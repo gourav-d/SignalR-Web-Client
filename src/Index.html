@@ -4,174 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <script src="./index.js"></script>
-    <title>Signal R JavaScript Client</title>
+    
+    <!-- <script src="./js/components/basicView.js"></script> -->
+    <title >Signal R JavaScript Client</title>
 </head>
 <body>
+    
     <h1>Signal R JavaScript Client</h1>
-    <div>
-        <table>
-            <tr>
-                <td>Url</td>
-                <td><input type="text" id="txt-url" size="50" value="http://localhost:53128/connect/app"/></td>
-            </tr>
-            <tr></tr>
-            <tr></tr>
-            <tr>
-                <td>Methods</td>
-                <tr><td>WebSocket <input type="checkbox" id="txt-chk-we" class="lst-con-protocol" value="ws" checked/></td></tr>
-                <tr><td>Long Pooling <input type="checkbox" id="txt-chk-lp" class="lst-con-protocol" disabled checked value="lp" /></td></tr>
-                <tr><td>Server Send Event<input type="checkbox" id="txt-chk-sse"  class="lst-con-protocol" checked value="sse" /></td></tr>
-                <!-- <tr><td>Any<input type="checkbox" id="txt-chk-any" class="lst-con-any" value="any" /></td></tr> -->
-         </tr>
-            <tr></tr>
-            <tr></tr>
-            <tr>
-                <td>Server Method</td>
-                <td><input type="text" id="txt-method" size="50" value="Get"/></td>
-                </tr>
-                <tr></tr>
-                <tr></tr>
-            <tr>
-                <td>Request Data</td>
-                <td><textarea id="txt-input-area" rows="10" cols="100"></textarea></td>
-                <td><input type="button" id="btn-send" value="Send" onclick="sendData()"/></td>
-            </tr>
-            <tr>
-                <td>Response Data</td>
-                <td><textarea id="txt-output-area" rows="10" cols="100"></textarea></td>
-            </tr>
-            <tr></tr>
-            <tr></tr>
-            <tr>
-                <td><input type="button" id="btn-connect" value="Connect" onclick="connectToServer()" /></td>
-            </tr>
-            <tr></tr>
-            <tr></tr>
-            <tr>
-                   <td> <input type="button" id="btn-disconnect" value="Disconnect" onclick="disconnect()" /></td>
-            </tr>
-        </table>
+    <!-- <hello-component data-name="James"></hello-component> -->
+    <div class="container">
+        <basic-src-view></basic-src-view>
     </div>
-    <script type="text/javascript">
 
-        var connection = null;
-    
-        function connectToServer()
-        {
-            var url = document.getElementById("txt-url").value;
-            connection = new signalR.HubConnectionBuilder()
-                    .withUrl(url)
-                    .build();
-            
-            connection
-                .start()
-                .then(function () {
-                    console.log('Connected');
-                    document.querySelector("#txt-output-area").value +=  "Connected..." + '\n'
-                })
-                .catch(function (err) {
-                    return console.error(err.toString());
-                });
-        }
-    
-        function sendData()
-        {
-            var methodName = document.getElementById("txt-method").value
-            //connection.invoke.apply(methodName, null);
-            var c = new Array();
-            var data = JSON.parse(document.getElementById("txt-input-area").value);
-            c.push(data);
-    
-            connection.invoke(methodName, data)
-                    .catch(function (err) {
-                        return console.log(err);
-                    });
-    
-            connection.on("ReceiveData", function(data)  {
-                
-                    
-                    document.querySelector("#txt-output-area").value +=  JSON.stringify(data) + '\n';
-    
-                
-            });
-        }
-    
-        function disconnect()
-        {
-            connection.stop()
-                        .then(function () {
-                            console.log('Disconnected');
-                            document.querySelector("#txt-output-area").value +=  "Disconnected..." + '\n'
-                        })
-                        .catch(function (err) {
-                            return console.error(err.toString());
-                        });
-        }
-
-        (function(){
-
-
-            //SetProtocols();
-            
-            var elements = document.querySelectorAll(".lst-con-protocol");
-
-            elements.forEach(function(el) {
-                el.addEventListener("click", function(){
-                    SetProtocols();
-                });
-
-            })
-            
-
-        })();
-
-
-        function SetProtocols()
-        {
-            // var anyCheckbox = document.getElementById("txt-chk-any");
-
-            // if(anyCheckbox.checked === true)
-            // {
-            //     return;
-            // }
-
-            var counter = 0;
-            var elements = document.querySelectorAll(".lst-con-protocol");
-
-            for(var i = 0; i < elements.length; i++)
-            {
-                if(elements[i].value === "ws" && elements[i].checked !== true)
-                {
-                    console.log("WebSocket disabled");
-                    WebSocket = undefined;
-                    counter++;
-                }
-                else if(elements[i].value === "sse" && elements[i].checked !== true)
-                {
-                    console.log("Server Sent Event disabled");
-                    EventSource = undefined;
-                    counter++;
-                }
-                else if(elements[i].value === "lp" && elements[i].checked !== true)
-                {
-                    //console.log("Server Sent Event disabled");
-                    //EventSource = undefined;
-                    counter++;
-                }
-            }
-
-
-            // if(counter === 0)
-            // {
-            //     anyCheckbox.checked = true;
-            // }
-            // else
-            // {
-            //     anyCheckbox.checked = false;
-            // }
-        }   
-        
-    </script>
+    <script src="./main.js"></script>
 </body>
 </html>

@@ -1,0 +1,66 @@
+h1 {
+    color: rgb(51, 153, 97);
+}
+
+body {
+    padding : 10px ;
+    
+  }
+
+.tab {
+    margin-top: 20px;
+}
+
+/* .tabcontent .tab-pane{ border:solid 1px blue;  border-top: 0};  */
+#tabheader li a { background-color: rgb(17, 106, 158); color: white; font-size: 20px; }
+#tabheader  a.active {
+    border-bottom-color: transparent;
+    background-color:  white; 
+    color: black;
+}
+
+.tab-content {
+    background-color: white;
+    
+}
+.panel {
+    padding-top : 10px;
+    padding-left: 1px;
+    padding-right: 1px;
+    padding-bottom: 1px;
+    /* padding: 10px, 10px,10px, 10px; */
+    background-color:  rgb(17, 106, 158);
+    border: 1px;
+
+}
+
+li:hover { 
+    background-color: white;
+  }
+
+/* #tab-header .nav-pills > li > a {
+    border-radius: 4px 4px 0 0 ;
+  }
+
+  #tab-header .nav-tabs > li > a {
+    border-radius: 4px 4px 0 0 ;
+  } */
+
+  /* .active a {
+
+    background-color: #428bca !important;
+  
+  }
+   */
+  /* .active{
+    background-color: #428bca;
+  } */
+  
+  #tab-header .tab-content {
+    /* color : white; */
+    /* background-color: #428bca; */
+    padding : 5px 15px;
+  }
+  
+
+  
