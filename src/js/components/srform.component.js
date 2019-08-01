@@ -91,8 +91,6 @@ class SrFormComponent extends HTMLElement {
                                 </fieldset>
                             </form>
         `;
-
-
     }
 }
 

@@ -1,4 +1,4 @@
-class HeaderComponent extends HTMLElement {
+class AppComponent extends HTMLElement {
     constructor() {
         super();
     }
@@ -17,7 +17,7 @@ class HeaderComponent extends HTMLElement {
       }
 
     render() {
-        this.innerHTML = `      
+        this.innerHTML = `
 
         <div id="tab-header" class="container">
             <div class="panel panel-primary">
@@ -40,7 +40,6 @@ class HeaderComponent extends HTMLElement {
                         <h2>Advance</h2>
                         <sr-form type="advance"></sr-form>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -48,6 +47,6 @@ class HeaderComponent extends HTMLElement {
     }
 }
 
-if(!window.customElements.get("basic-src-view")) {
-    window.customElements.define("basic-src-view", HeaderComponent);
+if(!window.customElements.get("src-app")) {
+    window.customElements.define("src-app", AppComponent);
 }

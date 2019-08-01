@@ -1,8 +1,8 @@
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap/dist/js/bootstrap.js'
 import '../css/main.css';
-import './components/SrFormComponent';
-import './components/header.component';
+import './components/srform.component';
+import './components/app.component';
 
 console.log("Hello Webpack111");
 
