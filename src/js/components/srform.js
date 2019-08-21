@@ -24,6 +24,16 @@ export  function Init() {
         false);
     }
 
+        //Send Payload Button Events
+        var sendBtnClass = document.getElementsByClassName('btn-send-payload');
+        for (var i = 0; i < disconnectBtnClass.length; i++) {
+            sendBtnClass[i].addEventListener('click', 
+                function() {
+                    SendPayload();
+            }, 
+            false);
+        }
+
     NotConnected();
 }
 
@@ -64,11 +74,8 @@ export function connectToServer(url) {
 }
 
 export function OnConnect() {
-
-    //Try to setup connection
-    //work from here
-    var url = document.getElementById()
-    connectToServer();
+    var url = document.getElementById("inputUrl").value;
+    connectToServer(url);
 
 
     console.log("OnConnect");
@@ -79,6 +86,11 @@ export function OnConnect() {
 
     //Hide Connect Button
     DisableElementByClassName('connectbtn')
+
+    //Receive Data
+    connection.on("ReceiveData", function(data)  {
+        document.querySelector("#inputResponseData").value +=  JSON.stringify(data) + '\n';
+    });
 }
 
 export function DisableElementByClassName(className) {
@@ -99,6 +111,7 @@ export function EnableElementByClassName(className) {
 
 export function OnDisConnect() {
     console.log("OnDisConnect");
+    Disconnect();
     var onDisConnectClass = document.getElementsByClassName('disconnectbtn');
     var addEventOnDisconnect = function() {
         console.log('btn disconnect');
@@ -110,4 +123,28 @@ export function OnDisConnect() {
 
     EnableElementByClassName('connectbtn');
     NotConnected();
+}
+
+export function Disconnect() {
+    connection.stop()
+                .then(function () {
+                    console.log('Disconnected');
+                    //document.querySelector("#txt-output-area").value +=  "Disconnected..." + '\n'
+                })
+                .catch(function (err) {
+                    return console.error(err.toString());
+                });
+}
+
+export function SendPayload() {
+
+    var methodName = document.getElementById("inputServerMethod").value
+    var c = new Array();
+    var data = JSON.parse(document.getElementById("inputRequestData").value);
+    c.push(data);
+
+    connection.invoke(methodName, data)
+            .catch(function (err) {
+                return console.log(err);
+            });
 }

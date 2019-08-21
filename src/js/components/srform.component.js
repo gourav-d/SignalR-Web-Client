@@ -36,7 +36,7 @@ class SrFormComponent extends HTMLElement {
                                     <div class="form-group row">
                                         <label for="inputUrl" class="col-sm-2 col-form-label">Service Endpoint</label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control" id="inputUrl" placeholder="Url" value="http://localhost:53128/connect/app">
+                                            <input type="text" class="form-control inputUrl" id="inputUrl" placeholder="Url" value="https://localhost:5001/connect/app">
                                         </div>
                                     </div>
                                     <div class="form-group row">
@@ -89,8 +89,8 @@ class SrFormComponent extends HTMLElement {
                                     </div>
                                     <div class="form-group row onconnect">
                                         <div class="col-10 col-sm-5 col-md-5">
-                                            <input type="button" class="btn btn-primary" value="Send"/>
-                                            <input type="button" class="btn btn-primary disconnectbtn" id="btn-connect" value="Disconnect" />
+                                            <input type="button" class="btn btn-primary btn-send-payload" value="Send"/>
+                                            <input type="button" class="btn btn-primary disconnectbtn" id="btn-disconnectbtn" value="Disconnect" />
                                         </div>
                                     </div>
                                 </fieldset>
