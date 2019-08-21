@@ -1,3 +1,5 @@
+import * as abcTest from './srform';
+
 class SrFormComponent extends HTMLElement {
     constructor() {
         super();
@@ -13,6 +15,8 @@ class SrFormComponent extends HTMLElement {
     connectedCallback() {
         console.log('connected!');
         this.render();
+        abcTest.Init();
+
     }
 
     disconnectedCallback() {
@@ -32,16 +36,16 @@ class SrFormComponent extends HTMLElement {
                                     <div class="form-group row">
                                         <label for="inputUrl" class="col-sm-2 col-form-label">Service Endpoint</label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control" id="inputUrl" placeholder="Url">
+                                            <input type="text" class="form-control" id="inputUrl" placeholder="Url" value="http://localhost:53128/connect/app">
                                         </div>
                                     </div>
                                     <div class="form-group row">
                                         <div class="col-sm-10 offset-sm-2">
-                                            <input type="button" class="btn btn-primary" id="btn-connect" value="Connect" />
+                                            <input type="button" class="btn btn-primary connectbtn" id="btn-connect" value="Connect" />
                                         </div>
                                     </div>
 
-                                    <div class="form-group row" ${divStyle}>
+                                    <div class="form-group row onconnect" ${divStyle}>
                                         <label class="col-sm-2 col-form-label">Protocol Supported</label>
                                         <div class="col-sm-10 offset-sm-2">
                                             <div class="form-check form-check-inline">
@@ -65,35 +69,38 @@ class SrFormComponent extends HTMLElement {
                                         </div>
                                      </div>
                                     
-                                    <div class="form-group row">
+                                    <div class="form-group row onconnect">
                                         <label for="inputServerMethod" class="col-sm-2 col-form-label">Server Method</label>
                                         <div class="col-sm-10">
                                             <input type="text" class="form-control" id="inputServerMethod" placeholder="Server Method Name">
                                         </div>
                                     </div>
-                                    <div class="form-group row">
+                                    <div class="form-group row onconnect">
                                             <label for="inputRequestData" class="col-sm-2 col-form-label">Request Payload</label>
                                             <div class="col-sm-10">
                                                 <textarea rows="3" class="form-control" id="inputRequestData" placeholder="Request Payload"></textarea>
                                             </div>
                                     </div>
-                                    <div class="form-group row">
+                                    <div class="form-group row onconnect">
                                             <label for="inputResponseData" class="col-sm-2 col-form-label">Response Payload</label>
                                             <div class="col-sm-10">
                                                 <textarea rows="3" class="form-control" id="inputResponseData" placeholder="Response Payload"></textarea>
                                             </div>
                                     </div>
-                                    <div class="form-group row">
-                                        <div class="col-sm-10 offset-sm-2">
-                                            <button type="button" class="btn btn-primary">Send</button>
+                                    <div class="form-group row onconnect">
+                                        <div class="col-10 col-sm-5 col-md-5">
+                                            <input type="button" class="btn btn-primary" value="Send"/>
+                                            <input type="button" class="btn btn-primary disconnectbtn" id="btn-connect" value="Disconnect" />
                                         </div>
                                     </div>
                                 </fieldset>
                             </form>
         `;
+
+        
     }
 }
 
 if(!window.customElements.get("sr-form")) {
-    window.customElements.define("sr-form", SrFormComponent);
+    window.customElements.define("sr-form", SrFormComponent);  
 }

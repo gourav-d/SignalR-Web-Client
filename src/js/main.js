@@ -1,10 +1,14 @@
+import '@webcomponents/webcomponentsjs/webcomponents-bundle';//WebComponent Pollyfill
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap/dist/js/bootstrap.js'
 import '../css/main.css';
 import './components/srform.component';
 import './components/app.component';
 
+
 console.log("Hello Webpack111");
+
+
 
 // class HelloComponent extends HTMLElement {
 //     static get observedAttributes() {
