@@ -61,6 +61,10 @@ li:hover {
     /* background-color: #428bca; */
     padding : 5px 15px;
   }
+
+  .method-arguments {
+    padding-top: 10px;
+  }
   
 
   

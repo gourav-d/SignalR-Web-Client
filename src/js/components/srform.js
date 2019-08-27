@@ -1,6 +1,7 @@
 import * as signalR from "@aspnet/signalr";
 
 var connection = null;
+var isConnected = false;
 export  function Init() {
     //Connect Button Events
     var connectBtnClass = document.getElementsByClassName('connectbtn');
@@ -9,7 +10,7 @@ export  function Init() {
             function() {
                 console.log('btn connect');
                 OnConnect();
-        }, 
+        },
         false);
     }
 
@@ -35,6 +36,59 @@ export  function Init() {
         }
 
     NotConnected();
+    
+    Test();
+    
+}
+
+export function Test() {
+
+    var navLinkClass = document.getElementsByClassName('nav-link');
+        for (var i = 0; i < navLinkClass.length; i++) {
+            navLinkClass[i].addEventListener('click', 
+                function() {
+                    //debugger;
+                console.log(this.getAttribute('data-tab-type'));
+                OnTabChange(this.getAttribute('data-tab-type'));
+            }, 
+            false);
+        }
+}
+
+export function OnTabChange(tabName) {
+    if(tabName == 'basic') {
+        document.getElementById('protocol-support').style = 'display:none';
+
+    }
+    else {
+        if(isConnected) {
+            document.getElementById('protocol-support').style = 'display:block';
+        }
+    }   
+}
+
+export function AddArguments() {
+
+    //Add Arguments Button Events
+    var addArgBtnClass = document.getElementsByClassName('btn-add-argument');
+    for (var i = 0; i < addArgBtnClass.length; i++) {
+        addArgBtnClass[i].addEventListener('click', 
+            function() {
+                
+                var parentDiv = document.getElementsByClassName('method-arguments');
+
+                for (var i = 0; i < parentDiv.length; i++) {
+                    var inputTxtElement = document.createElement('textarea');
+                    inputTxtElement.setAttribute("row", "1");
+                    inputTxtElement.setAttribute("value", "");
+                    inputTxtElement.setAttribute("class", "form-control req-arg");
+                    inputTxtElement.setAttribute("placeholder", "Request Payload");
+                    parentDiv[i].appendChild(inputTxtElement);
+                    parentDiv[i].append(document.createElement('br'))
+                }
+        }, 
+        false);
+    }
 }
 
 export function NotConnected() {
@@ -77,8 +131,8 @@ export function OnConnect() {
     var url = document.getElementById("inputUrl").value;
     connectToServer(url);
 
-
     console.log("OnConnect");
+    isConnected = true;
     var onConnectClass = document.getElementsByClassName('onconnect');
     for (var i = 0; i < onConnectClass.length; i++) {
         onConnectClass[i].style.display = "block";
@@ -91,6 +145,8 @@ export function OnConnect() {
     connection.on("ReceiveData", function(data)  {
         document.querySelector("#inputResponseData").value +=  JSON.stringify(data) + '\n';
     });
+
+    AddArguments();
 }
 
 export function DisableElementByClassName(className) {
@@ -111,6 +167,7 @@ export function EnableElementByClassName(className) {
 
 export function OnDisConnect() {
     console.log("OnDisConnect");
+    isConnected = false;
     Disconnect();
     var onDisConnectClass = document.getElementsByClassName('disconnectbtn');
     var addEventOnDisconnect = function() {
@@ -138,12 +195,24 @@ export function Disconnect() {
 
 export function SendPayload() {
 
-    var methodName = document.getElementById("inputServerMethod").value
+    var methodName = document.getElementById("inputServerMethod").value;
     var c = new Array();
-    var data = JSON.parse(document.getElementById("inputRequestData").value);
-    c.push(data);
+    //var data = JSON.parse(document.getElementById("inputRequestData").value);
+    var argsTextAreaClass = document.getElementsByClassName('req-arg');
+debugger;
+    for (var i = 0; i < argsTextAreaClass.length; i++) {
+        
+        if(argsTextAreaClass[i].value !== "") { 
 
-    connection.invoke(methodName, data)
+            //Star from Here
+            //Support different type of data format
+            //c.push(JSON.parse(argsTextAreaClass[i].value));
+            c.push(argsTextAreaClass[i].value);
+        }
+    }   
+    
+
+    connection.invoke(methodName, ...c)
             .catch(function (err) {
                 return console.log(err);
             });

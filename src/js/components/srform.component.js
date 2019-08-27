@@ -45,7 +45,7 @@ class SrFormComponent extends HTMLElement {
                                         </div>
                                     </div>
 
-                                    <div class="form-group row onconnect" ${divStyle}>
+                                    <div class="form-group row onconnect" ${divStyle} id="protocol-support">
                                         <label class="col-sm-2 col-form-label">Protocol Supported</label>
                                         <div class="col-sm-10 offset-sm-2">
                                             <div class="form-check form-check-inline">
@@ -71,20 +71,22 @@ class SrFormComponent extends HTMLElement {
                                     
                                     <div class="form-group row onconnect">
                                         <label for="inputServerMethod" class="col-sm-2 col-form-label">Server Method</label>
-                                        <div class="col-sm-10">
+                                        <div class="col-sm-10 offset-sm-2">
                                             <input type="text" class="form-control" id="inputServerMethod" placeholder="Server Method Name">
                                         </div>
                                     </div>
                                     <div class="form-group row onconnect">
-                                            <label for="inputRequestData" class="col-sm-2 col-form-label">Request Payload</label>
-                                            <div class="col-sm-10">
-                                                <textarea rows="3" class="form-control" id="inputRequestData" placeholder="Request Payload"></textarea>
-                                            </div>
+                                        <label for="inputRequestData" class="col-sm-2 col-form-label">Request Payload</label>
+                                        <div class="col-sm-10 offset-sm-2">
+                                            
+                                            <input type="button" value="Add Argument" id="inputRequestData" class="btn-primary btn-xs btn-add-argument" />
+                                            <div id="method-arguments" class="method-arguments"></div>
+                                        </div>
                                     </div>
                                     <div class="form-group row onconnect">
                                             <label for="inputResponseData" class="col-sm-2 col-form-label">Response Payload</label>
-                                            <div class="col-sm-10">
-                                                <textarea rows="3" class="form-control" id="inputResponseData" placeholder="Response Payload"></textarea>
+                                            <div class="col-sm-10 offset-sm-2">
+                                                <textarea rows="2" class="form-control" id="inputResponseData" placeholder="Response Payload"></textarea>
                                             </div>
                                     </div>
                                     <div class="form-group row onconnect">

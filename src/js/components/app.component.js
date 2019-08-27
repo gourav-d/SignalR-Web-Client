@@ -22,11 +22,11 @@ class AppComponent extends HTMLElement {
         <div id="tab-header" class="container">
             <div class="panel panel-primary">
                 <ul class="nav nav-tabs justify-content-end nav-justified" id="tabheader">
-                    <li class="nav-item active">
-                        <a class="nav-link active" data-toggle="tab"  href="#basicview">Basic</a>
+                    <li class="nav-item">
+                        <a class="nav-link active" data-tab-type="basic" data-toggle="tab"  href="#basicview">Basic</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#advanceview">Advance</a>
+                        <a class="nav-link" data-tab-type="advance" data-toggle="tab" href="#basicview">Advance</a>
                     </li>
                 </ul>
 
@@ -36,10 +36,7 @@ class AppComponent extends HTMLElement {
                         <sr-form></sr-form>
                     </div>
 
-                    <div id="advanceview" class="tab-pane fade">
-                        <h2>Advance</h2>
-                        <sr-form type="advance"></sr-form>
-                    </div>
+                   
                 </div>
             </div>
         </div>
