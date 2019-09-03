@@ -1,5 +1,4 @@
 import * as signalR from "@aspnet/signalr";
-// import * from './../../images/';
 import deleteImg from '../../images/delete.png';
 
 const ContentType = { 
@@ -75,8 +74,6 @@ export function OnTabChange(tabName) {
     }
 }
 
-
-
 export function AddArguments() {
 
     //Add Arguments Button Events
@@ -102,9 +99,7 @@ export function AddArguments() {
                     divElement.appendChild(GetImageElement());
                     divElement.append(document.createElement('br'))
                     divElement.appendChild(hr);
-                    parentDiv[i].appendChild(divElement);                  
-
-                    
+                    parentDiv[i].appendChild(divElement);
                 }
             },
             false);
@@ -224,8 +219,6 @@ export function NotConnected() {
     }
 }
 
-
-
 export function buildConnection(url) {
     connection = new signalR.HubConnectionBuilder()
         .withUrl(url)
@@ -320,21 +313,6 @@ export function SendPayload() {
 
     var methodName = document.getElementById("inputServerMethod").value;
     var methodArguments = new Array();
-
-
-    var argsTextAreaClass = document.getElementsByClassName('req-arg');
-    // ReadArguments();
-
-    // for (var i = 0; i < argsTextAreaClass.length; i++) {
-
-    //     if (argsTextAreaClass[i].value !== "") {
-
-    //         //Star from Here
-    //         //Support different type of data format
-    //         //c.push(JSON.parse(argsTextAreaClass[i].value));
-    //         c.push(argsTextAreaClass[i].value);
-    //     }
-    // }
 
     methodArguments = ReadAndFormatArguments();
 
