@@ -77,10 +77,9 @@ class SrFormComponent extends HTMLElement {
                                     </div>
                                     <div class="form-group row onconnect">
                                         <label for="inputRequestData" class="col-sm-2 col-form-label">Request Payload</label>
-                                        <div class="col-sm-10 offset-sm-2">
-                                            
+                                        <div class="col-sm-10 offset-sm-2">                                            
                                             <input type="button" value="Add Argument" id="inputRequestData" class="btn-primary btn-xs btn-add-argument" />
-                                            <div id="method-arguments" class="method-arguments"></div>
+                                            <div id="form-group method-arguments" class="method-arguments"></div>
                                         </div>
                                     </div>
                                     <div class="form-group row onconnect">

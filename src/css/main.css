@@ -65,6 +65,21 @@ li:hover {
   .method-arguments {
     padding-top: 10px;
   }
-  
 
+  .args-container {
+    padding-top: 10px;
+  }
+  
+  .hr.div-splitter {
+    height: 10px;
+    border: 0;
+    box-shadow: 0 10px 10px -10px #8c8b8b inset;
+  }
+  hr.style13 {
+    height: 10px;
+    border: 0;
+    box-shadow: 0 10px 10px -10px #8c8b8b inset;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
   

@@ -1,100 +1,202 @@
 import * as signalR from "@aspnet/signalr";
 
+const ContentType = { 
+    TEXT : "Text",
+    NUMBER : "Number",
+    JSON : "JSON"
+} 
+
+
 var connection = null;
 var isConnected = false;
-export  function Init() {
+export function Init() {
     //Connect Button Events
     var connectBtnClass = document.getElementsByClassName('connectbtn');
     for (var i = 0; i < connectBtnClass.length; i++) {
-        connectBtnClass[i].addEventListener('click', 
-            function() {
+        connectBtnClass[i].addEventListener('click',
+            function () {
                 console.log('btn connect');
                 OnConnect();
-        },
-        false);
+            },
+            false);
     }
 
     //Disconnect Button Events
     var disconnectBtnClass = document.getElementsByClassName('disconnectbtn');
     for (var i = 0; i < disconnectBtnClass.length; i++) {
-        disconnectBtnClass[i].addEventListener('click', 
-            function() {
+        disconnectBtnClass[i].addEventListener('click',
+            function () {
                 console.log('btn connect');
                 OnDisConnect();
-        }, 
-        false);
+            },
+            false);
     }
 
-        //Send Payload Button Events
-        var sendBtnClass = document.getElementsByClassName('btn-send-payload');
-        for (var i = 0; i < disconnectBtnClass.length; i++) {
-            sendBtnClass[i].addEventListener('click', 
-                function() {
-                    SendPayload();
-            }, 
+    //Send Payload Button Events
+    var sendBtnClass = document.getElementsByClassName('btn-send-payload');
+    for (var i = 0; i < disconnectBtnClass.length; i++) {
+        sendBtnClass[i].addEventListener('click',
+            function () {
+                SendPayload();
+            },
             false);
-        }
+    }
 
     NotConnected();
-    
+
     Test();
-    
+
 }
 
 export function Test() {
 
     var navLinkClass = document.getElementsByClassName('nav-link');
-        for (var i = 0; i < navLinkClass.length; i++) {
-            navLinkClass[i].addEventListener('click', 
-                function() {
-                    //debugger;
+    for (var i = 0; i < navLinkClass.length; i++) {
+        navLinkClass[i].addEventListener('click',
+            function () {
                 console.log(this.getAttribute('data-tab-type'));
                 OnTabChange(this.getAttribute('data-tab-type'));
-            }, 
+            },
             false);
-        }
+    }
 }
 
 export function OnTabChange(tabName) {
-    if(tabName == 'basic') {
+    if (tabName == 'basic') {
         document.getElementById('protocol-support').style = 'display:none';
 
     }
     else {
-        if(isConnected) {
+        if (isConnected) {
             document.getElementById('protocol-support').style = 'display:block';
         }
-    }   
+    }
 }
+
+
 
 export function AddArguments() {
 
     //Add Arguments Button Events
     var addArgBtnClass = document.getElementsByClassName('btn-add-argument');
     for (var i = 0; i < addArgBtnClass.length; i++) {
-        addArgBtnClass[i].addEventListener('click', 
-            function() {
-                
+        addArgBtnClass[i].addEventListener('click',
+            function () {
+
                 var parentDiv = document.getElementsByClassName('method-arguments');
 
                 for (var i = 0; i < parentDiv.length; i++) {
-                    var inputTxtElement = document.createElement('textarea');
-                    inputTxtElement.setAttribute("row", "1");
-                    inputTxtElement.setAttribute("value", "");
-                    inputTxtElement.setAttribute("class", "form-control req-arg");
-                    inputTxtElement.setAttribute("placeholder", "Request Payload");
-                    parentDiv[i].appendChild(inputTxtElement);
+
+                    var divElement = document.createElement('div');
+                    //divElement.setAttribute('class', 'form-group form-inline args-container');
+                    divElement.setAttribute('class', 'container args-container');
+                    //divElement.setAttribute('style', 'border:1px solid #cecece');
+
+                    var hr = document.createElement('hr');
+                    hr.setAttribute('class', 'style13');
+
+                    divElement.appendChild(GetTextBoxElement());
+                    divElement.appendChild(GetSelectElement());
+
+                    parentDiv[i].appendChild(divElement);
+                    parentDiv[i].appendChild(hr);
+
                     parentDiv[i].append(document.createElement('br'))
                 }
-        }, 
-        false);
+            },
+            false);
     }
+}
+
+export function GetSelectElement() {
+    var div = document.createElement('div');
+    div.setAttribute('class', 'form-group col-sm-5');
+
+
+    var selectElement = document.createElement('select');
+    selectElement.setAttribute('class', 'req-content-type form-control');
+
+    var optionTxt = document.createElement('option');
+    var optionNum = document.createElement('option');
+    var optionJsonObj = document.createElement('option');
+
+    optionTxt.value = ContentType.TEXT
+    optionTxt.text = "Text";
+    selectElement.add(optionTxt, null);
+
+    optionNum.value = ContentType.NUMBER
+    optionNum.text = "Number";
+    selectElement.add(optionNum, null);
+
+    optionJsonObj.value = ContentType.JSON;
+    optionJsonObj.text = "JSON";
+    selectElement.add(optionJsonObj, null);
+
+    div.appendChild(selectElement);
+
+    return div;
+}
+
+export function GetTextBoxElement() {
+
+    var div = document.createElement('div');
+    div.setAttribute('class', 'form-group col-sm-5');
+
+    var inputTxtElement = document.createElement('textarea');
+    inputTxtElement.setAttribute("row", "1");
+    inputTxtElement.setAttribute("value", "");
+    inputTxtElement.setAttribute("class", "form-control req-arg-txt");
+    inputTxtElement.setAttribute("placeholder", "Request Payload");
+
+    div.appendChild(inputTxtElement);
+    return div;
+}
+
+export function ReadArguments() {
+    var requestArgs = new Array();
+    var argsContainers = document.querySelectorAll('.args-container');
+    console.log(argsContainers);
+    
+    if (argsContainers.length == 0) {
+        return requestArgs;
+    }
+
+    argsContainers.forEach((el) => {
+        debugger;
+        var textBox = el.querySelector('.req-arg-txt').value;
+        var selectList = el.querySelector('.req-content-type').value;
+
+        if(textBox !== "") {
+            requestArgs.push({cType: selectList, data: textBox });
+        }
+    });
+
+    return requestArgs;
+}
+
+export function ReadAndFormatArguments() {
+    var args = ReadArguments();
+    var requestArguments = new Array();
+
+    args.forEach((d) => {
+        if(d.cType == ContentType.NUMBER) {
+            requestArguments.push(Number(d.data));
+        } 
+        else if(d.cType == ContentType.JSON) {
+            requestArguments.push(JSON.parse(d.data));
+        }
+        else if(d.cType == ContentType.TEXT) {
+            requestArguments.push(d.data);
+        }
+    });
+
+    return requestArguments;
 }
 
 export function NotConnected() {
     console.log("notConnected");
     var onConnectClass = document.getElementsByClassName('onconnect');
-    var tests = function() {
+    var tests = function () {
         console.log('btn connect');
     };
 
@@ -103,14 +205,16 @@ export function NotConnected() {
     }
 }
 
+
+
 export function buildConnection(url) {
-        connection = new signalR.HubConnectionBuilder()
-                .withUrl(url)
-                .build();
+    connection = new signalR.HubConnectionBuilder()
+        .withUrl(url)
+        .build();
 }
 
 export function start() {
-    
+
     connection
         .start()
         .then(function () {
@@ -142,8 +246,8 @@ export function OnConnect() {
     DisableElementByClassName('connectbtn')
 
     //Receive Data
-    connection.on("ReceiveData", function(data)  {
-        document.querySelector("#inputResponseData").value +=  JSON.stringify(data) + '\n';
+    connection.on("ReceiveData", function (data) {
+        document.querySelector("#inputResponseData").value += JSON.stringify(data) + '\n';
     });
 
     AddArguments();
@@ -153,7 +257,7 @@ export function DisableElementByClassName(className) {
     var el = document.getElementsByClassName(className);
 
     for (var i = 0; i < el.length; i++) {
-        el[i].disabled = true; 
+        el[i].disabled = true;
     }
 }
 
@@ -161,7 +265,7 @@ export function EnableElementByClassName(className) {
     var el = document.getElementsByClassName(className);
 
     for (var i = 0; i < el.length; i++) {
-        el[i].disabled = false; 
+        el[i].disabled = false;
     }
 }
 
@@ -170,7 +274,7 @@ export function OnDisConnect() {
     isConnected = false;
     Disconnect();
     var onDisConnectClass = document.getElementsByClassName('disconnectbtn');
-    var addEventOnDisconnect = function() {
+    var addEventOnDisconnect = function () {
         console.log('btn disconnect');
     };
 
@@ -184,36 +288,40 @@ export function OnDisConnect() {
 
 export function Disconnect() {
     connection.stop()
-                .then(function () {
-                    console.log('Disconnected');
-                    //document.querySelector("#txt-output-area").value +=  "Disconnected..." + '\n'
-                })
-                .catch(function (err) {
-                    return console.error(err.toString());
-                });
+        .then(function () {
+            console.log('Disconnected');
+            //document.querySelector("#txt-output-area").value +=  "Disconnected..." + '\n'
+        })
+        .catch(function (err) {
+            return console.error(err.toString());
+        });
 }
 
 export function SendPayload() {
 
     var methodName = document.getElementById("inputServerMethod").value;
     var c = new Array();
-    //var data = JSON.parse(document.getElementById("inputRequestData").value);
-    var argsTextAreaClass = document.getElementsByClassName('req-arg');
-debugger;
-    for (var i = 0; i < argsTextAreaClass.length; i++) {
-        
-        if(argsTextAreaClass[i].value !== "") { 
 
-            //Star from Here
-            //Support different type of data format
-            //c.push(JSON.parse(argsTextAreaClass[i].value));
-            c.push(argsTextAreaClass[i].value);
-        }
-    }   
-    
+
+    var argsTextAreaClass = document.getElementsByClassName('req-arg');
+    // ReadArguments();
+
+    // for (var i = 0; i < argsTextAreaClass.length; i++) {
+
+    //     if (argsTextAreaClass[i].value !== "") {
+
+    //         //Star from Here
+    //         //Support different type of data format
+    //         //c.push(JSON.parse(argsTextAreaClass[i].value));
+    //         c.push(argsTextAreaClass[i].value);
+    //     }
+    // }
+
+    c = ReadAndFormatArguments();
+
 
     connection.invoke(methodName, ...c)
-            .catch(function (err) {
-                return console.log(err);
-            });
+        .catch(function (err) {
+            return console.log(err);
+        });
 }
