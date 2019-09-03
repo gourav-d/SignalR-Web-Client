@@ -29,6 +29,19 @@ module.exports = {
         {
             test: /\.css$/,
             use: [MiniCssExtractPlugin.loader, "css-loader"]
+        },
+        {
+          //Image Loader code need to refactor
+            test: /\.(png|jpg)$/,
+            exclude: /node_modules/,
+            use: [{
+              loader: 'url-loader',
+              options: {
+                limit: 10000,
+                name: './src/images/[name].[ext]',
+                publicPath: './img/'
+              }
+            }]            
         }
       ]
     },

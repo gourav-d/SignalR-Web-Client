@@ -1,10 +1,12 @@
 import * as signalR from "@aspnet/signalr";
+// import * from './../../images/';
+import deleteImg from '../../images/delete.png';
 
 const ContentType = { 
     TEXT : "Text",
     NUMBER : "Number",
     JSON : "JSON"
-} 
+}
 
 
 var connection = null;
@@ -97,11 +99,12 @@ export function AddArguments() {
 
                     divElement.appendChild(GetTextBoxElement());
                     divElement.appendChild(GetSelectElement());
+                    divElement.appendChild(GetImageElement());
+                    divElement.append(document.createElement('br'))
+                    divElement.appendChild(hr);
+                    parentDiv[i].appendChild(divElement);                  
 
-                    parentDiv[i].appendChild(divElement);
-                    parentDiv[i].appendChild(hr);
-
-                    parentDiv[i].append(document.createElement('br'))
+                    
                 }
             },
             false);
@@ -149,6 +152,22 @@ export function GetTextBoxElement() {
     inputTxtElement.setAttribute("placeholder", "Request Payload");
 
     div.appendChild(inputTxtElement);
+    return div;
+}
+
+export function GetImageElement() {
+    var div = document.createElement('div');
+    div.setAttribute('class', 'form-group col-sm-5');
+
+    var imgElement = document.createElement('img');
+    imgElement.src = deleteImg;
+    // inputTxtElement.src = require('../../images/delete.png');
+    imgElement.addEventListener('click', function() {
+        console.log('Delete Button');
+        debugger;
+        this.parentElement.parentElement.remove();
+    });
+    div.appendChild(imgElement);
     return div;
 }
 
@@ -300,7 +319,7 @@ export function Disconnect() {
 export function SendPayload() {
 
     var methodName = document.getElementById("inputServerMethod").value;
-    var c = new Array();
+    var methodArguments = new Array();
 
 
     var argsTextAreaClass = document.getElementsByClassName('req-arg');
@@ -317,10 +336,9 @@ export function SendPayload() {
     //     }
     // }
 
-    c = ReadAndFormatArguments();
+    methodArguments = ReadAndFormatArguments();
 
-
-    connection.invoke(methodName, ...c)
+    connection.invoke(methodName, ...methodArguments)
         .catch(function (err) {
             return console.log(err);
         });
