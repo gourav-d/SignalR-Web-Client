@@ -1,1 +1,19 @@
 /node_modules
+
+# User-specific files
+*.suo
+*.user
+*.sln.docstates
+
+# dotnet stuff
+project.lock.json
+
+# Build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+[Bb]in/
+[Oo]bj/
+
+#project files
+.vs/
