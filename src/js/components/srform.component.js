@@ -36,7 +36,7 @@ class SrFormComponent extends HTMLElement {
                                     <div class="form-group row">
                                         <label for="inputUrl" class="col-sm-2 col-form-label">Service Endpoint</label>
                                         <div class="col-sm-10">
-                                            <input type="text" class="form-control inputUrl" id="inputUrl" placeholder="Url" value="https://localhost:5001/connect/app">
+                                            <input type="text" class="form-control inputUrl" id="inputUrl" placeholder="Url" value="https://localhost:5001/Test/OneHub">
                                         </div>
                                     </div>
                                     <div class="form-group row">
@@ -79,7 +79,7 @@ class SrFormComponent extends HTMLElement {
                                         <label for="inputRequestData" class="col-sm-2 col-form-label">Request Payload</label>
                                         <div class="col-sm-10 offset-sm-2">                                            
                                             <input type="button" value="Add Argument" id="inputRequestData" class="btn-primary btn-xs btn-add-argument" />
-                                            <div id="form-group method-arguments" class="method-arguments"></div>
+                                            <div id="method-arguments" class="form-group method-arguments"></div>
                                         </div>
                                     </div>
                                     <div class="form-group row onconnect">

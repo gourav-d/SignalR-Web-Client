@@ -7,16 +7,17 @@ const ContentType = {
     JSON : "JSON"
 }
 
-
 var connection = null;
+var storeFunc = null;
 var isConnected = false;
+var isAdvanceView = false;
+
 export function Init() {
     //Connect Button Events
     var connectBtnClass = document.getElementsByClassName('connectbtn');
     for (var i = 0; i < connectBtnClass.length; i++) {
         connectBtnClass[i].addEventListener('click',
             function () {
-                console.log('btn connect');
                 OnConnect();
             },
             false);
@@ -27,7 +28,6 @@ export function Init() {
     for (var i = 0; i < disconnectBtnClass.length; i++) {
         disconnectBtnClass[i].addEventListener('click',
             function () {
-                console.log('btn connect');
                 OnDisConnect();
             },
             false);
@@ -44,7 +44,6 @@ export function Init() {
     }
 
     NotConnected();
-
     Test();
 
 }
@@ -63,46 +62,60 @@ export function Test() {
 }
 
 export function OnTabChange(tabName) {
+    debugger;
     if (tabName == 'basic') {
-        document.getElementById('protocol-support').style = 'display:none';
-
+        //document.getElementById('protocol-support').style = 'display:none';
+        isAdvanceView = false;
+        AdvanceViewElements(isAdvanceView);
     }
     else {
-        if (isConnected) {
-            document.getElementById('protocol-support').style = 'display:block';
-        }
+        isAdvanceView = true;
+        AdvanceViewElements(isAdvanceView);
+        // if (isConnected) {
+        //     isAdvanceView = true;
+        //     //document.getElementById('protocol-support').style = 'display:block';
+        //     AdvanceViewElements(isAdvanceView);
+        // }
+    }
+}
+
+export function AdvanceViewElements(enable) {
+    if(enable === true) {
+        document.getElementById('protocol-support').style = 'display:block';
+    } 
+    else {
+        document.getElementById('protocol-support').style = 'display:none';
     }
 }
 
 export function AddArguments() {
-
     //Add Arguments Button Events
     var addArgBtnClass = document.getElementsByClassName('btn-add-argument');
     for (var i = 0; i < addArgBtnClass.length; i++) {
-        addArgBtnClass[i].addEventListener('click',
-            function () {
+        addArgBtnClass[i].addEventListener('click', AddArgumentsCallBack, false);
+    }
+}
 
-                var parentDiv = document.getElementsByClassName('method-arguments');
+export function AddArgumentsCallBack() {
 
-                for (var i = 0; i < parentDiv.length; i++) {
+    var parentDiv = document.getElementsByClassName('method-arguments');
 
-                    var divElement = document.createElement('div');
-                    //divElement.setAttribute('class', 'form-group form-inline args-container');
-                    divElement.setAttribute('class', 'container args-container');
-                    //divElement.setAttribute('style', 'border:1px solid #cecece');
+    for (var i = 0; i < parentDiv.length; i++) {
 
-                    var hr = document.createElement('hr');
-                    hr.setAttribute('class', 'style13');
+        var divElement = document.createElement('div');
+        //divElement.setAttribute('class', 'form-group form-inline args-container');
+        divElement.setAttribute('class', 'container args-container');
+        //divElement.setAttribute('style', 'border:1px solid #cecece');
 
-                    divElement.appendChild(GetTextBoxElement());
-                    divElement.appendChild(GetSelectElement());
-                    divElement.appendChild(GetImageElement());
-                    divElement.append(document.createElement('br'))
-                    divElement.appendChild(hr);
-                    parentDiv[i].appendChild(divElement);
-                }
-            },
-            false);
+        var hr = document.createElement('hr');
+        hr.setAttribute('class', 'style13');
+
+        divElement.appendChild(GetTextBoxElement());
+        divElement.appendChild(GetSelectElement());
+        divElement.appendChild(GetImageElement());
+        divElement.append(document.createElement('br'))
+        divElement.appendChild(hr);
+        parentDiv[i].appendChild(divElement);
     }
 }
 
@@ -159,7 +172,6 @@ export function GetImageElement() {
     // inputTxtElement.src = require('../../images/delete.png');
     imgElement.addEventListener('click', function() {
         console.log('Delete Button');
-        debugger;
         this.parentElement.parentElement.remove();
     });
     div.appendChild(imgElement);
@@ -176,7 +188,6 @@ export function ReadArguments() {
     }
 
     argsContainers.forEach((el) => {
-        debugger;
         var textBox = el.querySelector('.req-arg-txt').value;
         var selectList = el.querySelector('.req-content-type').value;
 
@@ -220,9 +231,18 @@ export function NotConnected() {
 }
 
 export function buildConnection(url) {
+    // var option = {
+    //     accessTokenFactory: () => 'YOUR ACCESS TOKEN TOKEN HERE'
+    //   };
+    var option = {
+        
+      };
+
+
+
     connection = new signalR.HubConnectionBuilder()
-        .withUrl(url)
-        .build();
+                    .withUrl(url, option)
+                    .build();
 }
 
 export function start() {
@@ -246,7 +266,6 @@ export function connectToServer(url) {
 export function OnConnect() {
     var url = document.getElementById("inputUrl").value;
     connectToServer(url);
-
     console.log("OnConnect");
     isConnected = true;
     var onConnectClass = document.getElementsByClassName('onconnect');
@@ -254,15 +273,68 @@ export function OnConnect() {
         onConnectClass[i].style.display = "block";
     }
 
+    AdvanceViewElements(isAdvanceView);
     //Hide Connect Button
     DisableElementByClassName('connectbtn')
 
     //Receive Data
+    //Reading the raw response
+    storeFunc = connection.processIncomingData;
+    connection.processIncomingData = function (data) {
+        console.log('111111111111xxxxxxxxxxxx'+ data);
+        storeFunc.call(connection, data);
+    }
     connection.on("ReceiveData", function (data) {
         document.querySelector("#inputResponseData").value += JSON.stringify(data) + '\n';
     });
 
     AddArguments();
+}
+
+export function SetConnectionProtocol()
+{
+    // var anyCheckbox = document.getElementById("txt-chk-any");
+
+    // if(anyCheckbox.checked === true)
+    // {
+    //     return;
+    // }
+
+    //Start work from here.
+    var counter = 0;
+    var elements = document.querySelectorAll(".lst-con-protocol");
+
+    for(var i = 0; i < elements.length; i++)
+    {
+        if(elements[i].value === "ws" && elements[i].checked !== true)
+        {
+            console.log("WebSocket disabled");
+            WebSocket = undefined;
+            counter++;
+        }
+        else if(elements[i].value === "sse" && elements[i].checked !== true)
+        {
+            console.log("Server Sent Event disabled");
+            EventSource = undefined;
+            counter++;
+        }
+        else if(elements[i].value === "lp" && elements[i].checked !== true)
+        {
+            //console.log("Server Sent Event disabled");
+            //EventSource = undefined;
+            counter++;
+        }
+    }
+
+
+    // if(counter === 0)
+    // {
+    //     anyCheckbox.checked = true;
+    // }
+    // else
+    // {
+    //     anyCheckbox.checked = false;
+    // }
 }
 
 export function DisableElementByClassName(className) {
@@ -294,15 +366,28 @@ export function OnDisConnect() {
         onDisConnectClass[i].style.display = "block";
     }
 
+    Reset();
     EnableElementByClassName('connectbtn');
     NotConnected();
+}
+
+export function Reset() {
+    //Clear Server Method Text
+    document.getElementById('inputServerMethod').value = "";
+
+    
+    var addArgBtnClass = document.getElementsByClassName('btn-add-argument');
+    for (var i = 0; i < addArgBtnClass.length; i++) {
+        addArgBtnClass[i].removeEventListener('click', AddArgumentsCallBack, false);
+    }
+    document.getElementById('method-arguments').innerHTML = "";
+    inputResponseData.value = "";
 }
 
 export function Disconnect() {
     connection.stop()
         .then(function () {
             console.log('Disconnected');
-            //document.querySelector("#txt-output-area").value +=  "Disconnected..." + '\n'
         })
         .catch(function (err) {
             return console.error(err.toString());

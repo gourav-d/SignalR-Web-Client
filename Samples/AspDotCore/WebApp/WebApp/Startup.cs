@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using WebApp.Hubs;
 
 namespace WebApp
 {
@@ -24,6 +25,16 @@ namespace WebApp
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
+			services.AddCors(options => options.AddPolicy("Cors", builder =>
+			{
+				builder
+					//.AllowAnyOrigin()
+					.AllowAnyMethod()
+					.AllowAnyHeader()
+					.AllowCredentials()
+					.WithOrigins("http://localhost:8080");
+			}));
+
 			services.Configure<CookiePolicyOptions>(options =>
 			{
 				// This lambda determines whether user consent for non-essential cookies is needed for a given request.
@@ -31,13 +42,15 @@ namespace WebApp
 				options.MinimumSameSitePolicy = SameSiteMode.None;
 			});
 
-
+			services.AddSignalR();
 			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
 		{
+			app.UseCors("Cors");
+
 			if (env.IsDevelopment())
 			{
 				app.UseDeveloperExceptionPage();
@@ -48,6 +61,10 @@ namespace WebApp
 				// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
 				app.UseHsts();
 			}
+
+			app.UseSignalR(option => {
+				option.MapHub<OneHub>(new PathString("/Test/OneHub"));
+			});
 
 			app.UseHttpsRedirection();
 			app.UseStaticFiles();
