@@ -45,23 +45,30 @@ class SrFormComponent extends HTMLElement {
                                         </div>
                                     </div>
 
+                                    <div class="form-group row onconnect">
+                                        <label for="authHeader" class="col-sm-2 col-form-label">Authentication Header</label>
+                                        <div class="col-sm-10 offset-sm-2">
+                                            <input type="text" class="form-control" id="authHeader" placeholder="Token">
+                                        </div>
+                                    </div>
+
                                     <div class="form-group row onconnect" ${divStyle} id="protocol-support">
                                         <label class="col-sm-2 col-form-label">Protocol Supported</label>
                                         <div class="col-sm-10 offset-sm-2">
                                             <div class="form-check form-check-inline">
-                                                <input type="checkbox" id="chk-ws" class="form-check-input" value="ws" checked/>
+                                                <input type="checkbox" id="chk-ws" class="form-check-input protocol-support" value="ws" checked/>
                                                 <label class="form-check-label" for="chk-ws">
                                                     WebSocket
                                                 </label>
                                             </div>
                                             <div class="form-check form-check-inline">
-                                                <input type="checkbox" id="chk-lp" class="form-check-input" disabled checked value="lp" />
+                                                <input type="checkbox" id="chk-lp" class="form-check-input protocol-support" disabled checked value="lp" />
                                                 <label class="form-check-label" for="chk-lp">
                                                     Long Pooling
                                                 </label>
                                             </div>
                                             <div class="form-check form-check-inline">
-                                                <input type="checkbox" id="chk-sse"  class="form-check-input" checked value="sse" />
+                                                <input type="checkbox" id="chk-sse"  class="form-check-input protocol-support" checked value="sse" />
                                                 <label class="form-check-label" for="chk-sse">
                                                     Server Send Event
                                                 </label>

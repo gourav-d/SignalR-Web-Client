@@ -264,6 +264,11 @@ export function connectToServer(url) {
 }
 
 export function OnConnect() {
+
+    if(isAdvanceView) {
+        SetConnectionProtocol();
+    }
+
     var url = document.getElementById("inputUrl").value;
     connectToServer(url);
     console.log("OnConnect");
@@ -299,10 +304,9 @@ export function SetConnectionProtocol()
     // {
     //     return;
     // }
-
     //Start work from here.
     var counter = 0;
-    var elements = document.querySelectorAll(".lst-con-protocol");
+    var elements = document.querySelectorAll(".protocol-support");
 
     for(var i = 0; i < elements.length; i++)
     {
@@ -367,8 +371,11 @@ export function OnDisConnect() {
     }
 
     Reset();
+    debugger;
+    
     EnableElementByClassName('connectbtn');
     NotConnected();
+    AdvanceViewElements(isAdvanceView);
 }
 
 export function Reset() {
