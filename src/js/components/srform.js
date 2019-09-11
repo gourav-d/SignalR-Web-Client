@@ -1,12 +1,14 @@
 import * as signalR from "@aspnet/signalr";
+import mitt from 'mitt';
 import deleteImg from '../../images/delete.png';
 
 const ContentType = { 
     TEXT : "Text",
     NUMBER : "Number",
     JSON : "JSON"
-}
+} 
 
+const eventEmitter = mitt();
 var connection = null;
 var storeFunc = null;
 var isConnected = false;
@@ -48,6 +50,26 @@ export function Init() {
 
 }
 
+//#region ConnectedEvent
+
+eventEmitter.on('OnConnected', () => {
+    if(isAdvanceView === true) {
+        document.getElementById('chk-ws').disabled= true;
+        document.getElementById('chk-sse').disabled= true;
+    }
+} );
+
+//#endregion
+
+//#region OnDisconnected
+eventEmitter.on('OnDisconnected', () => {
+    if(isAdvanceView === true) {
+        document.getElementById('chk-ws').disabled= false;
+        document.getElementById('chk-sse').disabled= false;
+    }
+} );
+//#endregion
+
 export function Test() {
 
     var navLinkClass = document.getElementsByClassName('nav-link');
@@ -62,7 +84,6 @@ export function Test() {
 }
 
 export function OnTabChange(tabName) {
-    debugger;
     if (tabName == 'basic') {
         //document.getElementById('protocol-support').style = 'display:none';
         isAdvanceView = false;
@@ -234,14 +255,26 @@ export function buildConnection(url) {
     // var option = {
     //     accessTokenFactory: () => 'YOUR ACCESS TOKEN TOKEN HERE'
     //   };
+
+//     const options = {
+//         accessTokenFactory: getToken
+// };
+
     var option = {
         
       };
 
-
+      if(isAdvanceView) { 
+        var token = document.getElementById('authHeader').value;
+        option.accessTokenFactory = () => document.getElementById('authHeader').value;
+      }
 
     connection = new signalR.HubConnectionBuilder()
                     .withUrl(url, option)
+                    // .withUrl(url,
+                    // {
+                    //     accessTokenFactory: () => "MyTokenGoesHere" // Return access token
+                    // })
                     .build();
 }
 
@@ -270,6 +303,7 @@ export function OnConnect() {
     }
 
     var url = document.getElementById("inputUrl").value;
+    debugger;
     connectToServer(url);
     console.log("OnConnect");
     isConnected = true;
@@ -286,18 +320,18 @@ export function OnConnect() {
     //Reading the raw response
     storeFunc = connection.processIncomingData;
     connection.processIncomingData = function (data) {
-        console.log('111111111111xxxxxxxxxxxx'+ data);
+        console.log('processIncomingData'+ data);
         storeFunc.call(connection, data);
     }
     connection.on("ReceiveData", function (data) {
         document.querySelector("#inputResponseData").value += JSON.stringify(data) + '\n';
     });
 
+    eventEmitter.emit('OnConnected');
     AddArguments();
 }
 
-export function SetConnectionProtocol()
-{
+export function SetConnectionProtocol() {
     // var anyCheckbox = document.getElementById("txt-chk-any");
 
     // if(anyCheckbox.checked === true)
@@ -371,8 +405,6 @@ export function OnDisConnect() {
     }
 
     Reset();
-    debugger;
-    
     EnableElementByClassName('connectbtn');
     NotConnected();
     AdvanceViewElements(isAdvanceView);
@@ -395,6 +427,7 @@ export function Disconnect() {
     connection.stop()
         .then(function () {
             console.log('Disconnected');
+            eventEmitter.emit('OnDisconnected');
         })
         .catch(function (err) {
             return console.error(err.toString());

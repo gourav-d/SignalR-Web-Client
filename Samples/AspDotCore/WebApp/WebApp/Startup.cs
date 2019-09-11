@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -9,6 +11,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using WebApp.Hubs;
 
 namespace WebApp
@@ -34,6 +37,60 @@ namespace WebApp
 					.AllowCredentials()
 					.WithOrigins("http://localhost:8080");
 			}));
+
+			//services.AddAuthentication()
+			//.AddJwtBearer(options => {
+			//	options.Events = new Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerEvents
+			//	{
+			//		OnTokenValidated = cotext => {
+
+			//			return Task.CompletedTask;
+			//		},
+			//		OnMessageReceived = context =>
+			//		{
+			//			var accessToken = context.Request.Query["access_token"];
+			//			if (string.IsNullOrEmpty(accessToken) == false)
+			//			{
+			//				context.Token = accessToken;
+			//			}
+			//			return Task.CompletedTask;
+			//		}
+			//	};
+			//});
+
+			services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+			.AddJwtBearer(options =>
+			{
+				options.TokenValidationParameters = new TokenValidationParameters
+				{
+					ValidateIssuer = true,
+					ValidateAudience = true,
+					ValidateLifetime = true,
+					ValidateIssuerSigningKey = true,
+					ValidIssuer = Configuration["Jwt:Issuer"],
+					ValidAudience = Configuration["Jwt:Issuer"],
+					IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
+				};
+
+				options.Events = new JwtBearerEvents
+				{
+					//OnTokenValidated = cotext =>
+					//{
+
+					//	return Task.CompletedTask;
+					//},
+					OnMessageReceived = context =>
+					{
+						//This is used for SignalR authentication
+						var accessToken = context.Request.Query["access_token"];
+						if (string.IsNullOrEmpty(accessToken) == false)
+						{
+							context.Token = accessToken;
+						}
+						return Task.CompletedTask;
+					}
+				};
+			});
 
 			services.Configure<CookiePolicyOptions>(options =>
 			{
@@ -62,11 +119,13 @@ namespace WebApp
 				app.UseHsts();
 			}
 
+			app.UseAuthentication();
+
 			app.UseSignalR(option => {
 				option.MapHub<OneHub>(new PathString("/Test/OneHub"));
 			});
 
-			app.UseHttpsRedirection();
+			//app.UseHttpsRedirection();
 			app.UseStaticFiles();
 			app.UseCookiePolicy();
 

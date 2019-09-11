@@ -45,7 +45,7 @@ class SrFormComponent extends HTMLElement {
                                         </div>
                                     </div>
 
-                                    <div class="form-group row onconnect">
+                                    <div class="form-group row ">
                                         <label for="authHeader" class="col-sm-2 col-form-label">Authentication Header</label>
                                         <div class="col-sm-10 offset-sm-2">
                                             <input type="text" class="form-control" id="authHeader" placeholder="Token">
