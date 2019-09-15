@@ -13,18 +13,18 @@ namespace WebApp.Hubs
 			return base.OnConnectedAsync();
 		}
 
-		public async Task NotifySameClient(string data)
+		public async Task TestCall(string data)
 		{
 			var connectionId = Context.ConnectionId;
-			await Clients.Client(connectionId).SendAsync("ReceiveData", $"Data Received: {data}");
+			await Clients.Client(connectionId).SendAsync("ReceiveData", $"Data Received from TestCall method: {data}");
 		}
 
 		//[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 		[Authorize]
-		public async Task EE(string data)
+		public async Task TestCallWithAuth(string data)
 		{
 			var connectionId = Context.ConnectionId;
-			await Clients.Client(connectionId).SendAsync("ReceiveData", $"Data Received: {data}");
+			await Clients.Client(connectionId).SendAsync("ReceiveData", $"Data Received from TestCallWithAuth method: {data}");
 		}
 
 		public async Task NotifyAllClient(string data)

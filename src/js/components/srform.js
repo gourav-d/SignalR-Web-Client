@@ -13,6 +13,7 @@ var connection = null;
 var storeFunc = null;
 var isConnected = false;
 var isAdvanceView = false;
+var isTokenRequired = false;
 
 export function Init() {
     //Connect Button Events
@@ -46,7 +47,18 @@ export function Init() {
     }
 
     NotConnected();
-    Test();
+    RigisterNavigationTabEvent();
+
+    document.getElementById('chk-req-token')
+            .addEventListener('change', (event) => {
+                    if (event.target.checked) {
+                        document.getElementById('authHeader').disabled= false;
+                        isTokenRequired = true;
+                    } else {
+                        isTokenRequired = false;
+                        document.getElementById('authHeader').disabled= true;
+                    }
+                });
 
 }
 
@@ -70,7 +82,7 @@ eventEmitter.on('OnDisconnected', () => {
 } );
 //#endregion
 
-export function Test() {
+export function RigisterNavigationTabEvent() {
 
     var navLinkClass = document.getElementsByClassName('nav-link');
     for (var i = 0; i < navLinkClass.length; i++) {
@@ -85,25 +97,30 @@ export function Test() {
 
 export function OnTabChange(tabName) {
     if (tabName == 'basic') {
-        //document.getElementById('protocol-support').style = 'display:none';
         isAdvanceView = false;
         AdvanceViewElements(isAdvanceView);
     }
     else {
         isAdvanceView = true;
         AdvanceViewElements(isAdvanceView);
-        // if (isConnected) {
-        //     isAdvanceView = true;
-        //     //document.getElementById('protocol-support').style = 'display:block';
-        //     AdvanceViewElements(isAdvanceView);
-        // }
     }
 }
+
 
 export function AdvanceViewElements(enable) {
     if(enable === true) {
         document.getElementById('protocol-support').style = 'display:block';
         document.getElementById('auth-container').style = 'display:block';
+        if(isConnected === true) {
+            document.getElementById('chk-req-token').disabled = true;
+            document.getElementById('authHeader').disabled = true;
+        } else {
+            document.getElementById('chk-req-token').disabled = false;
+            if(isTokenRequired === true) {
+                document.getElementById('authHeader').disabled = false;
+            }
+            
+        }
     } 
     else {
         document.getElementById('protocol-support').style = 'display:none';
@@ -262,13 +279,13 @@ export function buildConnection(url) {
 //         accessTokenFactory: getToken
 // };
 
-    var option = {
-        
-      };
+    var option = { };
 
-      if(isAdvanceView) {
+    if(isAdvanceView) {
+        if(isTokenRequired === true) {
         option.accessTokenFactory = () => document.getElementById('authHeader').value;
-      }
+        }
+    }
 
     connection = new signalR.HubConnectionBuilder()
                     .withUrl(url, option)
@@ -303,9 +320,8 @@ export function OnConnect() {
         SetConnectionProtocol();
     }
 
-    var url = document.getElementById("inputUrl").value;
-    debugger;
-    connectToServer(url);
+    var urlElement = document.getElementById("inputUrl");
+    connectToServer(urlElement.value);
     console.log("OnConnect");
     isConnected = true;
     var onConnectClass = document.getElementsByClassName('onconnect');
@@ -330,6 +346,9 @@ export function OnConnect() {
 
     eventEmitter.emit('OnConnected');
     AddArguments();
+
+    //Disable Url
+    urlElement.disabled = true;
 }
 
 export function SetConnectionProtocol() {
@@ -391,6 +410,8 @@ export function OnDisConnect() {
     EnableElementByClassName('connectbtn');
     NotConnected();
     AdvanceViewElements(isAdvanceView);
+    //Enable URL textBix
+    document.getElementById("inputUrl").disabled = false;
 }
 
 export function Reset() {

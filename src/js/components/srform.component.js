@@ -44,7 +44,16 @@ class SrFormComponent extends HTMLElement {
                                     <div class="form-group row onconnect" id="auth-container">
                                         <label for="authHeader" class="col-sm-2 col-form-label">Authentication Header</label>
                                         <div class="col-sm-10 offset-sm-2">
-                                            <input type="text" class="form-control" id="authHeader" placeholder="Token">
+                                            <input type="text" class="form-control" id="authHeader" placeholder="Token" disabled/>
+                                        </div>
+                                        <div class="col-sm-10 offset-sm-2">
+                                            <div class="form-check form-check-inline">
+                                                <input type="checkbox" id="chk-req-token" class="form-check-input chk-req-token"/>
+                                                <label class="form-check-label" for="chk-req-token">
+                                                    Token Required
+                                                </label>
+                                                
+                                            </div>
                                         </div>
                                     </div>
 
