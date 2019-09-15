@@ -39,13 +39,9 @@ class SrFormComponent extends HTMLElement {
                                             <input type="text" class="form-control inputUrl" id="inputUrl" placeholder="Url" value="https://localhost:5001/Test/OneHub">
                                         </div>
                                     </div>
-                                    <div class="form-group row">
-                                        <div class="col-sm-10 offset-sm-2">
-                                            <input type="button" class="btn btn-primary connectbtn" id="btn-connect" value="Connect" />
-                                        </div>
-                                    </div>
 
-                                    <div class="form-group row ">
+
+                                    <div class="form-group row onconnect" id="auth-container">
                                         <label for="authHeader" class="col-sm-2 col-form-label">Authentication Header</label>
                                         <div class="col-sm-10 offset-sm-2">
                                             <input type="text" class="form-control" id="authHeader" placeholder="Token">
@@ -75,6 +71,12 @@ class SrFormComponent extends HTMLElement {
                                             </div>
                                         </div>
                                      </div>
+
+                                     <div class="form-group row">
+                                        <div class="col-sm-10 offset-sm-2">
+                                            <input type="button" class="btn btn-primary connectbtn" id="btn-connect" value="Connect" />
+                                        </div>
+                                    </div>
                                     
                                     <div class="form-group row onconnect">
                                         <label for="inputServerMethod" class="col-sm-2 col-form-label">Server Method</label>
@@ -95,17 +97,16 @@ class SrFormComponent extends HTMLElement {
                                                 <textarea rows="2" class="form-control" id="inputResponseData" placeholder="Response Payload"></textarea>
                                             </div>
                                     </div>
-                                    <div class="form-group row onconnect">
-                                        <div class="col-10 col-sm-5 col-md-5">
+                                    <div class="form-group row onconnect ">
+                                        <div class="col-sm-2 offset-sm-2 btn-group">
                                             <input type="button" class="btn btn-primary btn-send-payload" value="Send"/>
                                             <input type="button" class="btn btn-primary disconnectbtn" id="btn-disconnectbtn" value="Disconnect" />
                                         </div>
                                     </div>
+                                    </div>
                                 </fieldset>
                             </form>
         `;
-
-        
     }
 }
 

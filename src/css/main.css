@@ -12,7 +12,12 @@ body {
 }
 
 /* .tabcontent .tab-pane{ border:solid 1px blue;  border-top: 0};  */
-#tabheader li a { background-color: rgb(17, 106, 158); color: white; font-size: 20px; }
+#tabheader li a { 
+  background-color: rgb(17, 106, 158); 
+  color: white; 
+  font-size: 20px; 
+}
+
 #tabheader  a.active {
     border-bottom-color: transparent;
     background-color:  white; 
@@ -83,3 +88,14 @@ li:hover {
     margin-bottom: 10px;
   }
   
+  .btn-send-payload {
+    margin-right: 10px;
+  }
+
+ul.nav .nav-item a:hover { 
+  border-color:  rgb(17, 106, 158) !important;
+ } 
+ul.nav .nav-link.active:hover { 
+  border-color: white !important; 
+} 
+

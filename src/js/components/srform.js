@@ -103,9 +103,11 @@ export function OnTabChange(tabName) {
 export function AdvanceViewElements(enable) {
     if(enable === true) {
         document.getElementById('protocol-support').style = 'display:block';
+        document.getElementById('auth-container').style = 'display:block';
     } 
     else {
         document.getElementById('protocol-support').style = 'display:none';
+        document.getElementById('auth-container').style = 'display:none';
     }
 }
 
@@ -264,8 +266,7 @@ export function buildConnection(url) {
         
       };
 
-      if(isAdvanceView) { 
-        var token = document.getElementById('authHeader').value;
+      if(isAdvanceView) {
         option.accessTokenFactory = () => document.getElementById('authHeader').value;
       }
 
@@ -332,14 +333,6 @@ export function OnConnect() {
 }
 
 export function SetConnectionProtocol() {
-    // var anyCheckbox = document.getElementById("txt-chk-any");
-
-    // if(anyCheckbox.checked === true)
-    // {
-    //     return;
-    // }
-    //Start work from here.
-    var counter = 0;
     var elements = document.querySelectorAll(".protocol-support");
 
     for(var i = 0; i < elements.length; i++)
@@ -363,16 +356,6 @@ export function SetConnectionProtocol() {
             counter++;
         }
     }
-
-
-    // if(counter === 0)
-    // {
-    //     anyCheckbox.checked = true;
-    // }
-    // else
-    // {
-    //     anyCheckbox.checked = false;
-    // }
 }
 
 export function DisableElementByClassName(className) {
