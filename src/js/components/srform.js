@@ -221,7 +221,6 @@ export function GetImageElement() {
 export function ReadArguments() {
     var requestArgs = new Array();
     var argsContainers = document.querySelectorAll('.args-container');
-    console.log(argsContainers);
     
     if (argsContainers.length == 0) {
         return requestArgs;
@@ -261,9 +260,6 @@ export function ReadAndFormatArguments() {
 export function NotConnected() {
     console.log("notConnected");
     var onConnectClass = document.getElementsByClassName('onconnect');
-    var tests = function () {
-        console.log('btn connect');
-    };
 
     for (var i = 0; i < onConnectClass.length; i++) {
         onConnectClass[i].style.display = "none";
@@ -293,6 +289,8 @@ export function buildConnection(url) {
                     // {
                     //     accessTokenFactory: () => "MyTokenGoesHere" // Return access token
                     // })
+                    .configureLogging(signalR.LogLevel.Information)
+                    //.withAutomaticReconnect([0, 2000, 10000, 30000])
                     .build();
 }
 
@@ -301,8 +299,7 @@ export function start() {
     connection
         .start()
         .then(function () {
-            console.log('Connected');
-            //document.querySelector("#txt-output-area").value +=  "Connected..." + '\n'
+            //console.log('Connected');
         })
         .catch(function (err) {
             return console.error(err.toString());
@@ -360,19 +357,16 @@ export function SetConnectionProtocol() {
         {
             console.log("WebSocket disabled");
             WebSocket = undefined;
-            counter++;
         }
         else if(elements[i].value === "sse" && elements[i].checked !== true)
         {
             console.log("Server Sent Event disabled");
             EventSource = undefined;
-            counter++;
         }
         else if(elements[i].value === "lp" && elements[i].checked !== true)
         {
             //console.log("Server Sent Event disabled");
             //EventSource = undefined;
-            counter++;
         }
     }
 }
@@ -398,9 +392,6 @@ export function OnDisConnect() {
     isConnected = false;
     Disconnect();
     var onDisConnectClass = document.getElementsByClassName('disconnectbtn');
-    var addEventOnDisconnect = function () {
-        console.log('btn disconnect');
-    };
 
     for (var i = 0; i < onDisConnectClass.length; i++) {
         onDisConnectClass[i].style.display = "block";
