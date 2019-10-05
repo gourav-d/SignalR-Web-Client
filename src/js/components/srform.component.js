@@ -1,4 +1,4 @@
-import * as abcTest from './srform';
+import * as srFrom from './srform';
 
 class SrFormComponent extends HTMLElement {
     constructor() {
@@ -6,21 +6,18 @@ class SrFormComponent extends HTMLElement {
     }
     
     static get observedAttributes() {
-              return ['type'];
+        return ['type'];
     }
     get getType() {
-      return this.getAttribute('type');
+         return this.getAttribute('type');
     }
 
     connectedCallback() {
-        console.log('connected!');
         this.render();
-        abcTest.Init();
-
+        srFrom.Init();
     }
 
     disconnectedCallback() {
-        console.log('disconnected!');
     }
 
     attributeChangedCallback(attrName, oldVal, newVal) {
@@ -108,7 +105,7 @@ class SrFormComponent extends HTMLElement {
                                     </div>
                                     <div class="form-group row onconnect ">
                                         <div class="col-sm-2 offset-sm-2 btn-group">
-                                            <input type="button" class="btn btn-primary btn-send-payload" value="Send"/>
+                                            <input type="button" class="btn btn-primary btn-send-payload" id="btn-send-payload" value="Send"/>
                                             <input type="button" class="btn btn-primary disconnectbtn" id="btn-disconnectbtn" value="Disconnect" />
                                         </div>
                                     </div>

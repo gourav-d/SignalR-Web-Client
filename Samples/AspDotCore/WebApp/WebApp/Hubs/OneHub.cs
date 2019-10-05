@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Threading.Tasks;
@@ -16,7 +15,13 @@ namespace WebApp.Hubs
 		public async Task TestCall(string data)
 		{
 			var connectionId = Context.ConnectionId;
-			await Clients.Client(connectionId).SendAsync("ReceiveData", $"Data Received from TestCall method: {data}");
+			await Clients.Client(connectionId).SendAsync("ReceiveData", $"Data Received from  TestCall method: {data}");
+		}
+
+		public async Task TestCall1(string data, string d)
+		{
+			var connectionId = Context.ConnectionId;
+			await Clients.Client(connectionId).SendAsync("ReceiveData", $"Data Received from  TestCall method: {data}- {d}");
 		}
 
 		//[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
