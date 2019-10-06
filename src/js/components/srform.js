@@ -1,42 +1,45 @@
 import deleteImg from '../../images/delete.png';
 import { AppLogic } from './logic/app.logic';
-import { ContentType, AppEvents } from './logic/lib/app.common'
+import * as AppCommon from './logic/lib/app.common';
 
-//var storeFunc = null;
 var isConnected = false;
-//var isAdvanceView = false;
-//ar appLogic = null;
 
 export function Init() {
 
     window.appLogic = new AppLogic();
 
     //Connect Button Events
-    var connectBtn = document
-                        .getElementById('btn-connect')
-                        .addEventListener('click',
-                            function () {
-                                OnConnect();
-                            },
-                            false);
+    document.getElementById('btn-connect')
+            .addEventListener('click',
+                function () {
+                    OnConnect();
+                },
+                false);
 
     //Disconnect Button Events
-    var disconnectBtn = document
-                            .getElementById('btn-disconnectbtn')
-                            .addEventListener('click',
-                                function () {
-                                    OnDisConnect();
-                                },
-                                false);
+    document.getElementById('btn-disconnectbtn')
+            .addEventListener('click',
+                function () {
+                    OnDisConnect();
+                },
+                false);
 
     //Send Payload Button Events
-    var sendBtn = document
-                    .getElementById('btn-send-payload')
-                    .addEventListener('click',
-                        function () {
-                            SendPayload();
-                        },
-                        false);
+    document.getElementById('btn-send-payload')
+            .addEventListener('click',
+                function () {
+                    SendPayload();
+                },
+                false);
+
+    document.getElementById('chk-loggerView')
+            .addEventListener('change', (event) => {
+                if (event.target.checked) {
+                    document.getElementById('logger-container').style.display = "block";
+                } else {
+                    document.getElementById('logger-container').style.display = "none";
+                }
+            });
 
     NotConnected();
     RigisterNavigationTabEvent();
@@ -55,23 +58,15 @@ export function Init() {
 }
 
 //#region ConnectedEvent
-// eventEmitter.on('OnConnected', () => {
-//     if(window.appLogic.GetCurrentView() !== true) {
-//         document.getElementById('chk-ws').disabled= true;
-//         document.getElementById('chk-sse').disabled= true;
-//     }
-// } );
 
-AppEvents.on('Init', () => {
-    debugger;
-    console.log('Init Event Emitter');
-} );
+    AppCommon.AppEvents.on('Init', () => {
+        //console.log('Init Event Emitter');
+    } );
 
 //#endregion
 
 //#region OnDisconnected
-AppEvents.on('OnDisconnected', () => {
-    debugger;
+AppCommon.AppEvents.on('OnDisconnected', () => {
     if(window.appLogic.GetCurrentView() !== true) {
         document.getElementById('chk-ws').disabled= false;
         document.getElementById('chk-sse').disabled= false;
@@ -111,7 +106,7 @@ export function AdvanceViewElements(enable) {
         if(isConnected === true) {
             document.getElementById('chk-req-token').disabled = true;
             document.getElementById('authHeader').disabled = true;
-            DisableElementByClassName('protocol-support');
+            AppCommon.DisableElementByClassName('protocol-support');
         } 
         else {
             document.getElementById('chk-req-token').disabled = false;
@@ -166,15 +161,15 @@ export function GetSelectElement() {
     var optionNum = document.createElement('option');
     var optionJsonObj = document.createElement('option');
 
-    optionTxt.value = ContentType.TEXT
+    optionTxt.value =  AppCommon.ContentType.TEXT
     optionTxt.text = "Text";
     selectElement.add(optionTxt, null);
 
-    optionNum.value = ContentType.NUMBER
+    optionNum.value = AppCommon.ContentType.NUMBER
     optionNum.text = "Number";
     selectElement.add(optionNum, null);
 
-    optionJsonObj.value = ContentType.JSON;
+    optionJsonObj.value = AppCommon.ContentType.JSON;
     optionJsonObj.text = "JSON";
     selectElement.add(optionJsonObj, null);
 
@@ -237,13 +232,13 @@ export function ReadAndFormatArguments() {
     var requestArguments = new Array();
 
     args.forEach((d) => {
-        if(d.cType == ContentType.NUMBER) {
+        if(d.cType == AppCommon.ContentType.NUMBER) {
             requestArguments.push(Number(d.data));
         } 
-        else if(d.cType == ContentType.JSON) {
+        else if(d.cType == AppCommon.ContentType.JSON) {
             requestArguments.push(JSON.parse(d.data));
         }
-        else if(d.cType == ContentType.TEXT) {
+        else if(d.cType == AppCommon.ContentType.TEXT) {
             requestArguments.push(d.data);
         }
     });
@@ -283,29 +278,25 @@ export function OnConnect() {
 
     var urlElement = document.getElementById("inputUrl");
     connectToServer(urlElement.value);
-    console.log("OnConnect");
+
     isConnected = true;
-    var onConnectClass = document.getElementsByClassName('onconnect');
-    for (var i = 0; i < onConnectClass.length; i++) {
-        onConnectClass[i].style.display = "block";
-    }
+    AppCommon.ShowElementByClassName('onconnect');
 
     AdvanceViewElements(isAdvanceView);
     //Hide Connect Button
-    DisableElementByClassName('connectbtn')
-
-    //Receive Data
-    //Reading the raw response
-    // storeFunc = connection.processIncomingData;
-    // connection.processIncomingData = function (data) {
-    //     console.log('processIncomingData'+ data);
-    //     storeFunc.call(connection, data);
-    // }
-
-    window.appLogic.OnReceive((data) => { document.querySelector("#inputResponseData").value += JSON.stringify(data) + '\n' } );
-
-    AppEvents.emit('OnConnected');
+    AppCommon.DisableElementByClassName('connectbtn');
+    AppCommon.AppEvents.emit('OnConnected');
     AddArguments();
+
+    AppCommon.AppEvents.on('ReceivedData', (data) => {
+        document.querySelector("#inputResponseData").value += JSON.stringify(data) + '\n' 
+    } );
+
+    AppCommon.AppEvents.on('Logger', (message) => {
+        debugger;
+        var msg = "[" + new Date().toISOString() + "] :: " + message;
+        document.getElementById("app-logs").innerHTML += '<p>' + msg + '</p>'; 
+    } );
 
     //Disable Url
     urlElement.disabled = true;
@@ -333,34 +324,14 @@ export function SetConnectionProtocol() {
     }
 }
 
-export function DisableElementByClassName(className) {
-    var el = document.getElementsByClassName(className);
-
-    for (var i = 0; i < el.length; i++) {
-        el[i].disabled = true;
-    }
-}
-
-export function EnableElementByClassName(className) {
-    var el = document.getElementsByClassName(className);
-
-    for (var i = 0; i < el.length; i++) {
-        el[i].disabled = false;
-    }
-}
-
 export function OnDisConnect() {
     console.log("OnDisConnect");
     isConnected = false;
     Disconnect();
-    var onDisConnectClass = document.getElementsByClassName('disconnectbtn');
-
-    for (var i = 0; i < onDisConnectClass.length; i++) {
-        onDisConnectClass[i].style.display = "block";
-    }
+    AppCommon.HideElementByClassName('onconnect');
 
     Reset();
-    EnableElementByClassName('connectbtn');
+    AppCommon.EnableElementByClassName('connectbtn');
     NotConnected();
     AdvanceViewElements(!window.appLogic.GetCurrentView());
     //Enable URL textBix

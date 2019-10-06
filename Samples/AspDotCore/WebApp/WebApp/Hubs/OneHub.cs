@@ -37,15 +37,28 @@ namespace WebApp.Hubs
 			await Clients.All.SendAsync("ReceiveData", $"Data Received: {data}");
 		}
 
-		public async Task TestComplexData(string data)
+		public async Task TestComplexData(User data)
 		{
 			var connectionId = Context.ConnectionId;
-			await Clients.Client(connectionId).SendAsync("ReceiveData", $"Data Received: {data}");
+			await Clients.Client(connectionId).SendAsync("ComplexSample", new { Msg = "Data Received", User = data });
 		}
 
 		public override Task OnDisconnectedAsync(Exception exception)
 		{
 			return base.OnDisconnectedAsync(exception);
 		}
+	}
+
+	public class User
+	{
+		public int Id { get; set; }
+		public string Name { get; set; }
+		public Address Address { get; set; }
+	}
+
+	public class Address
+	{
+		public string Country { get; set; }
+		public int Pin { get; set; }
 	}
 }

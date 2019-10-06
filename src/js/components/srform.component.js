@@ -30,6 +30,13 @@ class SrFormComponent extends HTMLElement {
         this.innerHTML = ` 
                         <form>
                                 <fieldset>
+                                    <div class="form">
+                                        <div class="checkbox-container float-right">
+                                            <input type="checkbox" id="chk-loggerView"  value="Logger View" />
+                                            <label for="chk-loggerView" class="col-sm-2 col-form-label">Logging</label>
+                                        </div>
+                                    </div>
+                                    
                                     <div class="form-group row">
                                         <label for="inputUrl" class="col-sm-2 col-form-label">Service Endpoint</label>
                                         <div class="col-sm-10">
@@ -109,6 +116,15 @@ class SrFormComponent extends HTMLElement {
                                             <input type="button" class="btn btn-primary disconnectbtn" id="btn-disconnectbtn" value="Disconnect" />
                                         </div>
                                     </div>
+                                    <div class="form-group row logger-container" style="display:none" id="logger-container">
+                                        <fieldset class="bg-gray" id="loggerView">
+                                            <legend class="col-form-label">
+                                            <h3>Logs</h3>
+                                            </legend>
+                                        <div class="container" id="app-logs">
+                                            
+                                        <div>
+                                        </fieldset>
                                     </div>
                                 </fieldset>
                             </form>
