@@ -34,9 +34,7 @@ class AppComponent extends HTMLElement {
                     <div id="basicview" class="tab-pane active">
                         <h2>Basic</h2>
                         <sr-form></sr-form>
-                    </div>
-
-                   
+                    </div>                  
                 </div>
             </div>
         </div>

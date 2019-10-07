@@ -99,3 +99,15 @@ ul.nav .nav-link.active:hover {
   border-color: white !important; 
 } 
 
+.logger-container {
+  padding: 5px;
+}
+
+.bg-gray {
+  background-color:#cccccc;
+  border-color: black;
+  border-width: 2px;
+  border-style: double;
+  padding: 10px;
+}
+

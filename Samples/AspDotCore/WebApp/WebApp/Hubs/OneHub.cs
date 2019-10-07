@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Threading.Tasks;
@@ -16,7 +15,13 @@ namespace WebApp.Hubs
 		public async Task TestCall(string data)
 		{
 			var connectionId = Context.ConnectionId;
-			await Clients.Client(connectionId).SendAsync("ReceiveData", $"Data Received from TestCall method: {data}");
+			await Clients.Client(connectionId).SendAsync("ReceiveData", $"Data Received from  TestCall method: {data}");
+		}
+
+		public async Task TestCall1(string data, string d)
+		{
+			var connectionId = Context.ConnectionId;
+			await Clients.Client(connectionId).SendAsync("ReceiveData", $"Data Received from  TestCall method: {data}- {d}");
 		}
 
 		//[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -32,15 +37,28 @@ namespace WebApp.Hubs
 			await Clients.All.SendAsync("ReceiveData", $"Data Received: {data}");
 		}
 
-		public async Task TestComplexData(string data)
+		public async Task TestComplexData(User data)
 		{
 			var connectionId = Context.ConnectionId;
-			await Clients.Client(connectionId).SendAsync("ReceiveData", $"Data Received: {data}");
+			await Clients.Client(connectionId).SendAsync("ComplexSample", new { Msg = "Data Received", User = data });
 		}
 
 		public override Task OnDisconnectedAsync(Exception exception)
 		{
 			return base.OnDisconnectedAsync(exception);
 		}
+	}
+
+	public class User
+	{
+		public int Id { get; set; }
+		public string Name { get; set; }
+		public Address Address { get; set; }
+	}
+
+	public class Address
+	{
+		public string Country { get; set; }
+		public int Pin { get; set; }
 	}
 }

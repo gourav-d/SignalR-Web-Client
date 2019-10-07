@@ -1,50 +1,45 @@
-import * as signalR from "@aspnet/signalr";
-import mitt from 'mitt';
 import deleteImg from '../../images/delete.png';
+import { AppLogic } from './logic/app.logic';
+import * as AppCommon from './logic/lib/app.common';
 
-const ContentType = { 
-    TEXT : "Text",
-    NUMBER : "Number",
-    JSON : "JSON"
-} 
-
-const eventEmitter = mitt();
-var connection = null;
-var storeFunc = null;
 var isConnected = false;
-var isAdvanceView = false;
-var isTokenRequired = false;
 
 export function Init() {
+
+    window.appLogic = new AppLogic();
+
     //Connect Button Events
-    var connectBtnClass = document.getElementsByClassName('connectbtn');
-    for (var i = 0; i < connectBtnClass.length; i++) {
-        connectBtnClass[i].addEventListener('click',
-            function () {
-                OnConnect();
-            },
-            false);
-    }
+    document.getElementById('btn-connect')
+            .addEventListener('click',
+                function () {
+                    OnConnect();
+                },
+                false);
 
     //Disconnect Button Events
-    var disconnectBtnClass = document.getElementsByClassName('disconnectbtn');
-    for (var i = 0; i < disconnectBtnClass.length; i++) {
-        disconnectBtnClass[i].addEventListener('click',
-            function () {
-                OnDisConnect();
-            },
-            false);
-    }
+    document.getElementById('btn-disconnectbtn')
+            .addEventListener('click',
+                function () {
+                    OnDisConnect();
+                },
+                false);
 
     //Send Payload Button Events
-    var sendBtnClass = document.getElementsByClassName('btn-send-payload');
-    for (var i = 0; i < disconnectBtnClass.length; i++) {
-        sendBtnClass[i].addEventListener('click',
-            function () {
-                SendPayload();
-            },
-            false);
-    }
+    document.getElementById('btn-send-payload')
+            .addEventListener('click',
+                function () {
+                    SendPayload();
+                },
+                false);
+
+    document.getElementById('chk-loggerView')
+            .addEventListener('change', (event) => {
+                if (event.target.checked) {
+                    document.getElementById('logger-container').style.display = "block";
+                } else {
+                    document.getElementById('logger-container').style.display = "none";
+                }
+            });
 
     NotConnected();
     RigisterNavigationTabEvent();
@@ -53,9 +48,9 @@ export function Init() {
             .addEventListener('change', (event) => {
                     if (event.target.checked) {
                         document.getElementById('authHeader').disabled= false;
-                        isTokenRequired = true;
+                        window.appLogic.EnableAuth();
                     } else {
-                        isTokenRequired = false;
+                        window.appLogic.DisableAuth();
                         document.getElementById('authHeader').disabled= true;
                     }
                 });
@@ -64,18 +59,15 @@ export function Init() {
 
 //#region ConnectedEvent
 
-eventEmitter.on('OnConnected', () => {
-    if(isAdvanceView === true) {
-        document.getElementById('chk-ws').disabled= true;
-        document.getElementById('chk-sse').disabled= true;
-    }
-} );
+    AppCommon.AppEvents.on('Init', () => {
+        //console.log('Init Event Emitter');
+    } );
 
 //#endregion
 
 //#region OnDisconnected
-eventEmitter.on('OnDisconnected', () => {
-    if(isAdvanceView === true) {
+AppCommon.AppEvents.on('OnDisconnected', () => {
+    if(window.appLogic.GetCurrentView() !== true) {
         document.getElementById('chk-ws').disabled= false;
         document.getElementById('chk-sse').disabled= false;
     }
@@ -97,31 +89,32 @@ export function RigisterNavigationTabEvent() {
 
 export function OnTabChange(tabName) {
     if (tabName == 'basic') {
-        isAdvanceView = false;
-        AdvanceViewElements(isAdvanceView);
+        window.appLogic.SetCurrentViewAsBasic();
+        AdvanceViewElements(false);
     }
     else {
-        isAdvanceView = true;
-        AdvanceViewElements(isAdvanceView);
+        window.appLogic.SetCurrentViewAsAdvance();
+        AdvanceViewElements(true);
     }
 }
 
-
 export function AdvanceViewElements(enable) {
+
     if(enable === true) {
         document.getElementById('protocol-support').style = 'display:block';
         document.getElementById('auth-container').style = 'display:block';
         if(isConnected === true) {
             document.getElementById('chk-req-token').disabled = true;
             document.getElementById('authHeader').disabled = true;
-        } else {
+            AppCommon.DisableElementByClassName('protocol-support');
+        } 
+        else {
             document.getElementById('chk-req-token').disabled = false;
-            if(isTokenRequired === true) {
+            if(window.appLogic.IsAuthEnabled() === true) {
                 document.getElementById('authHeader').disabled = false;
-            }
-            
+            }            
         }
-    } 
+    }
     else {
         document.getElementById('protocol-support').style = 'display:none';
         document.getElementById('auth-container').style = 'display:none';
@@ -143,9 +136,7 @@ export function AddArgumentsCallBack() {
     for (var i = 0; i < parentDiv.length; i++) {
 
         var divElement = document.createElement('div');
-        //divElement.setAttribute('class', 'form-group form-inline args-container');
         divElement.setAttribute('class', 'container args-container');
-        //divElement.setAttribute('style', 'border:1px solid #cecece');
 
         var hr = document.createElement('hr');
         hr.setAttribute('class', 'style13');
@@ -163,7 +154,6 @@ export function GetSelectElement() {
     var div = document.createElement('div');
     div.setAttribute('class', 'form-group col-sm-5');
 
-
     var selectElement = document.createElement('select');
     selectElement.setAttribute('class', 'req-content-type form-control');
 
@@ -171,15 +161,15 @@ export function GetSelectElement() {
     var optionNum = document.createElement('option');
     var optionJsonObj = document.createElement('option');
 
-    optionTxt.value = ContentType.TEXT
+    optionTxt.value =  AppCommon.ContentType.TEXT
     optionTxt.text = "Text";
     selectElement.add(optionTxt, null);
 
-    optionNum.value = ContentType.NUMBER
+    optionNum.value = AppCommon.ContentType.NUMBER
     optionNum.text = "Number";
     selectElement.add(optionNum, null);
 
-    optionJsonObj.value = ContentType.JSON;
+    optionJsonObj.value = AppCommon.ContentType.JSON;
     optionJsonObj.text = "JSON";
     selectElement.add(optionJsonObj, null);
 
@@ -209,7 +199,6 @@ export function GetImageElement() {
 
     var imgElement = document.createElement('img');
     imgElement.src = deleteImg;
-    // inputTxtElement.src = require('../../images/delete.png');
     imgElement.addEventListener('click', function() {
         console.log('Delete Button');
         this.parentElement.parentElement.remove();
@@ -243,13 +232,13 @@ export function ReadAndFormatArguments() {
     var requestArguments = new Array();
 
     args.forEach((d) => {
-        if(d.cType == ContentType.NUMBER) {
+        if(d.cType == AppCommon.ContentType.NUMBER) {
             requestArguments.push(Number(d.data));
         } 
-        else if(d.cType == ContentType.JSON) {
+        else if(d.cType == AppCommon.ContentType.JSON) {
             requestArguments.push(JSON.parse(d.data));
         }
-        else if(d.cType == ContentType.TEXT) {
+        else if(d.cType == AppCommon.ContentType.TEXT) {
             requestArguments.push(d.data);
         }
     });
@@ -267,43 +256,12 @@ export function NotConnected() {
 }
 
 export function buildConnection(url) {
-    // var option = {
-    //     accessTokenFactory: () => 'YOUR ACCESS TOKEN TOKEN HERE'
-    //   };
-
-//     const options = {
-//         accessTokenFactory: getToken
-// };
-
-    var option = { };
-
-    if(isAdvanceView) {
-        if(isTokenRequired === true) {
-        option.accessTokenFactory = () => document.getElementById('authHeader').value;
-        }
-    }
-
-    connection = new signalR.HubConnectionBuilder()
-                    .withUrl(url, option)
-                    // .withUrl(url,
-                    // {
-                    //     accessTokenFactory: () => "MyTokenGoesHere" // Return access token
-                    // })
-                    .configureLogging(signalR.LogLevel.Information)
-                    //.withAutomaticReconnect([0, 2000, 10000, 30000])
-                    .build();
+    var option = { url: url, getToken: () => document.getElementById('authHeader').value };
+    window.appLogic.Init(option);
 }
 
 export function start() {
-
-    connection
-        .start()
-        .then(function () {
-            //console.log('Connected');
-        })
-        .catch(function (err) {
-            return console.error(err.toString());
-        });
+    window.appLogic.OnConnect();
 }
 
 export function connectToServer(url) {
@@ -313,36 +271,32 @@ export function connectToServer(url) {
 
 export function OnConnect() {
 
+    var isAdvanceView = !window.appLogic.GetCurrentView();
     if(isAdvanceView) {
         SetConnectionProtocol();
     }
 
     var urlElement = document.getElementById("inputUrl");
     connectToServer(urlElement.value);
-    console.log("OnConnect");
+
     isConnected = true;
-    var onConnectClass = document.getElementsByClassName('onconnect');
-    for (var i = 0; i < onConnectClass.length; i++) {
-        onConnectClass[i].style.display = "block";
-    }
+    AppCommon.ShowElementByClassName('onconnect');
 
     AdvanceViewElements(isAdvanceView);
     //Hide Connect Button
-    DisableElementByClassName('connectbtn')
-
-    //Receive Data
-    //Reading the raw response
-    storeFunc = connection.processIncomingData;
-    connection.processIncomingData = function (data) {
-        console.log('processIncomingData'+ data);
-        storeFunc.call(connection, data);
-    }
-    connection.on("ReceiveData", function (data) {
-        document.querySelector("#inputResponseData").value += JSON.stringify(data) + '\n';
-    });
-
-    eventEmitter.emit('OnConnected');
+    AppCommon.DisableElementByClassName('connectbtn');
+    AppCommon.AppEvents.emit('OnConnected');
     AddArguments();
+
+    AppCommon.AppEvents.on('ReceivedData', (data) => {
+        document.querySelector("#inputResponseData").value += JSON.stringify(data) + '\n' 
+    } );
+
+    AppCommon.AppEvents.on('Logger', (message) => {
+        debugger;
+        var msg = "[" + new Date().toISOString() + "] :: " + message;
+        document.getElementById("app-logs").innerHTML += '<p>' + msg + '</p>'; 
+    } );
 
     //Disable Url
     urlElement.disabled = true;
@@ -366,24 +320,7 @@ export function SetConnectionProtocol() {
         else if(elements[i].value === "lp" && elements[i].checked !== true)
         {
             //console.log("Server Sent Event disabled");
-            //EventSource = undefined;
         }
-    }
-}
-
-export function DisableElementByClassName(className) {
-    var el = document.getElementsByClassName(className);
-
-    for (var i = 0; i < el.length; i++) {
-        el[i].disabled = true;
-    }
-}
-
-export function EnableElementByClassName(className) {
-    var el = document.getElementsByClassName(className);
-
-    for (var i = 0; i < el.length; i++) {
-        el[i].disabled = false;
     }
 }
 
@@ -391,16 +328,12 @@ export function OnDisConnect() {
     console.log("OnDisConnect");
     isConnected = false;
     Disconnect();
-    var onDisConnectClass = document.getElementsByClassName('disconnectbtn');
-
-    for (var i = 0; i < onDisConnectClass.length; i++) {
-        onDisConnectClass[i].style.display = "block";
-    }
+    AppCommon.HideElementByClassName('onconnect');
 
     Reset();
-    EnableElementByClassName('connectbtn');
+    AppCommon.EnableElementByClassName('connectbtn');
     NotConnected();
-    AdvanceViewElements(isAdvanceView);
+    AdvanceViewElements(!window.appLogic.GetCurrentView());
     //Enable URL textBix
     document.getElementById("inputUrl").disabled = false;
 }
@@ -408,7 +341,6 @@ export function OnDisConnect() {
 export function Reset() {
     //Clear Server Method Text
     document.getElementById('inputServerMethod').value = "";
-
     
     var addArgBtnClass = document.getElementsByClassName('btn-add-argument');
     for (var i = 0; i < addArgBtnClass.length; i++) {
@@ -419,25 +351,14 @@ export function Reset() {
 }
 
 export function Disconnect() {
-    connection.stop()
-        .then(function () {
-            console.log('Disconnected');
-            eventEmitter.emit('OnDisconnected');
-        })
-        .catch(function (err) {
-            return console.error(err.toString());
-        });
+    window.appLogic.OnDisConnect();
 }
 
 export function SendPayload() {
 
     var methodName = document.getElementById("inputServerMethod").value;
     var methodArguments = new Array();
-
+    
     methodArguments = ReadAndFormatArguments();
-
-    connection.invoke(methodName, ...methodArguments)
-        .catch(function (err) {
-            return console.log(err);
-        });
+    window.appLogic.OnSend({ methodName: methodName, methodArguments:  methodArguments});
 }
