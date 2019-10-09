@@ -1,5 +1,5 @@
 {
-  "name": "signalr-js-client",
+  "name": "signalr-web-client",
   "version": "1.0.0",
   "description": "ASP.Net Core Signal R JavaScript Client.",
   "main": "index.js",
