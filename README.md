@@ -25,7 +25,7 @@ SignalR Web Client have two views:
 In this basic view, you can contact to hub by providing the hub address. And to can start 
 
 1. Pass the valid Hub address in Service Endpoint textbox.(for ex. https://localhost:5001/Test/OneHub).
-<img src="./src/images/1.png"  width="600px" height="400px" />
+<img src="./src/images/1.PNG"  width="600px" height="400px" />
 
 2. Once click on Connect button, it will make connection with server. Once the connection is established, if any data is broadcast from the Hub(ex. OneHub) to all the client. Then, it will be displayed in Response payload textbox.
 
