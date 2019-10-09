@@ -38,7 +38,7 @@ class SrFormComponent extends HTMLElement {
                                     </div>
                                     
                                     <div class="form-group row">
-                                        <label for="inputUrl" class="col-sm-2 col-form-label">Service Endpoint</label>
+                                        <label for="inputUrl" class="col-sm-2 col-form-label">Hub Address</label>
                                         <div class="col-sm-10">
                                             <input type="text" class="form-control inputUrl" id="inputUrl" placeholder="Url" value="https://localhost:5001/Test/OneHub">
                                         </div>
@@ -62,7 +62,7 @@ class SrFormComponent extends HTMLElement {
                                     </div>
 
                                     <div class="form-group row onconnect" ${divStyle} id="protocol-support">
-                                        <label class="col-sm-2 col-form-label">Protocol Supported</label>
+                                        <label class="col-sm-2 col-form-label">Transport Type</label>
                                         <div class="col-sm-10 offset-sm-2">
                                             <div class="form-check form-check-inline">
                                                 <input type="checkbox" id="chk-ws" class="form-check-input protocol-support" value="ws" checked/>
