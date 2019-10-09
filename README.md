@@ -49,11 +49,11 @@ ex. Arg: abc
 
 Currently Data Type supports: Text, Number & JSON
 
-<img src="./src/images/5.png" width="300px" height="300px" />
+<img src="./src/images/5.PNG" width="300px" height="300px" />
 
 Then click on send button. It will send all the data to the hub. 
 
-<img src="./src/images/3.png"   />
+<img src="./src/images/3.PNG"   />
 
 ## Advance
 
