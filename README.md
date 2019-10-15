@@ -4,6 +4,11 @@ ASP.Net Core Signal-R Web Client is based on JavaScript
 
 This is a UI based SignalR client. It is a debugging tool to test ASP.Net Core SignalR hubs. Using this tool, we can send the data to the SignalR hub and receive the response emit from the SignalR Hub. This tool is design for dotnet developer to make their life easier when they work with SignalR.
 
+<p align="center">
+  <img src="./src/images/SignalR-Web-Client.jpg" >
+  <br>
+</p>
+
 ## Table of Contents
 
 -   [Basic Understanding of](#Basic-Understanding-of)
@@ -22,10 +27,7 @@ Before using this should, you should be know few concepts about:
 - [What is Asp.Net Core?](https://dotnet.microsoft.com/learn/aspnet/what-is-aspnet-core)
 - [What is SignalR in Asp.Net Core?](https://docs.microsoft.com/en-us/aspnet/core/signalr/introduction?view=aspnetcore-3.0)
 
-<p align="center">
-  <img src="./src/images/SignalR-Web-Client.jpg" >
-  <br>
-</p>
+
 
 
 #Prerequsit
