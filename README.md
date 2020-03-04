@@ -1,8 +1,8 @@
 # SignalR-Web-Client
-ASP.Net Core Signal-R Web Client is based on JavaScript  
+ASP.NET Core Signal-R is a JavaScript based Web Client.
 
 
-This is a UI based SignalR client. It is a debugging tool to test ASP.Net Core SignalR hubs. Using this tool, we can send the data to the SignalR hub and receive the response emit from the SignalR Hub. This tool is design for dotnet developer to make their life easier when they work with SignalR.
+It is a debugging tool to test ASP.Net Core SignalR hubs. This is a UI based SignalR client. Using this tool, we can send the data to the SignalR hub and receive the response from the SignalR Hub. This tool is design for dotnet developer to make their life easier when they work with SignalR.
 
 <p align="center">
   <img src="./src/images/SignalR-Web-Client.jpg" >
@@ -22,7 +22,7 @@ This is a UI based SignalR client. It is a debugging tool to test ASP.Net Core S
 
 ## Basic Understanding of:
 
-Before using this should, you should be know few concepts about:
+Before using this tool, you should be know few concepts about:
 
 - [What is Asp.Net Core?](https://dotnet.microsoft.com/learn/aspnet/what-is-aspnet-core)
 - [What is SignalR in Asp.Net Core?](https://docs.microsoft.com/en-us/aspnet/core/signalr/introduction?view=aspnetcore-3.0)
@@ -31,6 +31,12 @@ Before using this should, you should be know few concepts about:
 
 
 #Prerequsit
+
+# How it works?
+
+SignalR Web Client have two views:
+1. Basic
+2. Advance
 
 
 # How it works?
@@ -96,6 +102,16 @@ Nothing is perfect. Same rule goes to this tool also.
 - Want a new feature?
 
 Then, just open a [new clear and descriptive issue](../../issues/new).
+
+
+## How to integrate?
+
+1. Create a new project.
+  File -> New -> Project -> Select "ASP.NET Core Web Application"
+
+2. Now we have to create hub.
+    - Create a folder "Hubs". Inside that folder, create a file called "TestHub.cs".
+    - 
 
 
 ## License
