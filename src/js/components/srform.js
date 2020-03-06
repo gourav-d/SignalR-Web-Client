@@ -41,6 +41,20 @@ export function Init() {
                 }
             });
 
+    AppCommon.AppEvents.on('Logger', (message) => {
+        var msg = "[" + new Date().toISOString() + "] :: " + message;
+        document.getElementById("app-logs").innerHTML += '<p>' + msg + '</p>'; 
+    } );
+
+    AppCommon.AppEvents.on('ConnectionFailed', (message) => {
+        debugger;
+        isConnected = false;
+        alert('Connection Failed: Not able to establised the connection. Please check the Url.');
+        AppCommon.AppEvents.off('ReceivedData', HandleResponse);
+    } );
+
+    AppCommon.AppEvents.on('OnConnected', OnConnected);
+
     NotConnected();
     RigisterNavigationTabEvent();
 
@@ -279,27 +293,27 @@ export function OnConnect() {
     var urlElement = document.getElementById("inputUrl");
     connectToServer(urlElement.value);
 
+}
+
+export function OnConnected() {
+
+    var isAdvanceView = !window.appLogic.GetCurrentView();
+    var urlElement = document.getElementById("inputUrl");
     isConnected = true;
     AppCommon.ShowElementByClassName('onconnect');
 
     AdvanceViewElements(isAdvanceView);
     //Hide Connect Button
     AppCommon.DisableElementByClassName('connectbtn');
-    AppCommon.AppEvents.emit('OnConnected');
     AddArguments();
 
-    AppCommon.AppEvents.on('ReceivedData', (data) => {
-        document.querySelector("#inputResponseData").value += JSON.stringify(data) + '\n' 
-    } );
-
-    AppCommon.AppEvents.on('Logger', (message) => {
-        debugger;
-        var msg = "[" + new Date().toISOString() + "] :: " + message;
-        document.getElementById("app-logs").innerHTML += '<p>' + msg + '</p>'; 
-    } );
-
+    AppCommon.AppEvents.on('ReceivedData', HandleResponse);
     //Disable Url
     urlElement.disabled = true;
+}
+
+export function HandleResponse(data) {
+    document.querySelector("#inputResponseData").value = JSON.stringify(data) + '\n' + document.querySelector("#inputResponseData").value; 
 }
 
 export function SetConnectionProtocol() {
@@ -336,6 +350,7 @@ export function OnDisConnect() {
     AdvanceViewElements(!window.appLogic.GetCurrentView());
     //Enable URL textBix
     document.getElementById("inputUrl").disabled = false;
+    AppCommon.AppEvents.off('ReceivedData', HandleResponse);
 }
 
 export function Reset() {

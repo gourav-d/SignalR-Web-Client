@@ -39,10 +39,10 @@ class SignalRApp {
         var self = this;
         self.connection.start()
             .then(function () {
-                AppEvents.emit('OnConnect', { url: self.url });
+                AppEvents.emit('OnConnected', { url: self.url });
             })
             .catch(function (err) {
-                AppEvents.emit('Logger', err.toString());
+                AppEvents.emit('ConnectionFailed', err.toString());
                 return console.error(err.toString());
             });
     }
