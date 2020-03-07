@@ -116,10 +116,14 @@ class SrFormComponent extends HTMLElement {
                                             <input type="button" class="btn btn-primary disconnectbtn" id="btn-disconnectbtn" value="Disconnect" />
                                         </div>
                                     </div>
-                                    <div class="form-group row logger-container" style="display:none" id="logger-container">
+                                    <div class="form-group row logger-container" style="display:none" id="logger-container">                                    
                                         <fieldset class="bg-gray" id="loggerView">
+                                            <div class="text-right"> 
+                                                <input type="button" class="btn btn-primary btn-sm" id="btn-clearlogs" value="Clear" />
+                                                <br/>
+                                            </div>
                                             <legend class="col-form-label">
-                                            <h3>Logs</h3>
+                                            <h4>Logs</h4>
                                             </legend>
                                         <div class="container" id="app-logs">
                                             

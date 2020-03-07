@@ -41,9 +41,16 @@ export function Init() {
                 }
             });
 
+    document.getElementById('btn-clearlogs')
+            .addEventListener('click', (event) => {
+                document.getElementById("app-logs").innerHTML = "";
+            },
+            false);
+
     AppCommon.AppEvents.on('Logger', (message) => {
         var msg = "[" + new Date().toISOString() + "] :: " + message;
-        document.getElementById("app-logs").innerHTML += '<p>' + msg + '</p>'; 
+        var temp = document.getElementById("app-logs").innerHTML;
+        document.getElementById("app-logs").innerHTML = '<p>' + msg + '</p>' + temp;
     } );
 
     AppCommon.AppEvents.on('ConnectionFailed', (message) => {
@@ -313,7 +320,7 @@ export function OnConnected() {
 }
 
 export function HandleResponse(data) {
-    document.querySelector("#inputResponseData").value = JSON.stringify(data) + '\n' + document.querySelector("#inputResponseData").value; 
+    document.querySelector("#inputResponseData").value += JSON.stringify(data) + '\n'; 
 }
 
 export function SetConnectionProtocol() {
