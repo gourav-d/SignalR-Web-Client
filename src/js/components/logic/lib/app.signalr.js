@@ -1,4 +1,4 @@
-import * as SignalR from "@aspnet/signalr";
+import * as SignalR from "@microsoft/signalr";
 import { AppEvents } from './app.common';
 
 class SignalRApp {
@@ -18,6 +18,7 @@ class SignalRApp {
         this.connection = new SignalR.HubConnectionBuilder()
             .withUrl(options.url, options)
             .configureLogging(SignalR.LogLevel.Information)
+            .withAutomaticReconnect([0, 3000, 5000, 10000, 15000, 30000])
             .build();
 
         //Receive Data
@@ -29,6 +30,22 @@ class SignalRApp {
             self.processResponse.call(self.connection, data);
             self.HandleResponse(data);
         }
+
+        self.connection.onreconnecting((error) => {
+            // disableUi(true);
+            // const li = document.createElement("li");
+            // li.textContent = `Connection lost due to error "${error}". Reconnecting.`;
+            // document.getElementById("messagesList").appendChild(li);
+            console.log('On Reconnecting...');
+        });
+
+        self.connection.onreconnected((connectionId) => {
+            // disableUi(false);
+            // const li = document.createElement("li");
+            // li.textContent = `Connection reestablished. Connected.`;
+            // document.getElementById("messagesList").appendChild(li);
+            console.log('On Reconnected...');
+        });
         
         AppEvents.emit('Init', options);
         AppEvents.emit('Logger', "Init");
