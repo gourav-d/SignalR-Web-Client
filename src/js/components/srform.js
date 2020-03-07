@@ -4,61 +4,75 @@ import * as AppCommon from './logic/lib/app.common';
 
 var isConnected = false;
 
-export function Init() {
+//#region ConnectedEvent
+AppCommon.AppEvents.on('Init', () => {
+    //console.log('Init Event Emitter');
+});
+//#endregion
 
+//#region OnDisconnected
+AppCommon.AppEvents.on('OnDisconnected', () => {
+    if (window.appLogic.GetCurrentView() !== true) {
+        document.getElementById('chk-ws').disabled = false;
+        document.getElementById('chk-sse').disabled = false;
+    }
+});
+//#endregion
+
+export function Init() {
     window.appLogic = new AppLogic();
 
     //Connect Button Events
     document.getElementById('btn-connect')
-            .addEventListener('click',
-                function () {
-                    OnConnect();
-                },
-                false);
+        .addEventListener('click',
+            function () {
+                OnConnect();
+            },
+            false);
 
     //Disconnect Button Events
     document.getElementById('btn-disconnectbtn')
-            .addEventListener('click',
-                function () {
-                    OnDisConnect();
-                },
-                false);
+        .addEventListener('click',
+            function () {
+                OnDisConnect();
+            },
+            false);
 
     //Send Payload Button Events
     document.getElementById('btn-send-payload')
-            .addEventListener('click',
-                function () {
-                    SendPayload();
-                },
-                false);
+        .addEventListener('click',
+            function () {
+                SendPayload();
+            },
+            false);
 
     document.getElementById('chk-loggerView')
-            .addEventListener('change', (event) => {
-                if (event.target.checked) {
-                    document.getElementById('logger-container').style.display = "block";
-                } else {
-                    document.getElementById('logger-container').style.display = "none";
-                }
-            });
+        .addEventListener('change', (event) => {
+            if (event.target.checked) {
+                document.getElementById('logger-container').style.display = "block";
+            } else {
+                document.getElementById('logger-container').style.display = "none";
+            }
+        });
 
     document.getElementById('btn-clearlogs')
-            .addEventListener('click', (event) => {
-                document.getElementById("app-logs").innerHTML = "";
-            },
+        .addEventListener('click', (event) => {
+            document.getElementById("app-logs").innerHTML = "";
+        },
             false);
 
     AppCommon.AppEvents.on('Logger', (message) => {
         var msg = "[" + new Date().toISOString() + "] :: " + message;
         var temp = document.getElementById("app-logs").innerHTML;
         document.getElementById("app-logs").innerHTML = '<p>' + msg + '</p>' + temp;
-    } );
+    });
 
     AppCommon.AppEvents.on('ConnectionFailed', (message) => {
         debugger;
         isConnected = false;
         alert('Connection Failed: Not able to establised the connection. Please check the Url.');
         AppCommon.AppEvents.off('ReceivedData', HandleResponse);
-    } );
+    });
 
     AppCommon.AppEvents.on('OnConnected', OnConnected);
 
@@ -66,34 +80,17 @@ export function Init() {
     RigisterNavigationTabEvent();
 
     document.getElementById('chk-req-token')
-            .addEventListener('change', (event) => {
-                    if (event.target.checked) {
-                        document.getElementById('authHeader').disabled= false;
-                        window.appLogic.EnableAuth();
-                    } else {
-                        window.appLogic.DisableAuth();
-                        document.getElementById('authHeader').disabled= true;
-                    }
-                });
+        .addEventListener('change', (event) => {
+            if (event.target.checked) {
+                document.getElementById('authHeader').disabled = false;
+                window.appLogic.EnableAuth();
+            } else {
+                window.appLogic.DisableAuth();
+                document.getElementById('authHeader').disabled = true;
+            }
+        });
 
 }
-
-//#region ConnectedEvent
-
-    AppCommon.AppEvents.on('Init', () => {
-        //console.log('Init Event Emitter');
-    } );
-
-//#endregion
-
-//#region OnDisconnected
-AppCommon.AppEvents.on('OnDisconnected', () => {
-    if(window.appLogic.GetCurrentView() !== true) {
-        document.getElementById('chk-ws').disabled= false;
-        document.getElementById('chk-sse').disabled= false;
-    }
-} );
-//#endregion
 
 export function RigisterNavigationTabEvent() {
 
@@ -121,19 +118,19 @@ export function OnTabChange(tabName) {
 
 export function AdvanceViewElements(enable) {
 
-    if(enable === true) {
+    if (enable === true) {
         document.getElementById('protocol-support').style = 'display:block';
         document.getElementById('auth-container').style = 'display:block';
-        if(isConnected === true) {
+        if (isConnected === true) {
             document.getElementById('chk-req-token').disabled = true;
             document.getElementById('authHeader').disabled = true;
             AppCommon.DisableElementByClassName('protocol-support');
-        } 
+        }
         else {
             document.getElementById('chk-req-token').disabled = false;
-            if(window.appLogic.IsAuthEnabled() === true) {
+            if (window.appLogic.IsAuthEnabled() === true) {
                 document.getElementById('authHeader').disabled = false;
-            }            
+            }
         }
     }
     else {
@@ -182,7 +179,7 @@ export function GetSelectElement() {
     var optionNum = document.createElement('option');
     var optionJsonObj = document.createElement('option');
 
-    optionTxt.value =  AppCommon.ContentType.TEXT
+    optionTxt.value = AppCommon.ContentType.TEXT
     optionTxt.text = "Text";
     selectElement.add(optionTxt, null);
 
@@ -220,8 +217,7 @@ export function GetImageElement() {
 
     var imgElement = document.createElement('img');
     imgElement.src = deleteImg;
-    imgElement.addEventListener('click', function() {
-        console.log('Delete Button');
+    imgElement.addEventListener('click', function () {
         this.parentElement.parentElement.remove();
     });
     div.appendChild(imgElement);
@@ -231,7 +227,7 @@ export function GetImageElement() {
 export function ReadArguments() {
     var requestArgs = new Array();
     var argsContainers = document.querySelectorAll('.args-container');
-    
+
     if (argsContainers.length == 0) {
         return requestArgs;
     }
@@ -240,8 +236,8 @@ export function ReadArguments() {
         var textBox = el.querySelector('.req-arg-txt').value;
         var selectList = el.querySelector('.req-content-type').value;
 
-        if(textBox !== "") {
-            requestArgs.push({cType: selectList, data: textBox });
+        if (textBox !== "") {
+            requestArgs.push({ cType: selectList, data: textBox });
         }
     });
 
@@ -253,13 +249,13 @@ export function ReadAndFormatArguments() {
     var requestArguments = new Array();
 
     args.forEach((d) => {
-        if(d.cType == AppCommon.ContentType.NUMBER) {
+        if (d.cType == AppCommon.ContentType.NUMBER) {
             requestArguments.push(Number(d.data));
-        } 
-        else if(d.cType == AppCommon.ContentType.JSON) {
+        }
+        else if (d.cType == AppCommon.ContentType.JSON) {
             requestArguments.push(JSON.parse(d.data));
         }
-        else if(d.cType == AppCommon.ContentType.TEXT) {
+        else if (d.cType == AppCommon.ContentType.TEXT) {
             requestArguments.push(d.data);
         }
     });
@@ -268,7 +264,7 @@ export function ReadAndFormatArguments() {
 }
 
 export function NotConnected() {
-    console.log("notConnected");
+    console.log("Not Connected");
     var onConnectClass = document.getElementsByClassName('onconnect');
 
     for (var i = 0; i < onConnectClass.length; i++) {
@@ -293,7 +289,7 @@ export function connectToServer(url) {
 export function OnConnect() {
 
     var isAdvanceView = !window.appLogic.GetCurrentView();
-    if(isAdvanceView) {
+    if (isAdvanceView) {
         SetConnectionProtocol();
     }
 
@@ -320,33 +316,29 @@ export function OnConnected() {
 }
 
 export function HandleResponse(data) {
-    document.querySelector("#inputResponseData").value += JSON.stringify(data) + '\n'; 
+    document.querySelector("#inputResponseData").value += JSON.stringify(data) + '\n';
 }
 
 export function SetConnectionProtocol() {
     var elements = document.querySelectorAll(".protocol-support");
 
-    for(var i = 0; i < elements.length; i++)
-    {
-        if(elements[i].value === "ws" && elements[i].checked !== true)
-        {
+    for (var i = 0; i < elements.length; i++) {
+        if (elements[i].value === "ws" && elements[i].checked !== true) {
             console.log("WebSocket disabled");
             WebSocket = undefined;
         }
-        else if(elements[i].value === "sse" && elements[i].checked !== true)
-        {
+        else if (elements[i].value === "sse" && elements[i].checked !== true) {
             console.log("Server Sent Event disabled");
             EventSource = undefined;
         }
-        else if(elements[i].value === "lp" && elements[i].checked !== true)
-        {
+        else if (elements[i].value === "lp" && elements[i].checked !== true) {
             //console.log("Server Sent Event disabled");
         }
     }
 }
 
 export function OnDisConnect() {
-    console.log("OnDisConnect");
+    console.log("On DisConnect");
     isConnected = false;
     Disconnect();
     AppCommon.HideElementByClassName('onconnect');
@@ -363,7 +355,7 @@ export function OnDisConnect() {
 export function Reset() {
     //Clear Server Method Text
     document.getElementById('inputServerMethod').value = "";
-    
+
     var addArgBtnClass = document.getElementsByClassName('btn-add-argument');
     for (var i = 0; i < addArgBtnClass.length; i++) {
         addArgBtnClass[i].removeEventListener('click', AddArgumentsCallBack, false);
@@ -380,7 +372,7 @@ export function SendPayload() {
 
     var methodName = document.getElementById("inputServerMethod").value;
     var methodArguments = new Array();
-    
+
     methodArguments = ReadAndFormatArguments();
-    window.appLogic.OnSend({ methodName: methodName, methodArguments:  methodArguments});
+    window.appLogic.OnSend({ methodName: methodName, methodArguments: methodArguments });
 }
