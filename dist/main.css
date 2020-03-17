@@ -10148,4 +10148,7 @@ ul.nav .nav-link.active:hover {
   padding: 10px;
 }
 
+#app-logs {
+  word-wrap: break-word;/*Used because long log messages going out of div.*/
+}
 
