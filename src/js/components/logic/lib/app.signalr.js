@@ -36,6 +36,7 @@ class SignalRApp {
             // const li = document.createElement("li");
             // li.textContent = `Connection lost due to error "${error}". Reconnecting.`;
             // document.getElementById("messagesList").appendChild(li);
+            AppEvents.emit('Logger', `Connection lost due to error "${error}". Reconnecting.`);
             console.log('On Reconnecting...');
         });
 
@@ -44,6 +45,7 @@ class SignalRApp {
             // const li = document.createElement("li");
             // li.textContent = `Connection reestablished. Connected.`;
             // document.getElementById("messagesList").appendChild(li);
+            AppEvents.emit('Logger', `Connection reestablished. Connected`);
             console.log('On Reconnected...');
         });
         
