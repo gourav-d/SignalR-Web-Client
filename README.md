@@ -1,4 +1,5 @@
-# SignalR-Web-Client
+SignalR-Web-Client
+======================
 This is a JavaScript based SignalR Web Client.
 
 It is a debugging tool to test ASP.Net Core SignalR hubs. This is a UI based SignalR client. Using this tool, we can send the data to the SignalR hub and receive the response from the SignalR Hub. This tool is design for dotnetcore developer to make their life easier when they work with SignalR.
@@ -8,32 +9,86 @@ It is a debugging tool to test ASP.Net Core SignalR hubs. This is a UI based Sig
   <br>
 </p>
 
-## Table of Contents
+*Table of Contents*
 
--   [Basic Understanding of](#Basic-Understanding-of)
--   [Install](#install)
--   [Usage](#usage)
--   [Technologies](#technologies)
--   [API](#api)
--   [Contribute](#contribute)
--   [License](#license)
+- [SignalR-Web-Client](#signalr-web-client)
+- [Basic Understanding of:](#basic-understanding-of)
+- [Prerequsit](#prerequsit)
+- [How to install?](#how-to-install)
+- [How it works?](#how-it-works)
+    - [Baisc View](#baisc-view)
+      - [Server Method:](#server-method)
+      - [Request Payload:](#request-payload)
+      - [Data Type supports:](#data-type-supports)
+    - [Advance View](#advance-view)
+    - [Reporting Issues](#reporting-issues)
+  - [How to integrate?](#how-to-integrate)
+- [Technologies](#technologies)
+- [Browser Support](#browser-support)
+- [License](#license)
 
 
-## Basic Understanding of:
+# Basic Understanding of:
 
 Before using this tool, you should be know few concepts about:
 
 - [What is Asp.Net Core?](https://dotnet.microsoft.com/learn/aspnet/what-is-aspnet-core)
 - [What is SignalR in Asp.Net Core?](https://docs.microsoft.com/en-us/aspnet/core/signalr/introduction?view=aspnetcore-3.0)
 
-#Prerequsit
+# Prerequsit
 
-# How it works?
+- Node.Js
+- Npm
+- Git
 
-SignalR Web Client have two views:
-1. Basic
-2. Advance
+# How to install?
 
+Tool is available [here](https://gourav-d.github.io/SignalR-Web-Client/dist/).
+
+Locally installation:
+
+1. Need to clone repository. Open cmd and run the below command:
+    ```
+    git clone https://github.com/gourav-d/SignalR-Web-Client.git
+    ```
+2. Once the cloning is done, go inside "SignalR-Web-Client" folder.
+   ```
+   cd SignalR-Web-Client
+   ```
+3. The tool need to be run under some server. This is one of the requirement of SignalR library. So, if you already have a running server, then copy the content of "SignalR-Web-Client\dist" folder and put it on your server.<br/>
+   If you don't have server or wants to run the tool in different server, no worry.<br/>
+  Will tell you two approches to run this tool.
+  1. Using http server(npm). Here, we will use the published files and run under the server.<br/>
+        ```
+        npm install http-server -g
+        ```
+        Then go to "SignalR-Web-Client\dist" folder, and run the below command:<br/>
+        ```
+        http-server
+        ```
+        It will start the http-server and host the application. 
+        ```
+            Starting up http-server, serving ./
+            Available on:
+            http://192.168.1.5:8080
+            http://127.0.0.1:8080
+            http://172.18.96.166:8080
+            Hit CTRL-C to stop the server
+        ```
+   
+   2. Using npm. Here, we will build the tool and then run under the server. If you wants to customize the tool, then you can you this approch.
+       ```
+       npm install
+       npm run dev
+       ```
+  It will start the webpack-dev-server and host the application.
+  ```
+    > signalr-web-client@1.0.0 dev C:\demo\SignalR-Web-Client
+    > webpack-dev-server --content-base dist --hot --mode development
+
+    i ｢wds｣: Project is running at http://localhost:8080/
+    i ｢wds｣: webpack output is served from /
+  ```
 
 # How it works?
 
@@ -88,8 +143,6 @@ It has all the functionality which basic view provides, also it has additional f
 
  <img src="./src/images/2.PNG"   />
 
-## Browser Support
-Currently it supports only chrome browser.
 
 ### Reporting Issues
 
@@ -110,16 +163,17 @@ Then, just open a [new clear and descriptive issue](../../issues/new).
 
 
 
-## Technologies
+# Technologies
 
 - Aspnet-Signalr 1.1.4
 - Bootstrap 4.3.1
 - [Mitt](https://github.com/developit/mitt)
 - WebComponentsJs 2.2.10
 
+# Browser Support
+Currently it supports only chrome browser.
 
-
-## License
+# License
 
 [MIT License](https://opensource.org/licenses/MIT)
 
