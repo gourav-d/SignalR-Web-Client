@@ -35,7 +35,10 @@ namespace WebApp
 					.AllowAnyMethod()
 					.AllowAnyHeader()
 					.AllowCredentials()
-					.WithOrigins("http://localhost:8080", "https://gourav-d.github.io");
+					.WithOrigins(
+									"http://localhost:8080",
+									"http://127.0.0.1:8080",
+									"https://gourav-d.github.io");
 			}));
 
 			//services.AddAuthentication()
