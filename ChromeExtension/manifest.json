@@ -1,0 +1,39 @@
+{
+    "manifest_version": 2,
+    "name": "SignalR",
+    "version": "1.0",
+    "description": "SignalR",
+    "icons": {
+        "128": "icon128.png",
+        "48": "icon48.png",
+        "16": "icon16.png"
+     },
+
+     "app": {
+        "background": {
+          "scripts": ["wsc-chrome.js", "admin.js", "test.js"],
+          "persistent": false
+        }
+      },
+      
+      "sockets":{
+        "tcpServer": {
+          "listen": "*"
+        }
+      },
+
+      "permissions": [
+        "<all_urls>",
+        "system.display",
+        "system.network",
+        "power",
+        "webview",
+        "alwaysOnTopWindows",
+        "storage",
+        "app.window.fullscreen",
+        "app.window.fullscreen.overrideEsc",
+        {"fileSystem": ["directory","retainEntries"]}
+      ],
+      "optional_permissions": [ "audioCapture", "videoCapture" ]
+    
+}

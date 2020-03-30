@@ -13,8 +13,8 @@ It is a debugging tool to test ASP.Net Core SignalR hubs. This is a UI based Sig
 
 - [SignalR-Web-Client](#signalr-web-client)
 - [Basic Understanding of:](#basic-understanding-of)
-- [Prerequsit](#prerequsit)
-- [How to install?](#how-to-install)
+- [Prerequisite](#prerequisite)
+- [Install](#install)
 - [How it works?](#how-it-works)
     - [Baisc View](#baisc-view)
       - [Server Method:](#server-method)
@@ -35,13 +35,13 @@ Before using this tool, you should be know few concepts about:
 - [What is Asp.Net Core?](https://dotnet.microsoft.com/learn/aspnet/what-is-aspnet-core)
 - [What is SignalR in Asp.Net Core?](https://docs.microsoft.com/en-us/aspnet/core/signalr/introduction?view=aspnetcore-3.0)
 
-# Prerequsit
+# Prerequisite
 
 - Node.Js
 - Npm
 - Git
 
-# How to install?
+# Install
 
 Tool is available [here](https://gourav-d.github.io/SignalR-Web-Client/dist/).
 
@@ -49,7 +49,7 @@ Locally installation:
 
 1. Need to clone repository. Open cmd and run the below command:
     ```
-    git clone https://github.com/gourav-d/SignalR-Web-Client.git
+    git clone "https://github.com/gourav-d/SignalR-Web-Client.git"
     ```
 2. Once the cloning is done, go inside "SignalR-Web-Client" folder.
    ```
@@ -148,7 +148,7 @@ It has all the functionality which basic view provides, also it has additional f
 
 Nothing is perfect.
 - Found an issue?
-- Wants a new feature?
+- Enhancement
 
 Then, just open a [new clear and descriptive issue](../../issues/new).
 
@@ -179,5 +179,5 @@ Currently it supports only chrome browser.
 
 ---
 Copyright &copy; 2020,
-Created by [Gourav Dwivedi](https://github.com/gouravdwivedi6590).
-Released under the terms of the [MIT license](https://github.com/gouravdwivedi6590/SignalR-Web-Client/blob/master/LICENSE).
+Created by [Gourav Dwivedi](https://github.com/gourav-d).
+Released under the terms of the [MIT license](https://github.com/gourav-d/SignalR-Web-Client/blob/master/LICENSE).
