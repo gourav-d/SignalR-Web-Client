@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -31,7 +28,6 @@ namespace WebApp
 			services.AddCors(options => options.AddPolicy("Cors", builder =>
 			{
 				builder
-					//.AllowAnyOrigin()
 					.AllowAnyMethod()
 					.AllowAnyHeader()
 					.AllowCredentials()
@@ -125,7 +121,7 @@ namespace WebApp
 			app.UseAuthentication();
 
 			app.UseSignalR(option => {
-				option.MapHub<OneHub>(new PathString("/Test/OneHub"));
+				option.MapHub<SampleHub>(new PathString("/Test/OneHub"));
 			});
 
 			//app.UseHttpsRedirection();

@@ -1,38 +1,21 @@
-//chrome.app.runtime.onLaunched.addListener(init);
-
-chrome.app.runtime.onLaunched.addListener(
-  function () {
-    chrome.app.window.create('index.html', {
-      id: 'main',
-      bounds: { width: 620, height: 500 }
-    });
-  }
-);
-
-chrome.runtime.onMessage.addListener(function(request,sender,sendResponse){
-  if(request == "demo"){
-      chrome.storage.sync.get(['srWcServerInfo'], function(result) {
-            console.log('Value currently is ' + result.srWcServerUrl);
-            console.log('Value currently is ' + result);
-
-            debugger;
-            var url = result.srWcServerInfo.Url;
-            var port = parseInt(result.srWcServerInfo.Port);
-            init(url, port)
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <!-- <script src="./admin.js"></script> -->
+  <!-- <script src="./wsc-chrome.js"></script> -->
+  <script src="./abc.js"></script>
+  <!-- <script >
 
 
-          });
-  }
-});
-
-// chrome.app.window.create('index.html', {
-//   id: 'main',
-//   bounds: { width: 620, height: 500 }
-// });
-
-function init(url, port) {
+  
+  function init() {
     console.log('App launch');
-    //startWebserver('127.0.0.1', 8085, 'SR', null);
+
+    var url = document.getElementById('server-url').value;
+    var port = document.getElementById('server-port').value;
+
+    debugger;
     startWebserver(url, port, 'SR', null);
 
 
@@ -65,26 +48,12 @@ function init(url, port) {
                                                 renderIndex:true,
                                                 auth:{ username: "a",
                                                        password: "a" }
-                                               }, function(e) {
-                                                  console.log('error g2');
-                                                  console.log(e);
-                                               });
-
-                                            try {
-                                              adminServer.start()
-                                            } catch (error) {
-                                              console.log('error g2');
-                                              console.log(e);
-                                     
-                                            }
-          
-          
-    }, function(e) { 
+                                               })
+          adminServer.start()
+        }, function(e) { 
 
           console.log('error g');
           console.log(e);
-
-
         });
   
       });
@@ -92,4 +61,26 @@ function init(url, port) {
       // console.log(data1);
     }
 }
-
+  
+  </script> -->
+</head>
+<body>
+  <h1>Hello, let's code!</h1>
+  <div id="setting" >
+    <div id="setting-form">
+        <div id="#form-url">
+            <label for="">Url</label>
+            <input type="text" id="server-url" value="127.0.0.1">
+        </div>
+        <div id="#form-port">
+                <label for="">Port</label>
+                <input type="text" id="server-port" value="808">
+        </div>
+        <div id="#form-save">
+                <label for="">Url</label>
+                <input type="button" id="server-start" value="Start Server">
+        </div>
+    </div>
+  </div>
+</body>
+</html>

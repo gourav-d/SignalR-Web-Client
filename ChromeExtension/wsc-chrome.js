@@ -6130,7 +6130,7 @@ WSC.Buffer = Buffer
     var sockets = chrome.sockets
     var _DEBUG = false
 
-    function WebApplication(opts) {
+    function WebApplication(opts, errorCallback) {
         // need to support creating multiple WebApplication...
         if (_DEBUG) {
             console.log('initialize webapp with opts',opts)
@@ -6140,6 +6140,7 @@ WSC.Buffer = Buffer
         this.opts = opts
         this.handlers = opts.handlers || []
         this.init_handlers()
+        this.errorCallback = errorCallback;
         
         if (opts.retainstr) {
             // special option to setup a handler
@@ -6209,8 +6210,8 @@ WSC.Buffer = Buffer
             if (this.on_status_change) { this.on_status_change() }
         },
         error: function(data) {
-            console.error(data)
-            this.lasterr = data
+            console.error(data);
+            this.lasterr = data;
             this.change()
         },
         stop: function(reason) {
@@ -6298,6 +6299,11 @@ WSC.Buffer = Buffer
             } else if (result < 0) {
                 this.error({message:'unable to bind to port',
                             errno:result})
+                  if(this.errorCallback)
+                  {
+                    this.errorCallback({message:'unable to bind to port', errno:result});
+                  }
+                //throw {message:'unable to bind to port', errno:result};
             } else {
                 this.started = true
                 var host = this.get_host()
