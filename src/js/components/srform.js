@@ -1,9 +1,9 @@
 import deleteImg from '../../images/delete.png';
 import { AppLogic } from './logic/app.logic';
 import * as AppCommon from './logic/lib/app.common';
+import * as Test from '../components/dialogbox/custompopup';
 
 var isConnected = false;
-
 //#region ConnectedEvent
 AppCommon.AppEvents.on('Init', () => {
     //console.log('Init Event Emitter');
@@ -20,8 +20,8 @@ AppCommon.AppEvents.on('OnDisconnected', () => {
 //#endregion
 
 export function Init() {
+debugger;
     window.appLogic = new AppLogic();
-
     //Connect Button Events
     document.getElementById('btn-connect')
         .addEventListener('click',
@@ -68,9 +68,10 @@ export function Init() {
     });
 
     AppCommon.AppEvents.on('ConnectionFailed', (message) => {
-        debugger;
         isConnected = false;
-        alert('Connection Failed: Not able to establised the connection. Please check the Url.');
+
+        //alert('Connection Failed: Not able to establised the connection. Please check the Url.');
+        Test.CustomAlert('Not able to establised the connection. Please check the Url.', 'Connection Failed');
         AppCommon.AppEvents.off('ReceivedData', HandleResponse);
     });
 

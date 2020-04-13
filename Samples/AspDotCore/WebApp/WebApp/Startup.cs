@@ -121,7 +121,7 @@ namespace WebApp
 			app.UseAuthentication();
 
 			app.UseSignalR(option => {
-				option.MapHub<SampleHub>(new PathString("/Test/OneHub"));
+				option.MapHub<SampleHub>(new PathString("/Test/Hub"));
 			});
 
 			//app.UseHttpsRedirection();

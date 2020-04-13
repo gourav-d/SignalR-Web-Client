@@ -1,5 +1,6 @@
 import * as srFrom from './srform';
 
+
 class SrFormComponent extends HTMLElement {
     constructor() {
         super();
@@ -28,19 +29,25 @@ class SrFormComponent extends HTMLElement {
 
         var divStyle = this.getType === "advance" ? "style='display:block'" : "style='display:none'";
         this.innerHTML = ` 
+        
                         <form>
                                 <fieldset>
                                     <div class="form">
-                                        <div class="checkbox-container float-right">
-                                            <input type="checkbox" id="chk-loggerView"  value="Logger View" />
-                                            <label for="chk-loggerView" class="col-sm-2 col-form-label">Logging</label>
-                                        </div>
+
                                     </div>
                                     
                                     <div class="form-group row">
                                         <label for="inputUrl" class="col-sm-2 col-form-label">Hub Address</label>
-                                        <div class="col-sm-10">
-                                            <input type="text" class="form-control inputUrl" id="inputUrl" placeholder="Url" value="https://localhost:5001/Test/OneHub">
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control inputUrl" id="inputUrl" placeholder="Url" value="https://localhost:5001/Test/Hub">
+                                        </div>
+
+                                        <div class="col-sm-2 checkbox-container float-right" id="logger-chk-container">                               
+                                            <label class="col-sm-2 col-form-label mdl-switch  mdl-js-switch mdl-js-ripple-effect" for="chk-loggerView">
+                                                <input type="checkbox" id="chk-loggerView" class="mdl-switch__input col-sm-2 col-form-label" value="Logger View">
+                                                <span class="mdl-switch__label"></span>
+                                            </label>
+                                            <div class="mdl-tooltip mdl-tooltip--large" for="logger-chk-container">Logging</div>
                                         </div>
                                     </div>
 
@@ -52,11 +59,10 @@ class SrFormComponent extends HTMLElement {
                                         </div>
                                         <div class="col-sm-10 offset-sm-2">
                                             <div class="form-check form-check-inline">
-                                                <input type="checkbox" id="chk-req-token" class="form-check-input chk-req-token"/>
-                                                <label class="form-check-label" for="chk-req-token">
-                                                    Token Required
+                                                <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="chk-req-token">
+                                                    <input type="checkbox" id="chk-req-token" class="mdl-checkbox__input chk-req-token">
+                                                    <span class="mdl-checkbox__label">Token Required</span>
                                                 </label>
-                                                
                                             </div>
                                         </div>
                                     </div>
@@ -65,21 +71,33 @@ class SrFormComponent extends HTMLElement {
                                         <label class="col-sm-2 col-form-label">Transport Type</label>
                                         <div class="col-sm-10 offset-sm-2">
                                             <div class="form-check form-check-inline">
-                                                <input type="checkbox" id="chk-ws" class="form-check-input protocol-support" value="ws" checked/>
+                                                <!--<input type="checkbox" id="chk-ws" class="form-check-input protocol-support" value="ws" checked/>
                                                 <label class="form-check-label" for="chk-ws">
                                                     WebSocket
+                                                </label>-->
+                                                <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="chk-ws">
+                                                    <input type="checkbox" id="chk-ws" class="mdl-checkbox__input protocol-support" value="ws" checked>
+                                                    <span class="mdl-checkbox__label">WebSocket</span>
                                                 </label>
                                             </div>
                                             <div class="form-check form-check-inline">
-                                                <input type="checkbox" id="chk-lp" class="form-check-input protocol-support" disabled checked value="lp" />
+                                            <!--<input type="checkbox" id="chk-lp" class="form-check-input protocol-support" disabled checked value="lp" />
                                                 <label class="form-check-label" for="chk-lp">
                                                     Long Pooling
+                                                </label>-->
+                                                <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="chk-lp">
+                                                    <input type="checkbox" id="chk-lp" class="mdl-checkbox__input protocol-support" disabled checked value="lp">
+                                                    <span class="mdl-checkbox__label">Long Pooling</span>
                                                 </label>
                                             </div>
                                             <div class="form-check form-check-inline">
-                                                <input type="checkbox" id="chk-sse"  class="form-check-input protocol-support" checked value="sse" />
+                                            <!--<input type="checkbox" id="chk-sse"  class="form-check-input protocol-support" checked value="sse" />
                                                 <label class="form-check-label" for="chk-sse">
                                                     Server Send Event
+                                                </label>-->
+                                                <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="chk-sse">
+                                                    <input type="checkbox" id="chk-sse" class="mdl-checkbox__input protocol-support" checked value="sse">
+                                                    <span class="mdl-checkbox__label">Server Send Event</span>
                                                 </label>
                                             </div>
                                         </div>
@@ -87,7 +105,7 @@ class SrFormComponent extends HTMLElement {
 
                                      <div class="form-group row">
                                         <div class="col-sm-10 offset-sm-2">
-                                            <input type="button" class="btn btn-primary connectbtn" id="btn-connect" value="Connect" />
+                                           <input type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent connectbtn" id="btn-connect" value="Connect" />
                                         </div>
                                     </div>
                                     
@@ -100,7 +118,7 @@ class SrFormComponent extends HTMLElement {
                                     <div class="form-group row onconnect">
                                         <label for="inputRequestData" class="col-sm-2 col-form-label">Request Payload</label>
                                         <div class="col-sm-10 offset-sm-2">                                            
-                                            <input type="button" value="Add Argument" id="inputRequestData" class="btn-primary btn-xs btn-add-argument" />
+                                            <input type="button" value="Add Argument" id="inputRequestData" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent  btn-add-argument" />
                                             <div id="method-arguments" class="form-group method-arguments"></div>
                                         </div>
                                     </div>
@@ -111,15 +129,15 @@ class SrFormComponent extends HTMLElement {
                                             </div>
                                     </div>
                                     <div class="form-group row onconnect ">
-                                        <div class="col-sm-2 offset-sm-2 btn-group">
-                                            <input type="button" class="btn btn-primary btn-send-payload" id="btn-send-payload" value="Send"/>
-                                            <input type="button" class="btn btn-primary disconnectbtn" id="btn-disconnectbtn" value="Disconnect" />
+                                        <div class="col-sm-4 offset-sm-2 btn-group">
+                                            <input type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent  btn-send-payload" id="btn-send-payload" value="Send"/>
+                                            <input type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent  disconnectbtn" id="btn-disconnectbtn" value="Disconnect" />
                                         </div>
                                     </div>
-                                    <div class="form-group row logger-container" style="display:none" id="logger-container">                                    
+                                    <div class="form-group row logger-container scale-in-ver-top" style="display:none" id="logger-container">                                    
                                         <fieldset class="bg-gray" id="loggerView">
                                             <div class="text-right"> 
-                                                <input type="button" class="btn btn-primary btn-sm" id="btn-clearlogs" value="Clear" />
+                                                <input type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent " id="btn-clearlogs" value="Clear" />
                                                 <br/>
                                             </div>
                                             <legend class="col-form-label">

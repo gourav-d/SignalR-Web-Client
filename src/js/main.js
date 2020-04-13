@@ -1,13 +1,12 @@
 import '@webcomponents/webcomponentsjs/webcomponents-bundle';//WebComponent Pollyfill
 import 'bootstrap/dist/css/bootstrap.css'
+import 'material-design-lite/dist/material.indigo-blue.min.css'
+import 'material-design-lite/material.min.js'
 import 'bootstrap/dist/js/bootstrap.js'
 import '../css/main.css';
+import './components/custom.alertbox';
 import './components/srform.component';
 import './components/app.component';
-
-
-console.log("Hello Webpack111");
-
 
 
 // class HelloComponent extends HTMLElement {
@@ -37,4 +36,4 @@ console.log("Hello Webpack111");
 //   if(!window.customElements.get('hello-component')){
 //     // add into the 'real' dom as a valid tag
 //     window.customElements.define('hello-component', HelloComponent);
-//   }
+//   } 
