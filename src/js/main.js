@@ -4,7 +4,7 @@ import 'material-design-lite/dist/material.indigo-blue.min.css'
 import 'material-design-lite/material.min.js'
 import 'bootstrap/dist/js/bootstrap.js'
 import '../css/main.css';
-import './components/custom.alertbox';
+// import './components/custom.alertbox';
 import './components/srform.component';
 import './components/app.component';
 

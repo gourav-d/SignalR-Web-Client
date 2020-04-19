@@ -6,7 +6,7 @@ import * as Test from '../components/dialogbox/custompopup';
 var isConnected = false;
 //#region ConnectedEvent
 AppCommon.AppEvents.on('Init', () => {
-    //console.log('Init Event Emitter');
+
 });
 //#endregion
 
@@ -20,7 +20,6 @@ AppCommon.AppEvents.on('OnDisconnected', () => {
 //#endregion
 
 export function Init() {
-debugger;
     window.appLogic = new AppLogic();
     //Connect Button Events
     document.getElementById('btn-connect')
@@ -99,7 +98,6 @@ export function RigisterNavigationTabEvent() {
     for (var i = 0; i < navLinkClass.length; i++) {
         navLinkClass[i].addEventListener('click',
             function () {
-                console.log(this.getAttribute('data-tab-type'));
                 OnTabChange(this.getAttribute('data-tab-type'));
             },
             false);
@@ -107,13 +105,18 @@ export function RigisterNavigationTabEvent() {
 }
 
 export function OnTabChange(tabName) {
+    var appView = document.getElementById('appview');
+    var tabHeaderElement = appView.getElementsByTagName('h4')[0];
+
     if (tabName == 'basic') {
         window.appLogic.SetCurrentViewAsBasic();
         AdvanceViewElements(false);
+        tabHeaderElement.innerText = "Basic";
     }
     else {
         window.appLogic.SetCurrentViewAsAdvance();
         AdvanceViewElements(true);
+        tabHeaderElement.innerText = "Advance";
     }
 }
 
