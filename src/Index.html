@@ -5,14 +5,77 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title >SignalR Web Client</title>
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    
     <link rel="icon" href="data:,">
 </head>
 <body>
-    <div class="container">
+    <!-- <div class="container">
         <h1>SignalR Web Client</h1>
         <src-app></src-app>
-    </div>
-    <!-- <script src="./main.js"></script> -->
+    </div> -->
+     <div class="mdl-layout mdl-layout--fixed-header">
+        <header class="mdl-layout__header mdl-layout__header--scroll">
+                      
+          <div class="mdl-layout__header-row">
+            <!-- Left aligned menu below button -->
+            <!-- <div class="menu-list">
+                <button id="demo-menu-lower-left" class="mdl-button mdl-js-button mdl-button--icon">
+                  <i class="material-icons">more_vert</i>
+                </button>
+
+                <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect" for="demo-menu-lower-left">
+                  <li class="mdl-menu__item">
+                      <a target="_blank" href="https://github.com/gourav-d/SignalR-Web-Client">Github</a>
+                  </li>
+                </ul>
+            </div>  -->
+
+            <span class="mdl-layout-title">SignalR Web Client</span>
+
+<!-- Right aligned menu below button -->
+<button id="demo-menu-lower-right" class="mdl-button mdl-js-button mdl-button--icon">
+  <i class="material-icons">more_vert</i>
+</button>
+
+<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
+    for="demo-menu-lower-right">
+  <li class="mdl-menu__item">
+    <a target="_blank" href="https://github.com/gourav-d/SignalR-Web-Client">Github</a>
+  </li>
+</ul>
+
+            <!-- Add spacer, to align navigation to the right -->
+            <!-- <div class="mdl-layout-spacer"></div> -->
+            <!-- Navigation -->
+            <!-- <nav class="mdl-navigation">
+              <a class="mdl-navigation__link" href="">Link</a>
+              <a class="mdl-navigation__link" href="">Link</a>
+              <a class="mdl-navigation__link" href="">Link</a>
+              <a class="mdl-navigation__link" href="">Link</a>
+            </nav> 
+          </div>-->
+
+        </header>
+        <!--<div class="mdl-layout__drawer">
+           <span class="mdl-layout-title">SignalR Web1 Client</span> -->
+          <!-- <nav class="mdl-navigation">
+            <a class="mdl-navigation__link" target="_blank" href="https://github.com/gourav-d/SignalR-Web-Client">Github</a>
+            <a class="mdl-navigation__link" href="">Link</a> 
+            <a class="mdl-navigation__link" href="">Link</a>
+            <a class="mdl-navigation__link" href="">Link</a>
+          </nav> </div> -->
+          
+        <!-- </header> -->
+        <main class="mdl-layout__content">
+          <div class="page-content">              
+            <div class="container">
+                <br/><br/>
+                <src-app></src-app>
+            </div>
+          </div>
+        </main>
+  </div>
 </body>
 </html>

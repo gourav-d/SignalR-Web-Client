@@ -4,12 +4,10 @@ class AppComponent extends HTMLElement {
     }
 
     connectedCallback() {
-        console.log('connected!');
         this.render();
     }
 
     disconnectedCallback() {
-        console.log('disconnected!');
     }
 
     attributeChangedCallback(attrName, oldVal, newVal) {

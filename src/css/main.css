@@ -5,8 +5,9 @@ h1 {
 }
 
 body {
-    padding : 10px ;
-    
+    padding : 0px ;
+    margin: 0px;
+    font-family: 'Roboto', 'Helvetica', sans-serif;
   }
 
 .tab {
@@ -15,8 +16,10 @@ body {
 
 /* .tabcontent .tab-pane{ border:solid 1px blue;  border-top: 0};  */
 #tabheader li a { 
-  background-color: rgb(17, 106, 158); 
-  color: white; 
+  /* background-color: rgb(17, 106, 158);  */
+  background-color: rgb(63,81,181);
+  /* color: white;  */
+  color: rgb(255,255,255);
   font-size: 20px; 
 }
 
@@ -36,13 +39,14 @@ body {
     padding-right: 1px;
     padding-bottom: 1px;
     /* padding: 10px, 10px,10px, 10px; */
-    background-color:  rgb(17, 106, 158);
+    /* background-color:  rgb(17, 106, 158); */
+    background-color: rgb(63,81,181);
     border: 1px;
 
 }
 
 li:hover { 
-    background-color: white;
+    background-color: rgb(63,81,181);
   }
 
 /* #tab-header .nav-pills > li > a {
@@ -95,7 +99,8 @@ li:hover {
   }
 
 ul.nav .nav-item a:hover { 
-  border-color:  rgb(17, 106, 158) !important;
+  /* border-color:  rgb(17, 106, 158) !important; */
+  border-color: rgb(63,81,181) !important;
  } 
 ul.nav .nav-link.active:hover { 
   border-color: white !important; 
@@ -116,6 +121,22 @@ ul.nav .nav-link.active:hover {
 #app-logs {
   word-wrap: break-word;/*Used because long log messages going out of div.*/
 }
+
+/* Align span text in center of the div */
+.mdl-layout-title {
+  display:table;
+  margin:0 auto;
+}
+
+/* .mdl-layout__header-row {
+  padding: 0px 0px 0px 80px;
+  margin: 0 0 0 0;
+}
+
+#demo-menu-lower-left {
+  padding: 0;
+  margin: 0;
+} */
 
 .scale-in-ver-top {
 	-webkit-animation: scale-in-ver-top 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;

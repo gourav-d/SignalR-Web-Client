@@ -1,7 +1,8 @@
+
+import 'material-design-lite/material.css'
+import 'material-design-lite/material.js'
 import '@webcomponents/webcomponentsjs/webcomponents-bundle';//WebComponent Pollyfill
 import 'bootstrap/dist/css/bootstrap.css'
-import 'material-design-lite/dist/material.indigo-blue.min.css'
-import 'material-design-lite/material.min.js'
 import 'bootstrap/dist/js/bootstrap.js'
 import '../css/main.css';
 // import './components/custom.alertbox';

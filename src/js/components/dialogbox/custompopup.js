@@ -1,8 +1,6 @@
 import './custompopupStyle.css';
 
 ;(function (window){
-
-    debugger;
     if(document.getElementById('dialogoverlay'))
         return;
 

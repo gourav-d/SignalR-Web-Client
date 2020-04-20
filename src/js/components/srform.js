@@ -158,7 +158,7 @@ export function AddArgumentsCallBack() {
     for (var i = 0; i < parentDiv.length; i++) {
 
         var divElement = document.createElement('div');
-        divElement.setAttribute('class', 'container args-container');
+        divElement.setAttribute('class', 'container args-container scale-in-ver-top');
 
         var hr = document.createElement('hr');
         hr.setAttribute('class', 'style13');

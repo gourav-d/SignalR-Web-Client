@@ -32,9 +32,6 @@ class SrFormComponent extends HTMLElement {
         
                         <form>
                                 <fieldset>
-                                    <div class="form">
-
-                                    </div>
                                     
                                     <div class="form-group row">
                                         <label for="inputUrl" class="col-sm-2 col-form-label">Hub Address</label>
@@ -42,17 +39,17 @@ class SrFormComponent extends HTMLElement {
                                             <input type="text" class="form-control inputUrl" id="inputUrl" placeholder="Url" value="https://localhost:5001/Test/Hub">
                                         </div>
 
-                                        <div class="col-sm-2 checkbox-container float-right" id="logger-chk-container">                               
-                                            <label class="col-sm-2 col-form-label mdl-switch  mdl-js-switch mdl-js-ripple-effect" for="chk-loggerView">
-                                                <input type="checkbox" id="chk-loggerView" class="mdl-switch__input col-sm-2 col-form-label" value="Logger View">
+                                        <div class="col-sm-1 checkbox-container float-left" id="logger-chk-container">                               
+                                            <label class="col-sm-1 col-form-label mdl-switch  mdl-js-switch mdl-js-ripple-effect" for="chk-loggerView">
+                                                <input type="checkbox" id="chk-loggerView" class="col-sm-1 col-form-label mdl-switch__input" value="Logger View">
                                                 <span class="mdl-switch__label"></span>
                                             </label>
-                                            <div class="mdl-tooltip mdl-tooltip--large" for="logger-chk-container">Logging</div>
+                                            <div class="mdl-tooltip" for="logger-chk-container">Logging</div>
                                         </div>
                                     </div>
 
 
-                                    <div class="form-group row onconnect" id="auth-container">
+                                    <div class="form-group row onconnect scale-in-ver-top" id="auth-container">
                                         <label for="authHeader" class="col-sm-2 col-form-label">Authentication Header</label>
                                         <div class="col-sm-10 offset-sm-2">
                                             <input type="text" class="form-control" id="authHeader" placeholder="Token" disabled/>
@@ -67,7 +64,7 @@ class SrFormComponent extends HTMLElement {
                                         </div>
                                     </div>
 
-                                    <div class="form-group row onconnect" ${divStyle} id="protocol-support">
+                                    <div class="form-group row onconnect scale-in-ver-top" ${divStyle} id="protocol-support">
                                         <label class="col-sm-2 col-form-label">Transport Type</label>
                                         <div class="col-sm-10 offset-sm-2">
                                             <div class="form-check form-check-inline">
@@ -103,41 +100,41 @@ class SrFormComponent extends HTMLElement {
                                         </div>
                                      </div>
 
-                                     <div class="form-group row">
+                                     <div class="form-group row scale-in-ver-top">
                                         <div class="col-sm-10 offset-sm-2">
-                                           <input type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent connectbtn" id="btn-connect" value="Connect" />
+                                           <input type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary connectbtn" id="btn-connect" value="Connect" />
                                         </div>
                                     </div>
                                     
-                                    <div class="form-group row onconnect">
+                                    <div class="form-group row onconnect scale-in-ver-top">
                                         <label for="inputServerMethod" class="col-sm-2 col-form-label">Server Method</label>
                                         <div class="col-sm-10 offset-sm-2">
                                             <input type="text" class="form-control" id="inputServerMethod" placeholder="Server Method Name">
                                         </div>
                                     </div>
-                                    <div class="form-group row onconnect">
+                                    <div class="form-group row onconnect scale-in-ver-top">
                                         <label for="inputRequestData" class="col-sm-2 col-form-label">Request Payload</label>
                                         <div class="col-sm-10 offset-sm-2">                                            
-                                            <input type="button" value="Add Argument" id="inputRequestData" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent  btn-add-argument" />
+                                            <input type="button" value="Add Argument" id="inputRequestData" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary  btn-add-argument" />
                                             <div id="method-arguments" class="form-group method-arguments"></div>
                                         </div>
                                     </div>
-                                    <div class="form-group row onconnect">
+                                    <div class="form-group row onconnect scale-in-ver-top">
                                             <label for="inputResponseData" class="col-sm-2 col-form-label">Response Payload</label>
                                             <div class="col-sm-10 offset-sm-2">
                                                 <textarea rows="2" class="form-control" id="inputResponseData" placeholder="Response Payload"></textarea>
                                             </div>
                                     </div>
-                                    <div class="form-group row onconnect ">
+                                    <div class="form-group row onconnect scale-in-ver-top">
                                         <div class="col-sm-4 offset-sm-2 btn-group">
-                                            <input type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent  btn-send-payload" id="btn-send-payload" value="Send"/>
-                                            <input type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent  disconnectbtn" id="btn-disconnectbtn" value="Disconnect" />
+                                            <input type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary  btn-send-payload" id="btn-send-payload" value="Send"/>
+                                            <input type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary  disconnectbtn" id="btn-disconnectbtn" value="Disconnect" />
                                         </div>
                                     </div>
                                     <div class="form-group row logger-container scale-in-ver-top" style="display:none" id="logger-container">                                    
                                         <fieldset class="bg-gray" id="loggerView">
                                             <div class="text-right"> 
-                                                <input type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent " id="btn-clearlogs" value="Clear" />
+                                                <input type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary " id="btn-clearlogs" value="Clear" />
                                                 <br/>
                                             </div>
                                             <legend class="col-form-label">
