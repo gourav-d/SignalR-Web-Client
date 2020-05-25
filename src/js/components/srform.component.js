@@ -37,6 +37,7 @@ class SrFormComponent extends HTMLElement {
                                         <label for="inputUrl" class="col-sm-2 col-form-label">Hub Address</label>
                                         <div class="col-sm-8">
                                             <input type="text" class="form-control inputUrl" id="inputUrl" placeholder="Url" value="https://localhost:5001/Test/Hub">
+                                            <span class="error" aria-live="polite"><span>
                                         </div>
 
                                         <div class="col-sm-1 checkbox-container float-left" id="logger-chk-container">                               
@@ -110,6 +111,7 @@ class SrFormComponent extends HTMLElement {
                                         <label for="inputServerMethod" class="col-sm-2 col-form-label">Server Method</label>
                                         <div class="col-sm-10 offset-sm-2">
                                             <input type="text" class="form-control" id="inputServerMethod" placeholder="Server Method Name">
+                                            <span class="error" aria-live="polite"><span>
                                         </div>
                                     </div>
                                     <div class="form-group row onconnect scale-in-ver-top">

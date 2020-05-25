@@ -290,7 +290,43 @@ export function connectToServer(url) {
     start();
 }
 
+function UrlValidation() {
+    const urlElement = document.getElementById("inputUrl");
+    const errorElement = urlElement.nextElementSibling;
+
+    if (AppCommon.IsValidUrl(urlElement.value)) {
+        errorElement.innerText = "";
+        errorElement.className = "error";
+        return true;
+    } else {
+            errorElement.innerText = "Invalid Url";
+            errorElement.className = 'error active';
+            return false;
+    }
+}
+
+function TextboxValidation(element, errorMessage) {
+    const errorElement = element.nextElementSibling;
+
+    if(!!element.value) {
+        errorElement.innerText = "";
+        errorElement.className = "error";
+        return true;
+    } else {
+            errorElement.innerText = errorMessage;
+            errorElement.className = 'error active';
+            return false;
+    }
+}
+
+
 export function OnConnect() {
+
+    //Add validation
+    debugger;
+    if(!UrlValidation()) {
+        return;
+    }
 
     var isAdvanceView = !window.appLogic.GetCurrentView();
     if (isAdvanceView) {
@@ -374,7 +410,13 @@ export function Disconnect() {
 
 export function SendPayload() {
 
-    var methodName = document.getElementById("inputServerMethod").value;
+    const methodNameElement = document.getElementById("inputServerMethod");
+    var methodName = methodNameElement.value;
+    debugger;
+    if(!TextboxValidation(methodNameElement, "Please enter the Hub method name")) {
+        return false;
+    }
+
     var methodArguments = new Array();
 
     methodArguments = ReadAndFormatArguments();

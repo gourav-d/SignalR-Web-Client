@@ -128,6 +128,22 @@ ul.nav .nav-link.active:hover {
   margin:0 auto;
 }
 
+.error {
+  width: 100%;
+  padding: 0;
+  margin: 0%;
+  font-size: 80%;
+  color: #900;
+  border-radius: 0 0 5px 5px;
+  box-sizing: border-box;
+  font-style: italic;
+  font-weight: bold;
+}
+
+.error.active {
+  padding: 0.3em;
+}
+
 /* .mdl-layout__header-row {
   padding: 0px 0px 0px 80px;
   margin: 0 0 0 0;
