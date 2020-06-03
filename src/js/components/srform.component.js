@@ -40,12 +40,13 @@ class SrFormComponent extends HTMLElement {
                                             <span class="error" aria-live="polite"><span>
                                         </div>
 
-                                        <div class="col-sm-1 checkbox-container float-left" id="logger-chk-container">                               
-                                            <label class="col-sm-1 col-form-label mdl-switch  mdl-js-switch mdl-js-ripple-effect" for="chk-loggerView">
+                                        <div class="form-group row col-sm-1 checkbox-container float-left" id="logger-chk-container">                               
+                                            <label  class="col-sm-2 col-form-label mdl-switch  mdl-js-switch mdl-js-ripple-effect" for="chk-loggerView">
                                                 <input type="checkbox" id="chk-loggerView" class="col-sm-1 col-form-label mdl-switch__input" value="Logger View">
-                                                <span class="mdl-switch__label"></span>
+                                                <!--<span  class="mdl-switch__label">Logging</span> -->                                                
                                             </label>
-                                            <div class="mdl-tooltip" for="logger-chk-container">Logging</div>
+                                            <!-- If we add tool tip, then extra border will appear on click
+                                            <div class="mdl-tooltip" data-mdl-for="logger-chk-container">Logging</div> -->
                                         </div>
                                     </div>
 

@@ -107,7 +107,6 @@ class SignalRApp {
                 var jsonObj = JSON.parse(e);
 
                 if(jsonObj !== null && jsonObj.hasOwnProperty('target')) {
-                    debugger;
                     AppEvents.emit('ReceivedData', { "ClientMethod": jsonObj.target, "Data": jsonObj.arguments });
                 }
             });

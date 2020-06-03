@@ -1,5 +1,5 @@
 import deleteImg from '../../images/delete.png';
-import soundfile from '../../assets/Notification.wav';
+import notificationSound from '../../assets/Notification.wav';
 import { AppLogic } from './logic/app.logic';
 import * as AppCommon from './logic/lib/app.common';
 import * as Test from '../components/dialogbox/custompopup';
@@ -54,6 +54,23 @@ export function Init() {
                 document.getElementById('logger-container').style.display = "none";
             }
         });
+
+    const muteNotifcationElement = document.getElementById('chk-mute-notification');
+    const notifcationMute = window.localStorage.getItem('muteNotification');
+    
+    if((!!notifcationMute) === false) {
+        window.localStorage.setItem('muteNotification', 1);        
+    }
+
+    muteNotifcationElement.checked = parseInt(notifcationMute) === 1;
+
+    muteNotifcationElement.addEventListener('change', (event) => {
+        if (event.target.checked) {
+            window.localStorage.setItem('muteNotification', 0);
+        } else {
+            window.localStorage.setItem('muteNotification', 1);
+        }
+    });
 
     document.getElementById('btn-clearlogs')
         .addEventListener('click', (event) => {
@@ -324,7 +341,6 @@ function TextboxValidation(element, errorMessage) {
 export function OnConnect() {
 
     //Add validation
-    debugger;
     if(!UrlValidation()) {
         return;
     }
@@ -357,9 +373,20 @@ export function OnConnected() {
 }
 
 export function HandleResponse(data) {
-    document.querySelector("#inputResponseData").value += JSON.stringify(data) + '\n';
-    let sound = new Audio(soundfile);
-    sound.play();
+    document.querySelector("#inputResponseData").value += JSON.stringify(data) + '\n';    
+    var isNotificationMute = window.localStorage.getItem('muteNotification');
+
+    // if((!!isNotificationMute) === false) {
+    //     window.localStorage.setItem('muteNotification', 1);
+    //     isNotificationMute = 1
+    // }
+
+    debugger;
+    if(parseInt(isNotificationMute) === 1) {
+        let sound = new Audio(notificationSound);
+        sound.play();
+    }
+    
 }
 
 export function SetConnectionProtocol() {
@@ -414,8 +441,7 @@ export function Disconnect() {
 export function SendPayload() {
 
     const methodNameElement = document.getElementById("inputServerMethod");
-    var methodName = methodNameElement.value;
-    debugger;
+    var methodName = methodNameElement.value;   
     if(!TextboxValidation(methodNameElement, "Please enter the Hub method name")) {
         return false;
     }
