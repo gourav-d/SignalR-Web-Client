@@ -1,4 +1,5 @@
 import deleteImg from '../../images/delete.png';
+import soundfile from '../../assets/Notification.wav';
 import { AppLogic } from './logic/app.logic';
 import * as AppCommon from './logic/lib/app.common';
 import * as Test from '../components/dialogbox/custompopup';
@@ -357,6 +358,8 @@ export function OnConnected() {
 
 export function HandleResponse(data) {
     document.querySelector("#inputResponseData").value += JSON.stringify(data) + '\n';
+    let sound = new Audio(soundfile);
+    sound.play();
 }
 
 export function SetConnectionProtocol() {
