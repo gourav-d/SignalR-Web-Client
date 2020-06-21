@@ -1,4 +1,4 @@
-@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css");
+/* @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"); */
 
 h1 {
     color: rgb(51, 153, 97);
@@ -104,10 +104,6 @@ ul.nav .nav-item a:hover {
  } 
 ul.nav .nav-link.active:hover { 
   border-color: white !important; 
-} 
-
-.logger-container {
-  padding: 5px;
 }
 
 .bg-gray {
@@ -118,8 +114,40 @@ ul.nav .nav-link.active:hover {
   padding: 10px;
 }
 
-#app-logs {
+#loggerView {
   word-wrap: break-word;/*Used because long log messages going out of div.*/
+  border-radius: 5px 5px 5px 5px;
+  box-sizing: border-box;
+  border-style: solid;
+  border-top-width: 3px;
+  border-right-width: 3px;
+  border-bottom-width: .5px;
+  border-left-width: .5px;
+  border-color: rgba(63, 81, 181, 1);
+  border-style: solid;
+  background-color: rgb(255,255,255);
+
+}
+
+.logger-header {
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  text-transform: uppercase;
+  font-size: 20px;
+  color: rgba(0,0,0,.54);
+  font-weight: 500;
+  margin-bottom: 20px;
+}
+
+#logger-container {
+  padding: 10px;
+  margin-top: 50px;
+}
+
+#app-logs {
+  overflow-x: hidden;
+  overflow-y: auto;
+  min-height: 50px;
+  max-height: 400px;
 }
 
 /* Align span text in center of the div */
@@ -142,6 +170,22 @@ ul.nav .nav-link.active:hover {
 
 .error.active {
   padding: 0.3em;
+}
+
+#inputResponseData {
+  height: 150px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  text-align: left;
+  padding: 5px;
+  border-radius: 5px 5px 5px 5px;
+  box-sizing: border-box;
+  border-style: solid;
+  border-top-width: 3px;
+  border-right-width: 3px;
+  border-bottom-width: .5px;
+  border-left-width: .5px;
+  border-color: rgba(63, 81, 181, 1);
 }
 
 /* .mdl-layout__header-row {

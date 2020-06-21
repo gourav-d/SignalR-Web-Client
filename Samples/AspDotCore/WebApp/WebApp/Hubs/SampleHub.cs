@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.Connections.Features;
 using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Threading.Tasks;
@@ -15,25 +16,29 @@ namespace WebApp.Hubs
 
 		public async Task SendMessage(string message)
 		{
+			var transportType = Context.Features.Get<IHttpTransportFeature>().TransportType.ToString();
 			var connectionId = Context.ConnectionId;
-			await Clients.Client(connectionId).SendAsync("Response", $"Data Received from  SendMessage method: {message}");
+			await Clients.Client(connectionId).SendAsync("Response", $"TransportType-{transportType} :: Data Received from SendMessage method: {message}");
 		}
 
 		public async Task SendMessageWithId(string message, int id)
 		{
+			var transportType = Context.Features.Get<IHttpTransportFeature>().TransportType.ToString();
 			var connectionId = Context.ConnectionId;
-			await Clients.Client(connectionId).SendAsync("Response", $"Data Received from  TestCall method: {message}- {id}");
+			await Clients.Client(connectionId).SendAsync("Response", $"TransportType-{transportType} :: Data Received from SendMessageWithId method: {message}- {id}");
 		}
 
 		public async Task NotifyAllClient(string message)
 		{
-			await Clients.All.SendAsync("Response", $"Data Received: {message}");
+			var transportType = Context.Features.Get<IHttpTransportFeature>().TransportType.ToString();
+			await Clients.All.SendAsync("Response", $"TransportType-{transportType} :: Data Received: {message}");
 		}
 
 		public async Task ComplexData(User user)
 		{
+			var transportType = Context.Features.Get<IHttpTransportFeature>().TransportType.ToString();
 			var connectionId = Context.ConnectionId;
-			await Clients.Client(connectionId).SendAsync("Response", new { Msg = "Complex Data Received", User = user });
+			await Clients.Client(connectionId).SendAsync("Response", new { Msg = $"TransportType-{transportType} :: Complex Data Received", User = user });
 		}
 
 		public override Task OnDisconnectedAsync(Exception exception)
@@ -45,8 +50,9 @@ namespace WebApp.Hubs
 		[Authorize]
 		public async Task SendMessageWithAuth(string message)
 		{
+			var transportType = Context.Features.Get<IHttpTransportFeature>().TransportType.ToString();
 			var connectionId = Context.ConnectionId;
-			await Clients.Client(connectionId).SendAsync("Response", $"Data Received from SendMessageWithAuth method: {message}");
+			await Clients.Client(connectionId).SendAsync("Response", $"TransportType-{transportType} :: Data Received from SendMessageWithAuth method: {message}");
 		}
 	}
 }

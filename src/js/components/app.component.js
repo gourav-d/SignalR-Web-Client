@@ -30,7 +30,7 @@ class AppComponent extends HTMLElement {
 
                 <div class="tab-content container clearfix tabcontent">
                     <div id="appview" class="tab-pane active">
-                        <h4>Basic</h4>
+                        <h4 style="display: none">Basic</h4> <br/><br/>
                         <sr-form></sr-form>
                     </div>                  
                 </div>

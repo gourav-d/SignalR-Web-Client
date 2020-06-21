@@ -80,8 +80,9 @@ export function Init() {
 
     AppCommon.AppEvents.on('Logger', (message) => {
         var msg = "[" + new Date().toISOString() + "] :: " + message;
-        var temp = document.getElementById("app-logs").innerHTML;
-        document.getElementById("app-logs").innerHTML = '<p>' + msg + '</p>' + temp;
+        var loggerElement = document.getElementById("app-logs");        
+        var oldLogs = loggerElement.innerHTML;
+        document.getElementById("app-logs").innerHTML = '<p>' + msg + '</p>' + oldLogs;
     });
 
     AppCommon.AppEvents.on('ConnectionFailed', (message) => {
@@ -373,15 +374,12 @@ export function OnConnected() {
 }
 
 export function HandleResponse(data) {
-    document.querySelector("#inputResponseData").value += JSON.stringify(data) + '\n';    
+    var responseDiv = document.querySelector("#inputResponseData");
+    responseDiv.innerText += JSON.stringify(data) + '\n';
+    responseDiv.scrollTop = responseDiv.scrollHeight;
+
     var isNotificationMute = window.localStorage.getItem('muteNotification');
 
-    // if((!!isNotificationMute) === false) {
-    //     window.localStorage.setItem('muteNotification', 1);
-    //     isNotificationMute = 1
-    // }
-
-    debugger;
     if(parseInt(isNotificationMute) === 1) {
         let sound = new Audio(notificationSound);
         sound.play();
@@ -431,7 +429,8 @@ export function Reset() {
         addArgBtnClass[i].removeEventListener('click', AddArgumentsCallBack, false);
     }
     document.getElementById('method-arguments').innerHTML = "";
-    inputResponseData.value = "";
+    var responseDiv = document.querySelector("#inputResponseData");
+    responseDiv.innerText = "";
 }
 
 export function Disconnect() {

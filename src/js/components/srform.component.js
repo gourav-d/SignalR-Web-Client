@@ -123,30 +123,30 @@ class SrFormComponent extends HTMLElement {
                                         </div>
                                     </div>
                                     <div class="form-group row onconnect scale-in-ver-top">
-                                            <label for="inputResponseData" class="col-sm-2 col-form-label">Response Payload</label>
-                                            <div class="col-sm-10 offset-sm-2">
-                                                <textarea rows="2" class="form-control" id="inputResponseData" placeholder="Response Payload"></textarea>
-                                            </div>
-                                    </div>
-                                    <div class="form-group row onconnect scale-in-ver-top">
                                         <div class="col-sm-4 offset-sm-2 btn-group">
                                             <input type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary  btn-send-payload" id="btn-send-payload" value="Send"/>
                                             <input type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary  disconnectbtn" id="btn-disconnectbtn" value="Disconnect" />
                                         </div>
                                     </div>
+                                    <div class="form-group row onconnect scale-in-ver-top">
+                                        <label for="inputResponseData" class="col-sm-2 col-form-label">Response Payload</label>
+                                        <div class="col-sm-10 offset-sm-2">
+                                            <div  rows="2" id="inputResponseData"></div>
+                                        </div>
+                                    </div>
                                     <div class="form-group row logger-container scale-in-ver-top" style="display:none" id="logger-container">                                    
-                                        <fieldset class="bg-gray" id="loggerView">
+                                        <div class="bg-gray" id="loggerView">
                                             <div class="text-right"> 
                                                 <input type="button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary " id="btn-clearlogs" value="Clear" />
                                                 <br/>
                                             </div>
-                                            <legend class="col-form-label">
-                                            <h4>Logs</h4>
-                                            </legend>
-                                        <div class="container" id="app-logs">
-                                            
-                                        <div>
-                                        </fieldset>
+                                            <div class="col-form-label logger-header">
+                                            Logs
+                                            </div>
+                                            <div class="container" id="app-logs">
+                                                
+                                            <div>
+                                        </div>
                                     </div>
                                 </fieldset>
                             </form>

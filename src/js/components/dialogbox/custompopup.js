@@ -22,8 +22,6 @@ import './custompopupStyle.css';
         document.getElementById('dialogboxfoot').innerHTML = '<button class="pure-material-button-contained active" id="custom-popup-ok-btn">OK</button>';
         document.getElementById('custom-popup-ok-btn')
         .addEventListener('click', function() {
-            console.log('event added');
-
             document.getElementById('dialogbox').style.display = "none";
             document.getElementById('dialogoverlay').style.display = "none";
         })
