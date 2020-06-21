@@ -177,7 +177,7 @@ export function AddArgumentsCallBack() {
     for (var i = 0; i < parentDiv.length; i++) {
 
         var divElement = document.createElement('div');
-        divElement.setAttribute('class', 'container args-container scale-in-ver-top');
+        divElement.setAttribute('class', 'container args-container');
 
         var hr = document.createElement('hr');
         hr.setAttribute('class', 'style13');
@@ -185,7 +185,7 @@ export function AddArgumentsCallBack() {
         divElement.appendChild(GetTextBoxElement());
         divElement.appendChild(GetSelectElement());
         divElement.appendChild(GetImageElement());
-        divElement.append(document.createElement('br'))
+        // divElement.append(document.createElement('br'))
         divElement.appendChild(hr);
         parentDiv[i].appendChild(divElement);
     }
@@ -193,7 +193,7 @@ export function AddArgumentsCallBack() {
 
 export function GetSelectElement() {
     var div = document.createElement('div');
-    div.setAttribute('class', 'form-group col-sm-5');
+    div.setAttribute('class', 'form-group');
 
     var selectElement = document.createElement('select');
     selectElement.setAttribute('class', 'req-content-type form-control');
@@ -222,7 +222,7 @@ export function GetSelectElement() {
 export function GetTextBoxElement() {
 
     var div = document.createElement('div');
-    div.setAttribute('class', 'form-group col-sm-5');
+    div.setAttribute('class', 'form-group');
 
     var inputTxtElement = document.createElement('textarea');
     inputTxtElement.setAttribute("row", "1");
@@ -236,7 +236,7 @@ export function GetTextBoxElement() {
 
 export function GetImageElement() {
     var div = document.createElement('div');
-    div.setAttribute('class', 'form-group col-sm-5');
+    div.setAttribute('class', 'form-group');
 
     var imgElement = document.createElement('img');
     imgElement.src = deleteImg;

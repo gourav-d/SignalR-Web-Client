@@ -21,10 +21,10 @@ class AppComponent extends HTMLElement {
             <div class="panel panel-primary">
                 <ul class="nav nav-tabs justify-content-end nav-justified" id="tabheader">
                     <li class="nav-item">
-                        <a class="nav-link active" data-tab-type="basic" data-toggle="tab"  href="#appview">Basic</a>
+                        <a class="nav-link active tab-text" data-tab-type="basic" data-toggle="tab"  href="#appview">Basic</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-tab-type="advance" data-toggle="tab" href="#appview">Advance</a>
+                        <a class="nav-link tab-text" data-tab-type="advance" data-toggle="tab" href="#appview">Advance</a>
                     </li>
                 </ul>
 
