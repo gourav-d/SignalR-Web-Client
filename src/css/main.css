@@ -77,17 +77,13 @@ li:hover {
   .method-arguments {
     padding-top: 0px;
   }
-
-  .args-container {
-    padding-top: 10px;
-  }
   
   .hr.div-splitter {
     height: 10px;
     border: 0;
     box-shadow: 0 10px 10px -10px #8c8b8b inset;
   }
-  hr.style13 {
+  hr.horizontal-line {
     height: 10px;
     border: 0;
     box-shadow: 0 10px 10px -10px #8c8b8b inset;
@@ -209,6 +205,26 @@ ul.nav .nav-link.active:hover {
   font-size: 12px;
   color: rgba(0,0,0,.54);
   font-weight: 500;
+}
+
+.skip-negotiation-desc {
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-size: 11px;
+  color: rgba(0,0,0,.54);
+  font-weight: 500;
+}
+
+.args-container {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-radius: 5px 5px 5px 5px;
+  box-sizing: border-box;
+  border-style: solid;
+  border-top-width: 1.5px;
+  border-right-width: 1.5px;
+  border-bottom-width: .5px;
+  border-left-width: .5px;
+  border-color: rgba(63, 81, 181, 1);
 }
 
 /* .mdl-layout__header-row {

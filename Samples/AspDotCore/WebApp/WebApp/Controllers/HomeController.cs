@@ -1,8 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.SignalR;
 using System.Diagnostics;
-using System.Threading.Tasks;
-using WebApp.Hubs;
 using WebApp.Models;
 
 namespace WebApp.Controllers

@@ -81,35 +81,82 @@ class SrFormComponent extends HTMLElement {
                             </div>
                             <div class="col-sm-10">
                                 <div class="form-check form-check-inline">
-                                    <!--<input type="checkbox" id="chk-ws" class="form-check-input protocol-support" value="ws" checked/>
-                                    <label class="form-check-label" for="chk-ws">
-                                        WebSocket
-                                    </label>-->
-                                    <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="chk-ws">
-                                        <input type="checkbox" id="chk-ws" class="mdl-checkbox__input protocol-support" value="ws" checked />
-                                        <span class="mdl-checkbox__label chk-text">WebSocket</span>
+                                    <!--
+                                        <input type="checkbox" id="chk-ws" class="form-check-input protocol-support" value="ws" checked/>
+                                            <label class="form-check-label" for="chk-ws">
+                                            WebSocket
+                                        </label>
+                                    -->
+                                    <!--
+                                        <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="chk-ws">
+                                            <input type="checkbox" id="chk-ws" class="mdl-checkbox__input protocol-support" value="ws" checked />
+                                            <span class="mdl-checkbox__label chk-text">WebSocket</span>
+                                        </label>
+                                    -->
+                                    
+                                    <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="chk-ws">
+                                        <input type="radio" id="chk-ws" class="mdl-radio__button protocol-support" name="transportType" value="ws" checked>
+                                        <span class="mdl-radio__label">WebSocket</span>
                                     </label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                <!--<input type="checkbox" id="chk-lp" class="form-check-input protocol-support" disabled checked value="lp" />
-                                    <label class="form-check-label" for="chk-lp">
+                                <!--
+                                    <input type="checkbox" id="chk-lp" class="form-check-input protocol-support" disabled checked value="lp" />
+                                        <label class="form-check-label" for="chk-lp">
                                         Long Pooling
-                                    </label>-->
+                                    </label>
+                                -->
+                                <!--
                                     <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="chk-lp">
                                         <input type="checkbox" id="chk-lp" class="mdl-checkbox__input protocol-support" disabled checked value="lp" />
                                         <span class="mdl-checkbox__label chk-text">Long Pooling</span>
                                     </label>
+                                -->
+
+                                    <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="chk-lp">
+                                        <input type="radio" id="chk-lp" class="mdl-radio__button protocol-support" name="transportType"  value="lp">
+                                        <span class="mdl-radio__label">Long Pooling</span>
+                                    </label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                <!--<input type="checkbox" id="chk-sse"  class="form-check-input protocol-support" checked value="sse" />
-                                    <label class="form-check-label" for="chk-sse">
-                                        Server Send Event
-                                    </label>-->
+                                <!--
+                                    <input type="checkbox" id="chk-sse"  class="form-check-input protocol-support" value="sse" />
+                                        <label class="form-check-label" for="chk-sse">
+                                            Server Send Event
+                                    </label>
+                                -->
+                                <!--
                                     <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="chk-sse">
                                         <input type="checkbox" id="chk-sse" class="mdl-checkbox__input protocol-support" checked value="sse" />
                                         <span class="mdl-checkbox__label chk-text">Server Send Event</span>
                                     </label>
+                                -->
+                                    <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="chk-sse">
+                                        <input type="radio" id="chk-sse" class="mdl-radio__button protocol-support" name="transportType" value="sse">
+                                        <span class="mdl-radio__label">Server Send Event</span>
+                                    </label>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group scale-in-ver-top" ${divStyle} id="content-negotiation">
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <label class="col-form-label label-title">Skip Negotiation</label>
+                            </div>
+                            <div class="col-sm-10">
+                                <div class="form-check">                                    
+                                    <label class="mdl-switch mdl-js-switch mdl-js-ripple-effect" for="chk-skip-negotiation">
+                                        <input type="checkbox" id="chk-skip-negotiation" class="mdl-switch__input skip-negotiation">
+                                        <span class="mdl-switch__label"></span>
+                                    </label>
+                                    <p class="skip-negotiation-desc">
+                                    Skip negotiation only supported when the WebSockets transport is the 
+                                    only enabled transport. This setting can't be enabled 
+                                    when using the Azure SignalR Service.</p>
+                                </div>
+
                             </div>
                         </div>
                     </div>
@@ -139,15 +186,14 @@ class SrFormComponent extends HTMLElement {
                             <div class="col-sm-2">
                                 <label for="inputRequestData" class="col-form-label label-title">Request Payload</label>
                             </div>
-                            <div class="col-sm-2">                                            
+                            <div class="col-sm-10">                                            
                                 <input type="button" value="Add Argument" id="inputRequestData" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary  btn-add-argument" />
-                            </div>
-                            
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-8 offset-sm-2">
-                                <div id="method-arguments" class="form-group method-arguments"></div>
-                            </div>
+                                <div>
+                                    <div class="col-sm-10">
+                                        <div id="method-arguments" class="form-group method-arguments"></div>
+                                    </div>
+                                </div>
+                            </div>                            
                         </div>
                     </div>
                     <div class="form-group row onconnect scale-in-ver-top">

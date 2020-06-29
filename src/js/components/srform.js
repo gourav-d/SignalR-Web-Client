@@ -5,6 +5,8 @@ import * as AppCommon from './logic/lib/app.common';
 import * as Test from '../components/dialogbox/custompopup';
 
 var isConnected = false;
+var transportType = "ws";
+var skipNegotiation = false;
 //#region ConnectedEvent
 AppCommon.AppEvents.on('Init', () => {
 
@@ -14,8 +16,12 @@ AppCommon.AppEvents.on('Init', () => {
 //#region OnDisconnected
 AppCommon.AppEvents.on('OnDisconnected', () => {
     if (window.appLogic.GetCurrentView() !== true) {
-        document.getElementById('chk-ws').disabled = false;
-        document.getElementById('chk-sse').disabled = false;
+        // document.getElementById('chk-ws').disabled = false;
+        // document.getElementById('chk-sse').disabled = false;
+        // document.getElementById('chk-lp').disabled = false;
+        //AppCommon.EnableElementByClassName('protocol-support');
+        EnableMdlElement('protocol-support');
+        EnableMdlElement('skip-negotiation');
     }
 });
 //#endregion
@@ -34,7 +40,7 @@ export function Init() {
     document.getElementById('btn-disconnectbtn')
         .addEventListener('click',
             function () {
-                OnDisConnect();
+                OnDisconnect();
             },
             false);
 
@@ -52,6 +58,15 @@ export function Init() {
                 document.getElementById('logger-container').style.display = "block";
             } else {
                 document.getElementById('logger-container').style.display = "none";
+            }
+        });
+
+    document.getElementById('chk-skip-negotiation')
+        .addEventListener('change', (event) => {
+            if (event.target.checked) {
+                skipNegotiation = true;
+            } else {
+                skipNegotiation = false;
             }
         });
 
@@ -87,9 +102,8 @@ export function Init() {
 
     AppCommon.AppEvents.on('ConnectionFailed', (message) => {
         isConnected = false;
-
         //alert('Connection Failed: Not able to establised the connection. Please check the Url.');
-        Test.CustomAlert('Not able to establised the connection. Please check the Url.', 'Connection Failed');
+        Test.CustomAlert('Not able to establised the connection. Please check the logs for more information.', 'Connection Failed');
         AppCommon.AppEvents.off('ReceivedData', HandleResponse);
     });
 
@@ -142,23 +156,28 @@ export function OnTabChange(tabName) {
 export function AdvanceViewElements(enable) {
 
     if (enable === true) {
-        document.getElementById('protocol-support').style = 'display:block';
+        document.getElementById('protocol-support').style = 'display:block';        
         document.getElementById('auth-container').style = 'display:block';
+        document.getElementById('content-negotiation').style = 'display:block';
+        
         if (isConnected === true) {
             document.getElementById('chk-req-token').disabled = true;
             document.getElementById('authHeader').disabled = true;
-            AppCommon.DisableElementByClassName('protocol-support');
+            DisableMdlElement('protocol-support');
+            DisableMdlElement('skip-negotiation');
         }
         else {
             document.getElementById('chk-req-token').disabled = false;
             if (window.appLogic.IsAuthEnabled() === true) {
                 document.getElementById('authHeader').disabled = false;
             }
+            EnableMdlElement('skip-negotiation');
         }
     }
     else {
         document.getElementById('protocol-support').style = 'display:none';
         document.getElementById('auth-container').style = 'display:none';
+        document.getElementById('content-negotiation').style = 'display:none';
     }
 }
 
@@ -177,23 +196,24 @@ export function AddArgumentsCallBack() {
     for (var i = 0; i < parentDiv.length; i++) {
 
         var divElement = document.createElement('div');
-        divElement.setAttribute('class', 'container args-container');
+        divElement.setAttribute('class', 'container args-container row');
 
-        var hr = document.createElement('hr');
-        hr.setAttribute('class', 'style13');
 
         divElement.appendChild(GetTextBoxElement());
-        divElement.appendChild(GetSelectElement());
         divElement.appendChild(GetImageElement());
+        divElement.appendChild(GetSelectElement());
+        
         // divElement.append(document.createElement('br'))
-        divElement.appendChild(hr);
+        //var hr = document.createElement('hr');
+        //hr.setAttribute('class', 'horizontal-line form-group col-sm-10');
+        //divElement.appendChild(hr);
         parentDiv[i].appendChild(divElement);
     }
 }
 
 export function GetSelectElement() {
     var div = document.createElement('div');
-    div.setAttribute('class', 'form-group');
+    div.setAttribute('class', 'form-group col-sm-4');
 
     var selectElement = document.createElement('select');
     selectElement.setAttribute('class', 'req-content-type form-control');
@@ -222,7 +242,7 @@ export function GetSelectElement() {
 export function GetTextBoxElement() {
 
     var div = document.createElement('div');
-    div.setAttribute('class', 'form-group');
+    div.setAttribute('class', 'form-group col-sm-11');
 
     var inputTxtElement = document.createElement('textarea');
     inputTxtElement.setAttribute("row", "1");
@@ -236,7 +256,7 @@ export function GetTextBoxElement() {
 
 export function GetImageElement() {
     var div = document.createElement('div');
-    div.setAttribute('class', 'form-group');
+    div.setAttribute('class', 'form-group col-sm-1 float-right');
 
     var imgElement = document.createElement('img');
     imgElement.src = deleteImg;
@@ -297,11 +317,19 @@ export function NotConnected() {
 
 export function buildConnection(url) {
     var option = { url: url, getToken: () => document.getElementById('authHeader').value };
+    option.transportType = transportType;
+    option.skipNegotiation = skipNegotiation;
     window.appLogic.Init(option);
 }
 
 export function start() {
-    window.appLogic.OnConnect();
+    window.appLogic.OnConnect(function(data) {
+        AppCommon.AppEvents.emit('OnConnected', data);
+        AppCommon.AppEvents.emit('Logger', "Connection was successfully established with the server");
+    }, function(err) {
+        AppCommon.AppEvents.emit('ConnectionFailed', err.toString());
+        AppCommon.AppEvents.emit('Logger', "ConnectionFailed: " + err.toString());
+    });
 }
 
 export function connectToServer(url) {
@@ -391,22 +419,40 @@ export function SetConnectionProtocol() {
     var elements = document.querySelectorAll(".protocol-support");
 
     for (var i = 0; i < elements.length; i++) {
-        if (elements[i].value === "ws" && elements[i].checked !== true) {
-            console.log("WebSocket disabled");
-            WebSocket = undefined;
+        if (elements[i].value === "ws" && elements[i].checked === true) {
+            //WebSocket = undefined;
+            transportType = "ws";
+            return;
         }
-        else if (elements[i].value === "sse" && elements[i].checked !== true) {
-            console.log("Server Sent Event disabled");
-            EventSource = undefined;
+        else if (elements[i].value === "sse" && elements[i].checked === true) {
+            //EventSource = undefined;
+            transportType = "sse";
+            return;
         }
-        else if (elements[i].value === "lp" && elements[i].checked !== true) {
-            //console.log("Server Sent Event disabled");
+        else if (elements[i].value === "lp" && elements[i].checked === true) {
+            transportType = "lp";
+            return;
         }
     }
+
+
+    // for (var i = 0; i < elements.length; i++) {
+    //     if (elements[i].value === "ws" && elements[i].checked !== true) {
+    //         console.log("WebSocket disabled");
+    //         //WebSocket = undefined;
+    //     }
+    //     else if (elements[i].value === "sse" && elements[i].checked !== true) {
+    //         console.log("Server Sent Event disabled");
+    //         //EventSource = undefined;
+    //     }
+    //     else if (elements[i].value === "lp" && elements[i].checked !== true) {
+    //         //console.log("Server Sent Event disabled");
+    //     }
+    // }
 }
 
-export function OnDisConnect() {
-    console.log("On DisConnect");
+export function OnDisconnect() {
+    //console.log("On DisConnect");
     isConnected = false;
     Disconnect();
     AppCommon.HideElementByClassName('onconnect');
@@ -434,7 +480,13 @@ export function Reset() {
 }
 
 export function Disconnect() {
-    window.appLogic.OnDisConnect();
+    window.appLogic.OnDisconnect(function() {
+        AppCommon.AppEvents.emit('Logger', "Disconnected from the server");
+        AppCommon.AppEvents.emit('OnDisconnected');
+    },
+    function(err) {
+        AppCommon.AppEvents.emit('Logger', err.toString());
+    });
 }
 
 export function SendPayload() {
@@ -448,5 +500,29 @@ export function SendPayload() {
     var methodArguments = new Array();
 
     methodArguments = ReadAndFormatArguments();
-    window.appLogic.OnSend({ methodName: methodName, methodArguments: methodArguments });
+    window.appLogic.OnSend({ methodName: methodName, methodArguments: methodArguments },
+        function(options) {
+            AppCommon.AppEvents.emit('Logger', "Calling server method - " + options.methodName);
+        },
+        function(err) {
+            AppCommon.AppEvents.emit('Logger', err.toString());
+        });
+}
+
+function DisableMdlElement(className) {
+    var el = document.getElementsByClassName(className);
+
+    for (var i = 0; i < el.length; i++) {
+        el[i].disabled = true;
+        el[i].parentNode.classList.add("is-disabled");
+    }
+}
+
+function EnableMdlElement(className) {
+    var el = document.getElementsByClassName(className);
+
+    for (var i = 0; i < el.length; i++) {
+        el[i].disabled = false;
+        el[i].parentNode.classList.remove("is-disabled");
+    }
 }

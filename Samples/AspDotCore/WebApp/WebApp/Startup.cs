@@ -156,7 +156,10 @@ namespace WebApp
 			app.UseAuthentication();
 
 			app.UseSignalR(option => {
-				option.MapHub<SampleHub>(new PathString("/Test/Hub"));
+				option.MapHub<SampleHub>(new PathString("/Test/Hub"), options =>
+				{
+					//options.Transports = Microsoft.AspNetCore.Http.Connections.HttpTransportType.ServerSentEvents;
+				});
 			});
 
 			//app.UseHttpsRedirection();
