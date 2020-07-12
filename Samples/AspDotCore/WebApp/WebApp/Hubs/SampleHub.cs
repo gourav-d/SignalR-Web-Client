@@ -17,15 +17,13 @@ namespace WebApp.Hubs
 		public async Task SendMessage(string message)
 		{
 			var transportType = Context.Features.Get<IHttpTransportFeature>().TransportType.ToString();
-			var connectionId = Context.ConnectionId;
-			await Clients.Client(connectionId).SendAsync("Response", $"TransportType-{transportType} :: Data Received from SendMessage method: {message}");
+			await Clients.Client(Context.ConnectionId).SendAsync("Response", $"TransportType-{transportType} :: Data Received from SendMessage method: {message}");
 		}
 
 		public async Task SendMessageWithId(string message, int id)
 		{
 			var transportType = Context.Features.Get<IHttpTransportFeature>().TransportType.ToString();
-			var connectionId = Context.ConnectionId;
-			await Clients.Client(connectionId).SendAsync("Response", $"TransportType-{transportType} :: Data Received from SendMessageWithId method: {message}- {id}");
+			await Clients.Client(Context.ConnectionId).SendAsync("Response", $"TransportType-{transportType} :: Data Received from SendMessageWithId method: {message}- {id}");
 		}
 
 		public async Task NotifyAllClient(string message)
@@ -37,8 +35,7 @@ namespace WebApp.Hubs
 		public async Task ComplexData(User user)
 		{
 			var transportType = Context.Features.Get<IHttpTransportFeature>().TransportType.ToString();
-			var connectionId = Context.ConnectionId;
-			await Clients.Client(connectionId).SendAsync("Response", new { Msg = $"TransportType-{transportType} :: Complex Data Received", User = user });
+			await Clients.Client(Context.ConnectionId).SendAsync("Response", new { Msg = $"TransportType-{transportType} :: Complex Data Received", User = user });
 		}
 
 		public override Task OnDisconnectedAsync(Exception exception)
@@ -51,8 +48,28 @@ namespace WebApp.Hubs
 		public async Task SendMessageWithAuth(string message)
 		{
 			var transportType = Context.Features.Get<IHttpTransportFeature>().TransportType.ToString();
+			await Clients.Client(Context.ConnectionId).SendAsync("Response", $"TransportType-{transportType} :: Data Received from SendMessageWithAuth method: {message}");
+		}
+
+		public async Task T1(string message)
+		{
+			var transportType = Context.Features.Get<IHttpTransportFeature>().TransportType.ToString();
 			var connectionId = Context.ConnectionId;
-			await Clients.Client(connectionId).SendAsync("Response", $"TransportType-{transportType} :: Data Received from SendMessageWithAuth method: {message}");
+			await Clients.Client(connectionId).SendAsync("Response", $"TransportType-{transportType} :: Data Received from SendMessage method: {message}");
+		}
+
+		public async Task T2(int message)
+		{
+			var transportType = Context.Features.Get<IHttpTransportFeature>().TransportType.ToString();
+			var connectionId = Context.ConnectionId;
+			await Clients.Client(connectionId).SendAsync("Response", $"TransportType-{transportType} :: Data Received from SendMessage method: {message}");
+		}
+
+		public async Task T3(double message)
+		{
+			var transportType = Context.Features.Get<IHttpTransportFeature>().TransportType.ToString();
+			var connectionId = Context.ConnectionId;
+			await Clients.Client(connectionId).SendAsync("Response", $"TransportType-{transportType} :: Data Received from SendMessage method: {message}");
 		}
 	}
 }

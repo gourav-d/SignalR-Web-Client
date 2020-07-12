@@ -21,7 +21,7 @@ namespace WebApp.Controllers
 		}
 
 		[AllowAnonymous]
-		[HttpGet("GetToken")]
+		[HttpGet("~/GetToken")]
 		public IActionResult GetToken(string username, string password)
 		{
 			var login = new UserModel{ Username = username, Password = password };

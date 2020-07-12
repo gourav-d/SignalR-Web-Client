@@ -109,13 +109,13 @@ class SrFormComponent extends HTMLElement {
                                 <!--
                                     <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="chk-lp">
                                         <input type="checkbox" id="chk-lp" class="mdl-checkbox__input protocol-support" disabled checked value="lp" />
-                                        <span class="mdl-checkbox__label chk-text">Long Pooling</span>
+                                        <span class="mdl-checkbox__label chk-text">Long Polling</span>
                                     </label>
                                 -->
 
                                     <label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="chk-lp">
                                         <input type="radio" id="chk-lp" class="mdl-radio__button protocol-support" name="transportType"  value="lp">
-                                        <span class="mdl-radio__label">Long Pooling</span>
+                                        <span class="mdl-radio__label">Long Polling</span>
                                     </label>
                                 </div>
                                 <div class="form-check form-check-inline">

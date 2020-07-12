@@ -293,9 +293,18 @@ export function ReadAndFormatArguments() {
 
     args.forEach((d) => {
         if (d.cType == AppCommon.ContentType.NUMBER) {
-            requestArguments.push(Number(d.data));
+            var data = Number(d.data);
+            if(isNaN(data)) {
+                Test.CustomAlert('Incorrect Data: ' + d.data + ' . Excepted data of type - ' + d.cType, 'Invalid Input');
+                throw 'Invalid Data'
+            }
+            requestArguments.push(data);
         }
         else if (d.cType == AppCommon.ContentType.JSON) {
+            if(AppCommon.IsValidJSON(data)) {
+                Test.CustomAlert('Incorrect Data: ' + d.data + ' . Excepted data of type - ' + d.cType, 'Invalid Input');
+                throw 'Invalid Data'
+            }
             requestArguments.push(JSON.parse(d.data));
         }
         else if (d.cType == AppCommon.ContentType.TEXT) {
@@ -325,10 +334,10 @@ export function buildConnection(url) {
 export function start() {
     window.appLogic.OnConnect(function(data) {
         AppCommon.AppEvents.emit('OnConnected', data);
-        AppCommon.AppEvents.emit('Logger', "Connection was successfully established with the server");
+        AppCommon.AppEvents.emit('Logger', "Connection established successfully with the server");
     }, function(err) {
         AppCommon.AppEvents.emit('ConnectionFailed', err.toString());
-        AppCommon.AppEvents.emit('Logger', "ConnectionFailed: " + err.toString());
+        AppCommon.AppEvents.emit('Logger', "ConnectionFailed-> " + err.toString());
     });
 }
 
@@ -506,6 +515,7 @@ export function SendPayload() {
         },
         function(err) {
             AppCommon.AppEvents.emit('Logger', err.toString());
+            Test.CustomAlert(err.toString(), 'Error');
         });
 }
 

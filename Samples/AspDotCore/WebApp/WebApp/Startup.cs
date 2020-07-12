@@ -160,6 +160,8 @@ namespace WebApp
 				{
 					//options.Transports = Microsoft.AspNetCore.Http.Connections.HttpTransportType.ServerSentEvents;
 				});
+
+				option.MapHub<SecuredHub>(new PathString("/Secured/Hub"));
 			});
 
 			//app.UseHttpsRedirection();

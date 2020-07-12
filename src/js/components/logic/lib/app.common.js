@@ -51,6 +51,15 @@ function IsValidUrl(url)
     return pattern.test(url);
 }
 
+function IsValidJSON(data)
+{
+    try {
+            JSON. parse(str);
+        } catch (e) {
+            return false;
+        }        
+}
+
 export { 
     ContentType, 
     AppEvents, 
@@ -58,5 +67,6 @@ export {
     DisableElementByClassName,
     HideElementByClassName,
     ShowElementByClassName,
-    IsValidUrl
+    IsValidUrl,
+    IsValidJSON
  };
