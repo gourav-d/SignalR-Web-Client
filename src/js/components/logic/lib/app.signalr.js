@@ -11,12 +11,33 @@ class SignalRApp {
 
     Init(options) {
 
+        var confguration = {};
         if(options.isTokenRequired === true) {
-            options.accessTokenFactory = () => options.getToken();
+           // options.skipNegotiation = true;
+           confguration.accessTokenFactory = () => options.getToken();
         }
-        
+
+        switch(options.transportType) {
+            case "ws":
+                confguration.transport = SignalR.HttpTransportType.WebSockets;
+              break;
+            case "lp":
+                confguration.transport = SignalR.HttpTransportType.LongPolling;
+              break;
+              case "sse":
+                confguration.transport = SignalR.HttpTransportType.ServerSentEvents;
+                break;
+            default:
+                confguration.transport = SignalR.HttpTransportType.WebSockets;
+        }
+
+        //confguration.logMessageContent = true;
+        if(!!options.skipNegotiation) {
+            confguration.skipNegotiation = options.skipNegotiation;
+        }
+                
         this.connection = new SignalR.HubConnectionBuilder()
-            .withUrl(options.url, options)
+            .withUrl(options.url, confguration)
             .configureLogging(SignalR.LogLevel.Information)
             .withAutomaticReconnect([0, 3000, 5000, 10000, 15000, 30000])
             .build();
@@ -32,69 +53,49 @@ class SignalRApp {
         }
 
         self.connection.onreconnecting((error) => {
-            // disableUi(true);
-            // const li = document.createElement("li");
-            // li.textContent = `Connection lost due to error "${error}". Reconnecting.`;
-            // document.getElementById("messagesList").appendChild(li);
             AppEvents.emit('Logger', `Connection lost due to error "${error}". Reconnecting.`);
             console.log('On Reconnecting...');
         });
 
         self.connection.onreconnected((connectionId) => {
-            // disableUi(false);
-            // const li = document.createElement("li");
-            // li.textContent = `Connection reestablished. Connected.`;
-            // document.getElementById("messagesList").appendChild(li);
             AppEvents.emit('Logger', `Connection reestablished. Connected`);
             console.log('On Reconnected...');
         });
-        
-        AppEvents.emit('Init', options);
-        AppEvents.emit('Logger', "Init");
     }
     
     
-    OnConnect() {
+    OnConnect(onSuccess, onError) {
         var self = this;
         self.connection.start()
-            .then(function () {
-                AppEvents.emit('OnConnected', { url: self.url });
+            .then(function (data) {
+                onSuccess({ url: self.url });
             })
             .catch(function (err) {
-                AppEvents.emit('ConnectionFailed', err.toString());
-                return console.error(err.toString());
+                onError(err)
             });
     }
     
-    OnSend(options) {
+    OnSend(options, beforeInvoke, onError) {
         var methodArguments = new Array();
         methodArguments = options.methodArguments;
     
-        AppEvents.emit('OnSend', options);
-        AppEvents.emit('Logger', "Calling... " + options.methodName);
+        beforeInvoke(options);
         this.connection.invoke(options.methodName, ...methodArguments)
             .catch(function (err) {
-                AppEvents.emit('Logger', err.toString());
-                return console.log(err);
+                onError(err);
             });
     }
     
     OnReceive(callback) {
-        // this.connection.on("ReceiveData", function (data) {
-        //     callback(data);
-        // });
     }
     
-    OnDisConnect() {
+    OnDisconnect(onSuccess, onError) {
         this.connection.stop()
             .then(function () {
-                console.log('Disconnected');
-                AppEvents.emit('Logger', "Disconnected...");
-                AppEvents.emit('OnDisconnected');
+                onSuccess();
             })
             .catch(function (err) {
-                AppEvents.emit('Logger', err.toString());
-                return console.error(err.toString());
+                onError(err);
             });
     }
 
@@ -107,7 +108,6 @@ class SignalRApp {
                 var jsonObj = JSON.parse(e);
 
                 if(jsonObj !== null && jsonObj.hasOwnProperty('target')) {
-                    debugger;
                     AppEvents.emit('ReceivedData', { "ClientMethod": jsonObj.target, "Data": jsonObj.arguments });
                 }
             });

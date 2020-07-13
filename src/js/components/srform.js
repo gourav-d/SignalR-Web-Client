@@ -1,27 +1,33 @@
 import deleteImg from '../../images/delete.png';
+import notificationSound from '../../assets/Notification.wav';
 import { AppLogic } from './logic/app.logic';
 import * as AppCommon from './logic/lib/app.common';
+import * as Test from '../components/dialogbox/custompopup';
 
 var isConnected = false;
-
+var transportType = "ws";
+var skipNegotiation = false;
 //#region ConnectedEvent
 AppCommon.AppEvents.on('Init', () => {
-    //console.log('Init Event Emitter');
+
 });
 //#endregion
 
 //#region OnDisconnected
 AppCommon.AppEvents.on('OnDisconnected', () => {
     if (window.appLogic.GetCurrentView() !== true) {
-        document.getElementById('chk-ws').disabled = false;
-        document.getElementById('chk-sse').disabled = false;
+        // document.getElementById('chk-ws').disabled = false;
+        // document.getElementById('chk-sse').disabled = false;
+        // document.getElementById('chk-lp').disabled = false;
+        //AppCommon.EnableElementByClassName('protocol-support');
+        EnableMdlElement('protocol-support');
+        EnableMdlElement('skip-negotiation');
     }
 });
 //#endregion
 
 export function Init() {
     window.appLogic = new AppLogic();
-
     //Connect Button Events
     document.getElementById('btn-connect')
         .addEventListener('click',
@@ -34,7 +40,7 @@ export function Init() {
     document.getElementById('btn-disconnectbtn')
         .addEventListener('click',
             function () {
-                OnDisConnect();
+                OnDisconnect();
             },
             false);
 
@@ -55,6 +61,32 @@ export function Init() {
             }
         });
 
+    document.getElementById('chk-skip-negotiation')
+        .addEventListener('change', (event) => {
+            if (event.target.checked) {
+                skipNegotiation = true;
+            } else {
+                skipNegotiation = false;
+            }
+        });
+
+    const muteNotifcationElement = document.getElementById('chk-mute-notification');
+    const notifcationMute = window.localStorage.getItem('muteNotification');
+    
+    if((!!notifcationMute) === false) {
+        window.localStorage.setItem('muteNotification', 1);        
+    }
+
+    muteNotifcationElement.checked = parseInt(notifcationMute) === 1;
+
+    muteNotifcationElement.addEventListener('change', (event) => {
+        if (event.target.checked) {
+            window.localStorage.setItem('muteNotification', 0);
+        } else {
+            window.localStorage.setItem('muteNotification', 1);
+        }
+    });
+
     document.getElementById('btn-clearlogs')
         .addEventListener('click', (event) => {
             document.getElementById("app-logs").innerHTML = "";
@@ -63,14 +95,15 @@ export function Init() {
 
     AppCommon.AppEvents.on('Logger', (message) => {
         var msg = "[" + new Date().toISOString() + "] :: " + message;
-        var temp = document.getElementById("app-logs").innerHTML;
-        document.getElementById("app-logs").innerHTML = '<p>' + msg + '</p>' + temp;
+        var loggerElement = document.getElementById("app-logs");        
+        var oldLogs = loggerElement.innerHTML;
+        document.getElementById("app-logs").innerHTML = '<p>' + msg + '</p>' + oldLogs;
     });
 
     AppCommon.AppEvents.on('ConnectionFailed', (message) => {
-        debugger;
         isConnected = false;
-        alert('Connection Failed: Not able to establised the connection. Please check the Url.');
+        //alert('Connection Failed: Not able to establised the connection. Please check the Url.');
+        Test.CustomAlert('Not able to establised the connection. Please check the logs for more information.', 'Connection Failed');
         AppCommon.AppEvents.off('ReceivedData', HandleResponse);
     });
 
@@ -98,7 +131,6 @@ export function RigisterNavigationTabEvent() {
     for (var i = 0; i < navLinkClass.length; i++) {
         navLinkClass[i].addEventListener('click',
             function () {
-                console.log(this.getAttribute('data-tab-type'));
                 OnTabChange(this.getAttribute('data-tab-type'));
             },
             false);
@@ -106,36 +138,46 @@ export function RigisterNavigationTabEvent() {
 }
 
 export function OnTabChange(tabName) {
+    var appView = document.getElementById('appview');
+    var tabHeaderElement = appView.getElementsByTagName('h4')[0];
+
     if (tabName == 'basic') {
         window.appLogic.SetCurrentViewAsBasic();
         AdvanceViewElements(false);
+        tabHeaderElement.innerText = "Basic";
     }
     else {
         window.appLogic.SetCurrentViewAsAdvance();
         AdvanceViewElements(true);
+        tabHeaderElement.innerText = "Advance";
     }
 }
 
 export function AdvanceViewElements(enable) {
 
     if (enable === true) {
-        document.getElementById('protocol-support').style = 'display:block';
+        document.getElementById('protocol-support').style = 'display:block';        
         document.getElementById('auth-container').style = 'display:block';
+        document.getElementById('content-negotiation').style = 'display:block';
+        
         if (isConnected === true) {
             document.getElementById('chk-req-token').disabled = true;
             document.getElementById('authHeader').disabled = true;
-            AppCommon.DisableElementByClassName('protocol-support');
+            DisableMdlElement('protocol-support');
+            DisableMdlElement('skip-negotiation');
         }
         else {
             document.getElementById('chk-req-token').disabled = false;
             if (window.appLogic.IsAuthEnabled() === true) {
                 document.getElementById('authHeader').disabled = false;
             }
+            EnableMdlElement('skip-negotiation');
         }
     }
     else {
         document.getElementById('protocol-support').style = 'display:none';
         document.getElementById('auth-container').style = 'display:none';
+        document.getElementById('content-negotiation').style = 'display:none';
     }
 }
 
@@ -154,23 +196,24 @@ export function AddArgumentsCallBack() {
     for (var i = 0; i < parentDiv.length; i++) {
 
         var divElement = document.createElement('div');
-        divElement.setAttribute('class', 'container args-container');
+        divElement.setAttribute('class', 'container args-container row');
 
-        var hr = document.createElement('hr');
-        hr.setAttribute('class', 'style13');
 
         divElement.appendChild(GetTextBoxElement());
-        divElement.appendChild(GetSelectElement());
         divElement.appendChild(GetImageElement());
-        divElement.append(document.createElement('br'))
-        divElement.appendChild(hr);
+        divElement.appendChild(GetSelectElement());
+        
+        // divElement.append(document.createElement('br'))
+        //var hr = document.createElement('hr');
+        //hr.setAttribute('class', 'horizontal-line form-group col-sm-10');
+        //divElement.appendChild(hr);
         parentDiv[i].appendChild(divElement);
     }
 }
 
 export function GetSelectElement() {
     var div = document.createElement('div');
-    div.setAttribute('class', 'form-group col-sm-5');
+    div.setAttribute('class', 'form-group col-sm-4');
 
     var selectElement = document.createElement('select');
     selectElement.setAttribute('class', 'req-content-type form-control');
@@ -199,7 +242,7 @@ export function GetSelectElement() {
 export function GetTextBoxElement() {
 
     var div = document.createElement('div');
-    div.setAttribute('class', 'form-group col-sm-5');
+    div.setAttribute('class', 'form-group col-sm-11');
 
     var inputTxtElement = document.createElement('textarea');
     inputTxtElement.setAttribute("row", "1");
@@ -213,7 +256,7 @@ export function GetTextBoxElement() {
 
 export function GetImageElement() {
     var div = document.createElement('div');
-    div.setAttribute('class', 'form-group col-sm-5');
+    div.setAttribute('class', 'form-group col-sm-1 float-right');
 
     var imgElement = document.createElement('img');
     imgElement.src = deleteImg;
@@ -250,9 +293,18 @@ export function ReadAndFormatArguments() {
 
     args.forEach((d) => {
         if (d.cType == AppCommon.ContentType.NUMBER) {
-            requestArguments.push(Number(d.data));
+            var data = Number(d.data);
+            if(isNaN(data)) {
+                Test.CustomAlert('Incorrect Data: ' + d.data + ' . Excepted data of type - ' + d.cType, 'Invalid Input');
+                throw 'Invalid Data'
+            }
+            requestArguments.push(data);
         }
         else if (d.cType == AppCommon.ContentType.JSON) {
+            if(AppCommon.IsValidJSON(data)) {
+                Test.CustomAlert('Incorrect Data: ' + d.data + ' . Excepted data of type - ' + d.cType, 'Invalid Input');
+                throw 'Invalid Data'
+            }
             requestArguments.push(JSON.parse(d.data));
         }
         else if (d.cType == AppCommon.ContentType.TEXT) {
@@ -274,11 +326,19 @@ export function NotConnected() {
 
 export function buildConnection(url) {
     var option = { url: url, getToken: () => document.getElementById('authHeader').value };
+    option.transportType = transportType;
+    option.skipNegotiation = skipNegotiation;
     window.appLogic.Init(option);
 }
 
 export function start() {
-    window.appLogic.OnConnect();
+    window.appLogic.OnConnect(function(data) {
+        AppCommon.AppEvents.emit('OnConnected', data);
+        AppCommon.AppEvents.emit('Logger', "Connection established successfully with the server");
+    }, function(err) {
+        AppCommon.AppEvents.emit('ConnectionFailed', err.toString());
+        AppCommon.AppEvents.emit('Logger', "ConnectionFailed-> " + err.toString());
+    });
 }
 
 export function connectToServer(url) {
@@ -286,7 +346,42 @@ export function connectToServer(url) {
     start();
 }
 
+function UrlValidation() {
+    const urlElement = document.getElementById("inputUrl");
+    const errorElement = urlElement.nextElementSibling;
+
+    if (AppCommon.IsValidUrl(urlElement.value)) {
+        errorElement.innerText = "";
+        errorElement.className = "error";
+        return true;
+    } else {
+            errorElement.innerText = "Invalid Url";
+            errorElement.className = 'error active';
+            return false;
+    }
+}
+
+function TextboxValidation(element, errorMessage) {
+    const errorElement = element.nextElementSibling;
+
+    if(!!element.value) {
+        errorElement.innerText = "";
+        errorElement.className = "error";
+        return true;
+    } else {
+            errorElement.innerText = errorMessage;
+            errorElement.className = 'error active';
+            return false;
+    }
+}
+
+
 export function OnConnect() {
+
+    //Add validation
+    if(!UrlValidation()) {
+        return;
+    }
 
     var isAdvanceView = !window.appLogic.GetCurrentView();
     if (isAdvanceView) {
@@ -316,29 +411,57 @@ export function OnConnected() {
 }
 
 export function HandleResponse(data) {
-    document.querySelector("#inputResponseData").value += JSON.stringify(data) + '\n';
+    var responseDiv = document.querySelector("#inputResponseData");
+    responseDiv.innerText += JSON.stringify(data) + '\n';
+    responseDiv.scrollTop = responseDiv.scrollHeight;
+
+    var isNotificationMute = window.localStorage.getItem('muteNotification');
+
+    if(parseInt(isNotificationMute) === 1) {
+        let sound = new Audio(notificationSound);
+        sound.play();
+    }
+    
 }
 
 export function SetConnectionProtocol() {
     var elements = document.querySelectorAll(".protocol-support");
 
     for (var i = 0; i < elements.length; i++) {
-        if (elements[i].value === "ws" && elements[i].checked !== true) {
-            console.log("WebSocket disabled");
-            WebSocket = undefined;
+        if (elements[i].value === "ws" && elements[i].checked === true) {
+            //WebSocket = undefined;
+            transportType = "ws";
+            return;
         }
-        else if (elements[i].value === "sse" && elements[i].checked !== true) {
-            console.log("Server Sent Event disabled");
-            EventSource = undefined;
+        else if (elements[i].value === "sse" && elements[i].checked === true) {
+            //EventSource = undefined;
+            transportType = "sse";
+            return;
         }
-        else if (elements[i].value === "lp" && elements[i].checked !== true) {
-            //console.log("Server Sent Event disabled");
+        else if (elements[i].value === "lp" && elements[i].checked === true) {
+            transportType = "lp";
+            return;
         }
     }
+
+
+    // for (var i = 0; i < elements.length; i++) {
+    //     if (elements[i].value === "ws" && elements[i].checked !== true) {
+    //         console.log("WebSocket disabled");
+    //         //WebSocket = undefined;
+    //     }
+    //     else if (elements[i].value === "sse" && elements[i].checked !== true) {
+    //         console.log("Server Sent Event disabled");
+    //         //EventSource = undefined;
+    //     }
+    //     else if (elements[i].value === "lp" && elements[i].checked !== true) {
+    //         //console.log("Server Sent Event disabled");
+    //     }
+    // }
 }
 
-export function OnDisConnect() {
-    console.log("On DisConnect");
+export function OnDisconnect() {
+    //console.log("On DisConnect");
     isConnected = false;
     Disconnect();
     AppCommon.HideElementByClassName('onconnect');
@@ -361,18 +484,55 @@ export function Reset() {
         addArgBtnClass[i].removeEventListener('click', AddArgumentsCallBack, false);
     }
     document.getElementById('method-arguments').innerHTML = "";
-    inputResponseData.value = "";
+    var responseDiv = document.querySelector("#inputResponseData");
+    responseDiv.innerText = "";
 }
 
 export function Disconnect() {
-    window.appLogic.OnDisConnect();
+    window.appLogic.OnDisconnect(function() {
+        AppCommon.AppEvents.emit('Logger', "Disconnected from the server");
+        AppCommon.AppEvents.emit('OnDisconnected');
+    },
+    function(err) {
+        AppCommon.AppEvents.emit('Logger', err.toString());
+    });
 }
 
 export function SendPayload() {
 
-    var methodName = document.getElementById("inputServerMethod").value;
+    const methodNameElement = document.getElementById("inputServerMethod");
+    var methodName = methodNameElement.value;   
+    if(!TextboxValidation(methodNameElement, "Please enter the Hub method name")) {
+        return false;
+    }
+
     var methodArguments = new Array();
 
     methodArguments = ReadAndFormatArguments();
-    window.appLogic.OnSend({ methodName: methodName, methodArguments: methodArguments });
+    window.appLogic.OnSend({ methodName: methodName, methodArguments: methodArguments },
+        function(options) {
+            AppCommon.AppEvents.emit('Logger', "Calling server method - " + options.methodName);
+        },
+        function(err) {
+            AppCommon.AppEvents.emit('Logger', err.toString());
+            Test.CustomAlert(err.toString(), 'Error');
+        });
+}
+
+function DisableMdlElement(className) {
+    var el = document.getElementsByClassName(className);
+
+    for (var i = 0; i < el.length; i++) {
+        el[i].disabled = true;
+        el[i].parentNode.classList.add("is-disabled");
+    }
+}
+
+function EnableMdlElement(className) {
+    var el = document.getElementsByClassName(className);
+
+    for (var i = 0; i < el.length; i++) {
+        el[i].disabled = false;
+        el[i].parentNode.classList.remove("is-disabled");
+    }
 }

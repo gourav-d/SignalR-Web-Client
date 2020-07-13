@@ -22,20 +22,20 @@ class AppLogic {
         sr.Init(options);        
     }
     
-    OnConnect() {
-        sr.OnConnect();
+    OnConnect(onSuccess, onError) {
+        sr.OnConnect(onSuccess, onError);
     }
     
-    OnSend(options) {
-        sr.OnSend(options);
+    OnSend(options, beforeInvoke, onError) {
+        sr.OnSend(options, beforeInvoke, onError);
     }
     
     OnReceive(callback) { 
         sr.OnReceive(callback);
     }
     
-    OnDisConnect() { 
-        sr.OnDisConnect();
+    OnDisconnect(onSuccess, onError) { 
+        sr.OnDisconnect(onSuccess, onError);
     }
 
     EnableAuth() {

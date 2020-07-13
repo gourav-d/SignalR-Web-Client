@@ -4,12 +4,10 @@ class AppComponent extends HTMLElement {
     }
 
     connectedCallback() {
-        console.log('connected!');
         this.render();
     }
 
     disconnectedCallback() {
-        console.log('disconnected!');
     }
 
     attributeChangedCallback(attrName, oldVal, newVal) {
@@ -23,16 +21,16 @@ class AppComponent extends HTMLElement {
             <div class="panel panel-primary">
                 <ul class="nav nav-tabs justify-content-end nav-justified" id="tabheader">
                     <li class="nav-item">
-                        <a class="nav-link active" data-tab-type="basic" data-toggle="tab"  href="#basicview">Basic</a>
+                        <a class="nav-link active tab-text" data-tab-type="basic" data-toggle="tab"  href="#appview">Basic</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-tab-type="advance" data-toggle="tab" href="#basicview">Advance</a>
+                        <a class="nav-link tab-text" data-tab-type="advance" data-toggle="tab" href="#appview">Advance</a>
                     </li>
                 </ul>
 
                 <div class="tab-content container clearfix tabcontent">
-                    <div id="basicview" class="tab-pane active">
-                        <h2>Basic</h2>
+                    <div id="appview" class="tab-pane active">
+                        <h4 style="display: none">Basic</h4> <br/><br/>
                         <sr-form></sr-form>
                     </div>                  
                 </div>

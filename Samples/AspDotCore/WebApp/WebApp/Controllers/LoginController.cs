@@ -21,9 +21,10 @@ namespace WebApp.Controllers
 		}
 
 		[AllowAnonymous]
-		[HttpPost]
-		public IActionResult Login([FromBody]UserModel login)
+		[HttpGet("~/GetToken")]
+		public IActionResult GetToken(string username, string password)
 		{
+			var login = new UserModel{ Username = username, Password = password };
 			IActionResult response = Unauthorized();
 			var user = AuthenticateUser(login);
 
@@ -61,7 +62,7 @@ namespace WebApp.Controllers
 		{
 			UserModel user = null;
 
-			if (login.Username == "Test" && login.Password == "Abc@123")
+			if (login.Username == "admin" && login.Password == "admin")
 			{
 				user = new UserModel { Username = "Test", EmailAddress = "test@test.com" };
 			}

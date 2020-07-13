@@ -1,4 +1,5 @@
 const path = require('path');
+var assets = path.resolve(__dirname, 'src/assets');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
@@ -33,7 +34,6 @@ module.exports = {
         {
           //Image Loader code need to refactor
             test: /\.(png|jpg)$/,
-            exclude: /node_modules/,
             use: [{
               loader: 'url-loader',
               options: {
@@ -42,6 +42,12 @@ module.exports = {
                 publicPath: './img/'
               }
             }]            
+        },
+        {
+          //assets file Loader code need to refactor
+            test: /\.(ogg|mp3|wav|mpe?g)$/i,
+            loader: 'file-loader',
+            include: assets,           
         }
       ]
     },
