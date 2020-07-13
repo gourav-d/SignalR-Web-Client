@@ -68,6 +68,10 @@ public class SampleHub : Hub
     <img src="./images/Basic_View_ Multi_Param.gif" width="100%" height="100%">
 </div>
 <img src="./images/Basic_View_ Multi_Param.gif" width="100%" height="100%">
+<p align="center">
+  <img src="./images/Basic_View_ Multi_Param.gif" width="1000px" height="600px">
+</p
+
 Example:
 
 ```csharp
