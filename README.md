@@ -1,8 +1,8 @@
 ﻿SignalR-Web-Client
 ======================
-This is a JavaScript-based SignalR Web Client.
+This is a JavaScript-based SignalR Web Client. SignalR Web Client is available [here](https://gourav-d.github.io/SignalR-Web-Client/dist/).
 
-It is a debugging tool to test ASP.Net Core SignalR hubs. This is a UI based SignalR client. Using this tool, we can send the data to the SignalR hub and receive a response from the SignalR Hub. This tool is designed for DotNet core developers to make their life easier when they will work with SignalR.
+It is a debugging tool to test ASP.Net Core SignalR hubs. This is a UI based SignalR client. Using this tool, we can send the data to the SignalR hub and receive a response from the SignalR Hub. The tool is designed for DotNet core developers to make their life easier when they will work with SignalR.
 
 <p align="center">
   <img src="./src/images/SignalR-Web-Client.jpg" >
@@ -13,27 +13,29 @@ It is a debugging tool to test ASP.Net Core SignalR hubs. This is a UI based Sig
     <img src="./src/images/Basic_View.gif" width="100%" height="100%">
 </div>
 
+<br/><br/><br/>
 *Table of Contents*
 
 
+
 - [SignalR-Web-Client](#signalr-web-client)
-- [Prior Knowledge:](#prior-knowledge)
+- [Prior Knowledge](#prior-knowledge)
 - [Prerequisite](#prerequisite)
 - [Install](#install)
 - [How it works?](#how-it-works)
-    - [Baisc View](#baisc-view)
+    - [Basic View](#basic-view)
       - [Server Method:](#server-method)
       - [Request Payload:](#request-payload)
       - [Data Type supports:](#data-type-supports)
     - [Advance View](#advance-view)
     - [Reporting Issues](#reporting-issues)
-  - [Samples](#samples)
+- [Samples](#samples)
 - [Technologies](#technologies)
 - [Browser Support](#browser-support)
 - [License](#license)
 
 
-# Prior Knowledge:
+# Prior Knowledge
 
 Before using this tool, you should know about:
 
@@ -42,8 +44,7 @@ Before using this tool, you should know about:
 
 # Prerequisite
 
-- Node.Js
-- 
+- Node.Js 
 - Npm
 - Git
 
@@ -106,24 +107,24 @@ To set up in local environment:
     In such a case, we have to inform the Hub Server, that allows SignalR Web Client (http://localhost:8080) origin.
 
       ```
-      Startup.cs
-      
-      public void ConfigureServices(IServiceCollection services)
-      {
-          services.AddCors(options => options.AddPolicy("Cors", builder =>
-          {
-            builder
-              .AllowAnyMethod()
-              .AllowAnyHeader()
-              .AllowCredentials()
-              .WithOrigins("http://localhost:8080"); //SignalR Web Client Url
-          }));
+Startup.cs
 
-        ...
-      }
+public void ConfigureServices(IServiceCollection services)
+{
+    services.AddCors(options => options.AddPolicy("Cors", builder =>
+    {
+      builder
+        .AllowAnyMethod()
+        .AllowAnyHeader()
+        .AllowCredentials()
+        .WithOrigins("http://localhost:8080"); //SignalR Web Client Url
+    }));
 
-##refer this file
+  ...
+}
       ```
+refer this [Startup.cs file](https://github.com/gourav-d/SignalR-Web-Client/blob/master/Samples/AspDotCore/WebApp/WebApp/Startup.cs#L30)
+      
 
 # How it works?
 
@@ -146,12 +147,11 @@ SignalR Web Client has two views:
 </div>
 
 
-1. Provide the valid hub url in *Hub Address* textbox.(for ex. https://localhost:5001/Test/OneHub).<br/><br/>
-<!-- <img src="./src/images/1.PNG"  width="600px" height="400px" /> -->
+1. Provide the valid hub url in *Hub Address* textbox.(for ex. https://localhost:5001/Test/Hub).<br/><br/>
 
-1. Click on the connect button, it will try to connect with the server. Once the connection is established, if any data is broadcast from the Hub(ex. SampleHub) to all the client then, it will be displayed in the response payload section.
+2. Click on the connect button, it will try to connect with the server. Once the connection is established, if any data is broadcast from the Hub(ex. SampleHub) to all the client then, it will be displayed in the response payload section.
 
-2. If we want to call any Hub method. For example SendMessage method
+3. If we want to call any Hub method. For example SendMessage method
 ```csharp
 public class SampleHub : Hub
 {
@@ -169,7 +169,7 @@ In the tool, we have to pass the parameter.
 
 #### Request Payload:
     It can take multiple parameters. In our example, SendMessage method only takes one parameter of type string. 
-    ex. TestCall(string data)
+    ex. SendMessage(string data)
         
         Argument textbox  :  Hello
         Data Type         :  Text
@@ -179,14 +179,14 @@ In the tool, we have to pass the parameter.
 
 <img src="./src/images/5.PNG" width="300px" height="300px" />
 
-Then click on the send button. It will send all the data to the hub. 
+4. Then click on the send button. It will send all the data to the hub. 
 
-<!-- <img src="./src/images/3.PNG"   /> -->
 
 ### Advance View
 
 It has all the functionality which basic view provides, also it has additional features like:
-- Authentication Header -> We can you this when Hub is protected using token-based authentication.
+- Authentication Header -> We can use you this when Hub is protected using token-based authentication.
+- Skip Negotiation -> This only supported when the WebSockets transport is the only enabled transport. This setting can't be enabled when using the Azure SignalR Service.
 - Transport Type ([To know more about SignalR Transport](https://kevgriffin.com/signalr-transports-explained/)) -> WebSocket, Long Polling, Server Send Event 
   
 
@@ -204,9 +204,9 @@ Nothing is perfect.
 Then, just open a [new clear and descriptive issue](../../issues/new).
 
 
-## Samples
+# Samples
 
-
+[Samples are available here](https://github.com/gourav-d/SignalR-Web-Client/tree/master/Samples/AspDotCore/WebApp/WebApp)
 
 
 # Technologies

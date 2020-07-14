@@ -12,6 +12,8 @@ using Microsoft.IdentityModel.Tokens;
 using WebApp.Hubs;
 using Microsoft.OpenApi.Models;
 using System;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
 
 namespace WebApp
 {
@@ -152,6 +154,13 @@ namespace WebApp
 				// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
 				app.UseHsts();
 			}
+
+			app.UseStaticFiles(new StaticFileOptions
+			{
+				FileProvider = new PhysicalFileProvider(
+				Path.Combine(env.ContentRootPath, "SignalRWebClient")),
+				RequestPath = "/SignalRWebClient"
+			});
 
 			app.UseAuthentication();
 

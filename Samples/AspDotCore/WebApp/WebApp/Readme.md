@@ -37,7 +37,7 @@ SignalR-Web-Client Samples
             ....
         }
 ```
-
+<br/><br/>
 
 
 ### Call Hub Method
@@ -60,7 +60,7 @@ public class SampleHub : Hub
     }
 }
 ```
-
+<br/><br/>
 
 ### Call Hub Method With Multiple Parameters
 
@@ -71,13 +71,13 @@ public class SampleHub : Hub
 Example:
 
 ```csharp
-    public async Task SendMessageWithId(string message, int id)
-    {
-        var transportType = Context.Features.Get<IHttpTransportFeature>().TransportType.ToString();
-        await Clients.Client(Context.ConnectionId).SendAsync("Response", $"TransportType-{transportType} :: Data Received from SendMessageWithId method: {message}- {id}");
-    }
+public async Task SendMessageWithId(string message, int id)
+{
+	var transportType = Context.Features.Get<IHttpTransportFeature>().TransportType.ToString();
+	await Clients.Client(Context.ConnectionId).SendAsync("Response", $"TransportType-{transportType} :: Data Received from SendMessageWithId method: {message}- {id}");
+}
 ```
-
+<br/><br/>
 ### Call Hub Method With JSON Data
 
 
@@ -88,13 +88,13 @@ Example:
 Example:
 
 ```csharp
-	public async Task ComplexData(User user)
-    {
-        var transportType = Context.Features.Get<IHttpTransportFeature>().TransportType.ToString();
-        await Clients.Client(Context.ConnectionId).SendAsync("Response", new { Msg = $"TransportType-{transportType} :: Complex Data Received", User = user });
-    }
+public async Task ComplexData(User user)
+{
+	var transportType = Context.Features.Get<IHttpTransportFeature>().TransportType.ToString();
+	await Clients.Client(Context.ConnectionId).SendAsync("Response", new { Msg = $"TransportType-{transportType} :: Complex Data Received", User = user });
+}
 ```
-
+<br/><br/>
 ### Receiving Hub Broadcast Messages
 
 <div align="center" style="width: 1000px; height: 600px;">
@@ -104,24 +104,24 @@ Example:
 Example:
 
 ```csharp
-	public class NotificationController : Controller
+public class NotificationController : Controller
+{
+	[HttpGet]
+	public IActionResult Send(string message)
 	{
-		[HttpGet]
-		public IActionResult Send(string message)
+		var task = Task.Run(async() =>
 		{
-			var task = Task.Run(async() =>
+			for (int i = 0; i < 5; i++)
 			{
-				for (int i = 0; i < 5; i++)
-				{
-					await _hubContext.Clients.All.SendAsync("ReceiveData", $"This message has been sent from Web API. Here is your message - {message}");
-					await Task.Delay(1500);
-				}
-			});
-			return new JsonResult($"Message has been sent to all the clients");
-		}
+				await _hubContext.Clients.All.SendAsync("ReceiveData", $"This message has been sent from Web API. Here is your message - {message}");
+				await Task.Delay(1500);
+			}
+		});
+		return new JsonResult($"Message has been sent to all the clients");
 	}
+}
 ```
-
+<br/><br/>
 
 ### Call Secured Hub Using Token
 
@@ -136,12 +136,12 @@ Example:
 
 ```csharp
 [Authorize]
-	public class SecuredHub : Hub
+public class SecuredHub : Hub
+{
+	public async Task SendMessage(string message)
 	{
-		public async Task SendMessage(string message)
-		{
-			var transportType = Context.Features.Get<IHttpTransportFeature>().TransportType.ToString();
-			await Clients.Client(Context.ConnectionId).SendAsync("Response", $"TransportType-{transportType} :: Data Received from SendMessageWithAuth method: {message}");
-		}
+		var transportType = Context.Features.Get<IHttpTransportFeature>().TransportType.ToString();
+		await Clients.Client(Context.ConnectionId).SendAsync("Response", $"TransportType-{transportType} :: Data Received from SendMessageWithAuth method: {message}");
 	}
+}
 ```
