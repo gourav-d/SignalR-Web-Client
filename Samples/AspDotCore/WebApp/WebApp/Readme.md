@@ -45,7 +45,7 @@ SignalR-Web-Client Samples
 
 
  <div align="center" style="width: 1000px; height: 600px;">
-    <img src="./images/Basic_View.gif" width="100%" height="100%">
+    <img src="https://github.com/gourav-d/SignalR-Web-Client/blob/master/Samples/AspDotCore/WebApp/WebApp/Images/Basic_View.gif" width="100%" height="100%">
 </div>
 
 Example:
@@ -65,23 +65,7 @@ public class SampleHub : Hub
 ### Call Hub Method With Multiple Parameters
 
 <div align="center" style="width: 1000px; height: 600px;">
-    <img src="./images/Basic_View_Multi_Param.gif" width="100%" height="100%">
-</div>
-<img src="./images/Basic_View_Multi_Param.gif" width="100%" height="100%">
-<p align="center">
-  <img src="./images/Basic_View_Multi_Param.gif" width="1000px" height="600px">
-</p
-
-4
-![Basic_View](./images/Basic_View_Multi_Param.gif)
-3
-![Basic_View](https://github.com/gourav-d/SignalR-Web-Client/blob/master/Samples/AspDotCore/WebApp/WebApp/Images/Basic_View.gif)
-2
-![image](https://github.com/gourav-d/SignalR-Web-Client/blob/master/Samples/AspDotCore/WebApp/WebApp/Images/Basic_View.gif =1000x600)
-
-1
-<div align="center" style="width: 1000px; height: 600px;">
-    <img src="https://github.com/gourav-d/SignalR-Web-Client/blob/master/Samples/AspDotCore/WebApp/WebApp/Images/Basic_View.gif" width="100%" height="100%">
+    <img src="https://github.com/gourav-d/SignalR-Web-Client/blob/master/Samples/AspDotCore/WebApp/WebApp/Images/Basic_View_Multi_Param.gif" width="100%" height="100%">
 </div>
 
 Example:
@@ -98,7 +82,7 @@ Example:
 
 
 <div align="center" style="width: 1000px; height: 600px;">
-    <img src="./images/Basic_View_Json_Param.gif" width="100%" height="100%">
+    <img src="https://github.com/gourav-d/SignalR-Web-Client/blob/master/Samples/AspDotCore/WebApp/WebApp/Images/Basic_View_Json_Param.gif" width="100%" height="100%">
 </div>
 
 Example:
@@ -114,7 +98,7 @@ Example:
 ### Receiving Hub Broadcast Messages
 
 <div align="center" style="width: 1000px; height: 600px;">
-    <img src="./images/Server_Broadcast_Msg.gif" width="100%" height="100%">
+    <img src="https://github.com/gourav-d/SignalR-Web-Client/blob/master/Samples/AspDotCore/WebApp/WebApp/Images/Server_Broadcast_Msg.gif" width="100%" height="100%">
 </div>
 
 Example:
@@ -144,7 +128,7 @@ Example:
 
 
 <div align="center" style="width: 1000px; height: 600px;">
-    <img src="./images/Advance_Token.gif" width="100%" height="100%">
+    <img src="https://github.com/gourav-d/SignalR-Web-Client/blob/master/Samples/AspDotCore/WebApp/WebApp/Images/Advance_Token.gif" width="100%" height="100%">
 </div>
 
 
