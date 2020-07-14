@@ -62,6 +62,7 @@ class SrFormComponent extends HTMLElement {
                             </div>
                             <div class="col-sm-8">
                                 <input type="text" class="form-control" id="authHeader" placeholder="Token" disabled />
+                                <span class="error" aria-live="polite"></span>
                             </div>
                             <div class="col-sm-2">
                                 <div class="form-check form-check-inline">

@@ -58,7 +58,7 @@ class SignalRApp {
         });
 
         self.connection.onreconnected((connectionId) => {
-            AppEvents.emit('Logger', `Connection reestablished. Connected`);
+            AppEvents.emit('Logger', `Reconnected successfully`);
             console.log('On Reconnected...');
         });
     }

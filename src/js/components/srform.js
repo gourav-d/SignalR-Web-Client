@@ -2,7 +2,7 @@ import deleteImg from '../../images/delete.png';
 import notificationSound from '../../assets/Notification.wav';
 import { AppLogic } from './logic/app.logic';
 import * as AppCommon from './logic/lib/app.common';
-import * as Test from '../components/dialogbox/custompopup';
+import * as Dialogbox from '../components/dialogbox/custompopup';
 
 var isConnected = false;
 var transportType = "ws";
@@ -16,12 +16,9 @@ AppCommon.AppEvents.on('Init', () => {
 //#region OnDisconnected
 AppCommon.AppEvents.on('OnDisconnected', () => {
     if (window.appLogic.GetCurrentView() !== true) {
-        // document.getElementById('chk-ws').disabled = false;
-        // document.getElementById('chk-sse').disabled = false;
-        // document.getElementById('chk-lp').disabled = false;
-        //AppCommon.EnableElementByClassName('protocol-support');
         EnableMdlElement('protocol-support');
         EnableMdlElement('skip-negotiation');
+        EnableMdlElement('chk-req-token')
     }
 });
 //#endregion
@@ -103,7 +100,7 @@ export function Init() {
     AppCommon.AppEvents.on('ConnectionFailed', (message) => {
         isConnected = false;
         //alert('Connection Failed: Not able to establised the connection. Please check the Url.');
-        Test.CustomAlert('Not able to establised the connection. Please check the logs for more information.', 'Connection Failed');
+        Dialogbox.Alert('Not able to establised the connection. Please check the logs for more information.', 'Connection Failed');
         AppCommon.AppEvents.off('ReceivedData', HandleResponse);
     });
 
@@ -165,13 +162,16 @@ export function AdvanceViewElements(enable) {
             document.getElementById('authHeader').disabled = true;
             DisableMdlElement('protocol-support');
             DisableMdlElement('skip-negotiation');
+            DisableMdlElement('chk-req-token')
         }
         else {
             document.getElementById('chk-req-token').disabled = false;
             if (window.appLogic.IsAuthEnabled() === true) {
                 document.getElementById('authHeader').disabled = false;
             }
+            EnableMdlElement('protocol-support');
             EnableMdlElement('skip-negotiation');
+            EnableMdlElement('chk-req-token')
         }
     }
     else {
@@ -295,14 +295,14 @@ export function ReadAndFormatArguments() {
         if (d.cType == AppCommon.ContentType.NUMBER) {
             var data = Number(d.data);
             if(isNaN(data)) {
-                Test.CustomAlert('Incorrect Data: ' + d.data + ' . Excepted data of type - ' + d.cType, 'Invalid Input');
+                Dialogbox.Alert('Incorrect Data: ' + d.data + ' . Excepted data of type - ' + d.cType, 'Invalid Input');
                 throw 'Invalid Data'
             }
             requestArguments.push(data);
         }
         else if (d.cType == AppCommon.ContentType.JSON) {
             if(AppCommon.IsValidJSON(data)) {
-                Test.CustomAlert('Incorrect Data: ' + d.data + ' . Excepted data of type - ' + d.cType, 'Invalid Input');
+                Dialogbox.Alert('Incorrect Data: ' + d.data + ' . Excepted data of type - ' + d.cType, 'Invalid Input');
                 throw 'Invalid Data'
             }
             requestArguments.push(JSON.parse(d.data));
@@ -386,7 +386,11 @@ export function OnConnect() {
     var isAdvanceView = !window.appLogic.GetCurrentView();
     if (isAdvanceView) {
         SetConnectionProtocol();
-    }
+        if(!ValidateTokenTextBox()) {
+            return;
+        }
+
+    }               
 
     var urlElement = document.getElementById("inputUrl");
     connectToServer(urlElement.value);
@@ -394,10 +398,11 @@ export function OnConnect() {
 }
 
 export function OnConnected() {
-
-    var isAdvanceView = !window.appLogic.GetCurrentView();
+    var isAdvanceView = !window.appLogic.GetCurrentView(); //true = basicView
     var urlElement = document.getElementById("inputUrl");
     isConnected = true;
+
+    DisableMdlElement('chk-req-token')    
     AppCommon.ShowElementByClassName('onconnect');
 
     AdvanceViewElements(isAdvanceView);
@@ -421,7 +426,6 @@ export function HandleResponse(data) {
         let sound = new Audio(notificationSound);
         sound.play();
     }
-    
 }
 
 export function SetConnectionProtocol() {
@@ -443,25 +447,9 @@ export function SetConnectionProtocol() {
             return;
         }
     }
-
-
-    // for (var i = 0; i < elements.length; i++) {
-    //     if (elements[i].value === "ws" && elements[i].checked !== true) {
-    //         console.log("WebSocket disabled");
-    //         //WebSocket = undefined;
-    //     }
-    //     else if (elements[i].value === "sse" && elements[i].checked !== true) {
-    //         console.log("Server Sent Event disabled");
-    //         //EventSource = undefined;
-    //     }
-    //     else if (elements[i].value === "lp" && elements[i].checked !== true) {
-    //         //console.log("Server Sent Event disabled");
-    //     }
-    // }
 }
 
 export function OnDisconnect() {
-    //console.log("On DisConnect");
     isConnected = false;
     Disconnect();
     AppCommon.HideElementByClassName('onconnect');
@@ -515,7 +503,7 @@ export function SendPayload() {
         },
         function(err) {
             AppCommon.AppEvents.emit('Logger', err.toString());
-            Test.CustomAlert(err.toString(), 'Error');
+            Dialogbox.Alert(err.toString(), 'Error');
         });
 }
 
@@ -535,4 +523,23 @@ function EnableMdlElement(className) {
         el[i].disabled = false;
         el[i].parentNode.classList.remove("is-disabled");
     }
+}
+
+function ValidateTokenTextBox() {
+    debugger;
+    var isTokenReq = document.getElementById('chk-req-token').checked;
+    var tokenTxtBox = document.getElementById('authHeader')
+    if(isTokenReq) {
+        if(!TextboxValidation(tokenTxtBox, "Please enter the Token")) {
+            AppCommon.AppEvents.emit('Logger', "Please enter the Token");
+            return false;
+        }
+    } 
+    else {
+        const errorElement = tokenTxtBox.nextElementSibling;
+        errorElement.innerText = "";
+        errorElement.className = "error";
+        
+    }
+    return true;
 }

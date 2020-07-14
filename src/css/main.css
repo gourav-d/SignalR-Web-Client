@@ -8,7 +8,12 @@ body {
     padding : 0px ;
     margin: 0px;
     font-family: 'Roboto', 'Helvetica', sans-serif;
-    min-height: 600px ;
+    /* min-height: 600px ; */
+    /* height: 2000px; */
+  }
+
+  html {
+     overflow-y:scroll; /*This make the scrollbar always visible and only active when needed. */
   }
 
 .tab {

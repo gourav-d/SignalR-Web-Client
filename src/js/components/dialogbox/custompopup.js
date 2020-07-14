@@ -8,7 +8,7 @@ import './custompopupStyle.css';
         <div id="dialogoverlay"></div>
         <div id="dialogbox" class="slit-in-vertical">
             <div>
-                <div id="dialogboxhead"></div>
+                <div id="dialogboxhead" style="background-color:rgb(63,81,181)"></div>
                 <div id="dialogboxbody"></div>
                 <div id="dialogboxfoot"></div>
             </div>
@@ -17,9 +17,11 @@ import './custompopupStyle.css';
         let dialogoverlay = document.getElementById('dialogoverlay');
         let dialogbox = document.getElementById('dialogbox');
 
+        
+
         dialogbox.style.display = "none";
         dialogoverlay.style.display = "none";
-        document.getElementById('dialogboxfoot').innerHTML = '<button class="pure-material-button-contained active" id="custom-popup-ok-btn">OK</button>';
+        document.getElementById('dialogboxfoot').innerHTML = '<button style="background-color:rgb(63,81,181)" class="pure-material-button-contained active" id="custom-popup-ok-btn">OK</button>';
         document.getElementById('custom-popup-ok-btn')
         .addEventListener('click', function() {
             document.getElementById('dialogbox').style.display = "none";
@@ -27,7 +29,7 @@ import './custompopupStyle.css';
         })
 })(window)
 
-export function CustomAlert(message, title) {    
+export function Alert(message, title) {    
 
         let dialogoverlay = document.getElementById('dialogoverlay');
         let dialogbox = document.getElementById('dialogbox');
