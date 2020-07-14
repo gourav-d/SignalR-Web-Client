@@ -1,8 +1,7 @@
 ﻿SignalR-Web-Client
 ======================
-This is a JavaScript-based SignalR Web Client. SignalR Web Client is available [here](https://gourav-d.github.io/SignalR-Web-Client/dist/).
 
-It is a debugging tool to test ASP.Net Core SignalR hubs. This is a UI based SignalR client. Using this tool, we can send the data to the SignalR hub and receive a response from the SignalR Hub. The tool is designed for DotNet core developers to make their life easier when they will work with SignalR.
+ It is a debugging tool to test ASP.Net Core SignalR hubs. Using this tool, we can send the data to the SignalR hub and receive a response from the SignalR Hub. The tool is designed for DotNet core developers to make their life easier when they will work with SignalR. Developer's, no need to write a single line of code to test the Hub. SignalR Web Client is available [here](https://gourav-d.github.io/SignalR-Web-Client/dist/).
 
 <p align="center">
   <img src="./src/images/SignalR-Web-Client.jpg" >
@@ -106,7 +105,7 @@ To set up in local environment:
     
     In such a case, we have to inform the Hub Server, that allows SignalR Web Client (http://localhost:8080) origin.
 
-      ```
+```csharp
 Startup.cs
 
 public void ConfigureServices(IServiceCollection services)
@@ -122,7 +121,7 @@ public void ConfigureServices(IServiceCollection services)
 
   ...
 }
-      ```
+```
 refer this [Startup.cs file](https://github.com/gourav-d/SignalR-Web-Client/blob/master/Samples/AspDotCore/WebApp/WebApp/Startup.cs#L30)
       
 
@@ -147,7 +146,7 @@ SignalR Web Client has two views:
 </div>
 
 
-1. Provide the valid hub url in *Hub Address* textbox.(for ex. https://localhost:5001/Test/Hub).<br/><br/>
+1. Provide the valid hub url in *Hub Address* textbox.(for ex. https://localhost:5001/Test/Hub).
 
 2. Click on the connect button, it will try to connect with the server. Once the connection is established, if any data is broadcast from the Hub(ex. SampleHub) to all the client then, it will be displayed in the response payload section.
 

@@ -40,7 +40,7 @@ SignalR-Web-Client Samples
 <br/><br/>
 
 
-### Call Hub Method
+### 1. Call Hub Method
 
 
 
@@ -62,7 +62,7 @@ public class SampleHub : Hub
 ```
 <br/><br/>
 
-### Call Hub Method With Multiple Parameters
+### 2. Call Hub Method With Multiple Parameters
 
 <div align="center" style="width: 1000px; height: 600px;">
     <img src="https://github.com/gourav-d/SignalR-Web-Client/blob/master/Samples/AspDotCore/WebApp/WebApp/Images/Basic_View_Multi_Param.gif" width="100%" height="100%">
@@ -78,7 +78,8 @@ public async Task SendMessageWithId(string message, int id)
 }
 ```
 <br/><br/>
-### Call Hub Method With JSON Data
+
+### 3. Call Hub Method With JSON Data
 
 
 <div align="center" style="width: 1000px; height: 600px;">
@@ -95,7 +96,8 @@ public async Task ComplexData(User user)
 }
 ```
 <br/><br/>
-### Receiving Hub Broadcast Messages
+
+### 4. Receiving Hub Broadcast Messages
 
 <div align="center" style="width: 1000px; height: 600px;">
     <img src="https://github.com/gourav-d/SignalR-Web-Client/blob/master/Samples/AspDotCore/WebApp/WebApp/Images/Server_Broadcast_Msg.gif" width="100%" height="100%">
@@ -123,7 +125,7 @@ public class NotificationController : Controller
 ```
 <br/><br/>
 
-### Call Secured Hub Using Token
+### 5. Call Secured Hub Using Token
 
 
 
