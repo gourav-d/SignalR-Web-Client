@@ -75,11 +75,11 @@ public class SampleHub : Hub
 3
 ![Basic_View](https://github.com/gourav-d/SignalR-Web-Client/blob/master/Samples/AspDotCore/WebApp/WebApp/Images/Basic_View.gif)
 2
-![](https://github.com/gourav-d/SignalR-Web-Client/blob/master/Samples/AspDotCore/WebApp/WebApp/Images/Basic_View.gif =1000x600)
+![image](https://github.com/gourav-d/SignalR-Web-Client/blob/master/Samples/AspDotCore/WebApp/WebApp/Images/Basic_View.gif =1000x600)
 
 1
 <div align="center" style="width: 1000px; height: 600px;">
-    <img src="./images/Basic_View_Multi_Param.gif" width="100%" height="100%">
+    <img src=".https://github.com/gourav-d/SignalR-Web-Client/blob/master/Samples/AspDotCore/WebApp/WebApp/Images/Basic_View.gif" width="100%" height="100%">
 </div>
 
 Example:
