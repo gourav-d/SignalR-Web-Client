@@ -68,19 +68,21 @@ export function Init() {
         });
 
     const muteNotifcationElement = document.getElementById('chk-mute-notification');
-    const notifcationMute = window.localStorage.getItem('muteNotification');
+    var notifcationMute = window.localStorage.getItem('muteNotification');
+    console.log('1 Notification data-' +  notifcationMute);
     
     if((!!notifcationMute) === false) {
-        window.localStorage.setItem('muteNotification', 1);        
+        window.localStorage.setItem('muteNotification', 0);
+        notifcationMute = 0;
     }
 
     muteNotifcationElement.checked = parseInt(notifcationMute) === 1;
 
     muteNotifcationElement.addEventListener('change', (event) => {
         if (event.target.checked) {
-            window.localStorage.setItem('muteNotification', 0);
-        } else {
             window.localStorage.setItem('muteNotification', 1);
+        } else {
+            window.localStorage.setItem('muteNotification', 0);
         }
     });
 
@@ -422,7 +424,7 @@ export function HandleResponse(data) {
 
     var isNotificationMute = window.localStorage.getItem('muteNotification');
 
-    if(parseInt(isNotificationMute) === 1) {
+    if(parseInt(isNotificationMute) === 0) {
         let sound = new Audio(notificationSound);
         sound.play();
     }
