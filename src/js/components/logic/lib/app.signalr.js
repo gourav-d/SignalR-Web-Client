@@ -61,6 +61,31 @@ class SignalRApp {
             AppEvents.emit('Logger', `Reconnected successfully`);
             console.log('On Reconnected...');
         });
+
+        /*
+
+        self.connection.start();
+debugger;
+
+        try {
+            self.connection.stream("DelayCounter", 500)
+                .subscribe({
+                    next: (item) => {
+                        console.log("GD" + item);
+                    },
+                    complete: () => {
+                        console.log("GD-Stream completed" + item);
+                    },
+                    error: (err) => {
+                        console.log("GD-Error" + err);
+                    },
+                });
+        }
+        catch (e) {
+            console.error(e.toString());
+        }
+
+*/
     }
     
     
@@ -78,12 +103,40 @@ class SignalRApp {
     OnSend(options, beforeInvoke, onError) {
         var methodArguments = new Array();
         methodArguments = options.methodArguments;
+
+        var isStreamInvocation = true;
     
+
         beforeInvoke(options);
-        this.connection.invoke(options.methodName, ...methodArguments)
+
+        if(isStreamInvocation) {
+
+            debugger;
+
+        try {
+            this.connection.stream(options.methodName, ...methodArguments)
+                .subscribe({
+                    next: (item) => {
+                        console.log("GD" + item);
+                    },
+                    complete: () => {
+                        console.log("GD-Stream completed");
+                    },
+                    error: (err) => {
+                        console.log("GD-Error" + err);
+                    },
+                });
+        }
+        catch (e) {
+            console.error(e.toString());
+        }
+
+        } else{
+            this.connection.invoke(options.methodName, ...methodArguments)
             .catch(function (err) {
                 onError(err);
             });
+        }
     }
     
     OnReceive(callback) {
@@ -109,7 +162,11 @@ class SignalRApp {
 
                 if(jsonObj !== null && jsonObj.hasOwnProperty('target')) {
                     AppEvents.emit('ReceivedData', { "ClientMethod": jsonObj.target, "Data": jsonObj.arguments });
-                }
+                } 
+                else if(jsonObj !== null && jsonObj.hasOwnProperty('item')) {
+                    AppEvents.emit('ReceivedData', { "item": jsonObj.item, "Data": jsonObj.arguments });
+                }  
+
             });
         }
     }

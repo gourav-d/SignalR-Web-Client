@@ -528,7 +528,6 @@ function EnableMdlElement(className) {
 }
 
 function ValidateTokenTextBox() {
-    debugger;
     var isTokenReq = document.getElementById('chk-req-token').checked;
     var tokenTxtBox = document.getElementById('authHeader')
     if(isTokenReq) {

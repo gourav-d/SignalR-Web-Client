@@ -171,6 +171,7 @@ namespace WebApp
 				});
 
 				option.MapHub<SecuredHub>(new PathString("/Secured/Hub"));
+				option.MapHub<AsyncEnumerableHub>(new PathString("/abc"));
 			});
 
 			//app.UseHttpsRedirection();
