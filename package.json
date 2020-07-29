@@ -20,6 +20,7 @@
   "homepage": "https://github.com/gouravdwivedi6590/SignalR-JS-Client#readme",
   "dependencies": {
     "@microsoft/signalr": "^3.1.2",
+    "@microsoft/signalr-protocol-msgpack": "^3.1.6",
     "@webcomponents/webcomponentsjs": "^2.2.10",
     "bootstrap": "^4.3.1",
     "jquery": "^3.4.1",

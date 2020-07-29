@@ -1,4 +1,10 @@
 import * as SignalR from "@microsoft/signalr";
+
+//import * as msgPack from 'node_modules\msgpack5\dist\msgpack5.js';
+import * as abc from "../../../../../node_modules/msgpack5/dist/msgpack5";
+//import * as s from 'node_modules\@microsoft\signalr-protocol-msgpack\dist\browser\signalr-protocol-msgpack.js';
+import { MessagePackHubProtocol } from "@microsoft/signalr-protocol-msgpack";
+import * as bb from "@microsoft/signalr-protocol-msgpack/dist/esm/BinaryMessageFormat";
 import { AppEvents } from './app.common';
 
 class SignalRApp {
@@ -35,9 +41,11 @@ class SignalRApp {
         if(!!options.skipNegotiation) {
             confguration.skipNegotiation = options.skipNegotiation;
         }
-                
+
+                        
         this.connection = new SignalR.HubConnectionBuilder()
             .withUrl(options.url, confguration)
+            .withHubProtocol(new MessagePackHubProtocol())
             .configureLogging(SignalR.LogLevel.Information)
             .withAutomaticReconnect([0, 3000, 5000, 10000, 15000, 30000])
             .build();
@@ -48,6 +56,7 @@ class SignalRApp {
         self.processResponse = self.connection.processIncomingData;
 
         self.connection.processIncomingData = function (data) {
+
             self.processResponse.call(self.connection, data);
             self.HandleResponse(data);
         }
@@ -116,8 +125,23 @@ class SignalRApp {
 
     ParseRespose(input) {
 
+        this.connection.logger
         if (typeof input !== "string") {
             console.log("Invalid input for JSON hub protocol. Expected a string.");
+            
+
+            unable to parse the binary data.
+            //var r = new bb();
+            //BinaryMessageFormat.parse(input);
+            
+            var ss = bb.BinaryMessageFormat.parse(input);
+
+            // var d = new abc();
+            // d.decoder(input);
+            // var s = new MessagePackHubProtocol();
+            // var data = s.parseMessage(input, this.connection.logger)
+            console.log(data);
+
             return null; 
             //throw new Error("Invalid input for JSON hub protocol. Expected a string.");
         }
