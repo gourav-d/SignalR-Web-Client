@@ -1,5 +1,5 @@
 ﻿
-SignalR-Web-Client Samples
+SignalR Web Client Samples
 =====================
 
 
@@ -7,35 +7,36 @@ SignalR-Web-Client Samples
 
 
 ```csharp
-        public void ConfigureServices(IServiceCollection services)
-		{
-            .....
-			services.AddCors(options => options.AddPolicy("Cors", builder =>
-			{
-				builder
-					.AllowAnyMethod()
-					.AllowAnyHeader()
-					.AllowCredentials()
-					.WithOrigins(
-									"http://localhost:8080",
-									"http://127.0.0.1:8080",
-									"https://gourav-d.github.io");
-			}));
-            ....
+public void ConfigureServices(IServiceCollection services)
+{
+	.....
+	services.AddCors(options => options.AddPolicy("Cors", builder =>
+	{
+		builder
+			.AllowAnyMethod()
+			.AllowAnyHeader()
+			.AllowCredentials()
+			.WithOrigins(
+				"http://localhost:8080",
+				"http://127.0.0.1:8080",
+				"https://gourav-d.github.io"
+			);
+	}));
+	....
 
-            services.AddSignalR();
-            ...
-        }
+	services.AddSignalR();
+	...
+}
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
-		{
-                ....
-                app.UseSignalR(option => {
-                    option.MapHub<SampleHub>(new PathString("/Test/Hub"));
-                    option.MapHub<SecuredHub>(new PathString("/Secured/Hub"));
-			});
-            ....
-        }
+public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+{
+		....
+		app.UseSignalR(option => {
+			option.MapHub<SampleHub>(new PathString("/Test/Hub"));
+			option.MapHub<SecuredHub>(new PathString("/Secured/Hub"));
+	});
+	....
+}
 ```
 <br/><br/>
 

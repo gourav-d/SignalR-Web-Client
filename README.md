@@ -1,4 +1,4 @@
-﻿SignalR-Web-Client
+﻿SignalR Web Client
 ======================
 
  It is a debugging tool to test ASP.Net Core SignalR hubs. Using this tool, we can send the data to the SignalR hub and receive a response from the SignalR Hub. The tool is designed for DotNet core developers to make their life easier when they will work with SignalR. Developer's, no need to write a single line of code to test the Hub. SignalR Web Client is available [here](https://gourav-d.github.io/SignalR-Web-Client/dist/).
@@ -17,19 +17,21 @@
 
 
 
-- [SignalR-Web-Client](#signalr-web-client)
+- [SignalR Web Client](#signalr-web-client)
 - [Prior Knowledge](#prior-knowledge)
 - [Prerequisite](#prerequisite)
-- [Install](#install)
+- [Installation](#installation)
 - [How it works?](#how-it-works)
     - [Basic View](#basic-view)
       - [Server Method:](#server-method)
       - [Request Payload:](#request-payload)
       - [Data Type supports:](#data-type-supports)
     - [Advance View](#advance-view)
-    - [Reporting Issues](#reporting-issues)
+- [Reporting Issues](#reporting-issues)
 - [Samples](#samples)
+- [Upcoming Features](#upcoming-features)
 - [Technologies](#technologies)
+- [ASP.Net Core Support](#aspnet-core-support)
 - [Browser Support](#browser-support)
 - [License](#license)
 
@@ -47,7 +49,7 @@ Before using this tool, you should know about:
 - Npm
 - Git
 
-# Install
+# Installation
 
 SignalR Web Client is available [here](https://gourav-d.github.io/SignalR-Web-Client/dist/).
 
@@ -108,8 +110,21 @@ To set up in local environment:
 ```csharp
 Startup.cs
 
+public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+{
+    ...
+    //CORS: This required when SignalR Web client is hosted on different server
+    app.UseCors("Cors");
+    ...
+    app.UseSignalR(option => {
+        //You'r Hub
+        //option.MapHub<SampleHub>(new PathString("/Test/Hub"));
+    });
+}
+
 public void ConfigureServices(IServiceCollection services)
 {
+    //CORS: This required when SignalR Web client is hosted on different server
     services.AddCors(options => options.AddPolicy("Cors", builder =>
     {
       builder
@@ -118,6 +133,9 @@ public void ConfigureServices(IServiceCollection services)
         .AllowCredentials()
         .WithOrigins("http://localhost:8080"); //SignalR Web Client Url
     }));
+
+    ...
+    services.AddSignalR();
 
   ...
 }
@@ -146,9 +164,9 @@ SignalR Web Client has two views:
 </div>
 
 
-1. Provide the valid hub url in *Hub Address* textbox.(for ex. https://localhost:5001/Test/Hub).
+1. Provide the valid hub URL in *Hub Address* textbox.(for ex. https://localhost:5001/Test/Hub).
 
-2. Click on the connect button, it will try to connect with the server. Once the connection is established, if any data is broadcast from the Hub(ex. SampleHub) to all the client then, it will be displayed in the response payload section.
+2. Click on the connect button, it will try to connect with the server. Once the connection is established, if any data is broadcast from the Hub(ex. SampleHub) to all the clients then, it will be displayed in the response payload section.
 
 3. If we want to call any Hub method. For example SendMessage method
 ```csharp
@@ -194,7 +212,7 @@ It has all the functionality which basic view provides, also it has additional f
 </div>
 
 
-### Reporting Issues
+# Reporting Issues
 
 Nothing is perfect.
 - Found an issue?
@@ -207,13 +225,19 @@ Then, just open a [new clear and descriptive issue](../../issues/new).
 
 [Samples are available here](https://github.com/gourav-d/SignalR-Web-Client/tree/master/Samples/AspDotCore/WebApp/WebApp)
 
+# Upcoming Features
+- Data Streaming Listener
+- SignalR Web Client Chrome Extension
+- Support for MessagePack Protocol (Currently, it support only JSON Protocol)
 
 # Technologies
-
 - Aspnet-Signalr 1.1.4
 - Bootstrap 4.3.1
 - [Mitt](https://github.com/developit/mitt)
 - WebComponentsJs 2.2.10
+
+# ASP.Net Core Support
+Currently, it works well with ASP.Net Core 2.2, 3.0 & 3.1.
 
 # Browser Support
 Currently, it supports only the chrome browser.
