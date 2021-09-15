@@ -22,4 +22,4 @@ namespace WebApp
 				{
 					webBuilder.UseStartup<Startup>();
 				});
-	}k•
+	}}

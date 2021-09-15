@@ -103,12 +103,13 @@ namespace WebApp
 				app.UseHsts();
 			}
 			app.UseCors("Cors");
-			app.UseHttpsRedirection();
+			//app.UseHttpsRedirection();
 
 			app.UseStaticFiles(new StaticFileOptions
 			{
 				FileProvider = new PhysicalFileProvider(
 				Path.Combine(env.ContentRootPath, "SignalRWebClient")),
+
 				RequestPath = "/SignalRWebClient"
 			});
 
@@ -117,6 +118,7 @@ namespace WebApp
 
 			app.UseAuthorization();
 			app.UseCookiePolicy();
+			app.UseStaticFiles();
 
 			app.UseEndpoints(endpoints =>
 			{
