@@ -143,6 +143,15 @@ public void ConfigureServices(IServiceCollection services)
 refer this [Startup.cs file](https://github.com/gourav-d/SignalR-Web-Client/blob/master/Samples/AspDotCore/WebApp/WebApp/Startup.cs#L30)
       
 
+# Run SignalR Web Client using Docker
+```
+$ docker pull gourav5/signalr-web-client
+
+$ docker run -it -d -p 8080:80 gourav5/signalr-web-client
+```
+Then you can hit http://localhost:8080 or http://host-ip:8080 in your browser.
+
+
 # How it works?
 
 SignalR Web Client has two views:
